@@ -1,0 +1,6 @@
+{
+	"extends": ["@mkobayashime/shared-config/biome"],
+	"javascript": {
+		"globals": ["chrome", "browser", "defineContentScript", "defineBackground"]
+	}
+}

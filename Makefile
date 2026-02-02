@@ -1,3 +1,6 @@
+biome = bunx biome
+eslint = bunx eslint
+typecheck = bunx tsc --noEmit
 wxt = bunx wxt
 
 deps: PHONY
@@ -6,6 +9,20 @@ ifeq ($(CI), true)
 else
 	bun install
 endif
+
+lint: deps PHONY
+	$(biome) check .
+	$(eslint) .
+
+lint.fix: deps PHONY
+	$(biome) check --fix .
+	$(eslint) --fix .
+
+typecheck: deps PHONY
+	$(typecheck)
+
+typecheck.watch: deps PHONY
+	$(typecheck) --watch
 
 dev: deps PHONY
 	$(wxt)

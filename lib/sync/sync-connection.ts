@@ -1,5 +1,5 @@
-import { syncBookmarksToFolder } from "../bookmarks/sync.ts";
 import { folderExists } from "../bookmarks/api.ts";
+import { syncBookmarksToFolder } from "../bookmarks/sync.ts";
 import { fetchFileContent, fetchLatestCommitSha } from "../github/api.ts";
 import { parseManifest } from "../manifest/parser.ts";
 import { updateConnection } from "../storage/connections.ts";
@@ -30,7 +30,8 @@ export const syncConnection = async (
 		}
 
 		// Normalize srcDir: strip leading slash for API paths
-		const apiPath = connection.srcDir === "/" ? "" : connection.srcDir.replace(/^\//, "");
+		const apiPath =
+			connection.srcDir === "/" ? "" : connection.srcDir.replace(/^\//, "");
 
 		// 2. Fetch latest commit SHA
 		const commitSha = await fetchLatestCommitSha(
@@ -70,7 +71,10 @@ export const syncConnection = async (
 		);
 
 		// 6. Sync to target folder
-		const count = await syncBookmarksToFolder(connection.targetFolderId, bookmarks);
+		const count = await syncBookmarksToFolder(
+			connection.targetFolderId,
+			bookmarks,
+		);
 
 		// 7. Update connection state
 		await updateConnection(connection.id, {

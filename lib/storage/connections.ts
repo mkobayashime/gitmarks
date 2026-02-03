@@ -6,7 +6,9 @@ export const getConnections = async (): Promise<Connection[]> => {
 	return (await storage.getItem<Connection[]>(CONNECTIONS_KEY)) ?? [];
 };
 
-export const saveConnections = async (connections: Connection[]): Promise<void> => {
+export const saveConnections = async (
+	connections: Connection[],
+): Promise<void> => {
 	await storage.setItem(CONNECTIONS_KEY, connections);
 };
 

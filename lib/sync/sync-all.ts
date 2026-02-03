@@ -1,6 +1,6 @@
 import { getConnections } from "../storage/connections.ts";
 import { getToken } from "../storage/index.ts";
-import { syncConnection, type SyncResult } from "./sync-connection.ts";
+import { type SyncResult, syncConnection } from "./sync-connection.ts";
 
 export type SyncAllResult = {
 	connectionId: string;

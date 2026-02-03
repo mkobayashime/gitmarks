@@ -1,3 +1,5 @@
+import type { Browser } from "@wxt-dev/browser";
+
 export type BookmarkFolder = {
 	id: string;
 	title: string;
@@ -8,7 +10,7 @@ export type BookmarkFolder = {
  * Recursively collect all folders from a bookmark tree node.
  */
 const collectFolders = (
-	nodes: chrome.bookmarks.BookmarkTreeNode[],
+	nodes: Browser.bookmarks.BookmarkTreeNode[],
 	parentPath: string,
 ): BookmarkFolder[] => {
 	const folders: BookmarkFolder[] = [];
@@ -38,7 +40,9 @@ export const getAllFolders = async (): Promise<BookmarkFolder[]> => {
 /**
  * Get a single folder by ID. Returns null if not found.
  */
-export const getFolderById = async (id: string): Promise<BookmarkFolder | null> => {
+export const getFolderById = async (
+	id: string,
+): Promise<BookmarkFolder | null> => {
 	try {
 		const nodes = await browser.bookmarks.get(id);
 		if (nodes.length === 0 || nodes[0].url) return null;
@@ -65,7 +69,7 @@ export const folderExists = async (id: string): Promise<boolean> => {
  */
 export const getBookmarksInFolder = async (
 	folderId: string,
-): Promise<chrome.bookmarks.BookmarkTreeNode[]> => {
+): Promise<Browser.bookmarks.BookmarkTreeNode[]> => {
 	const children = await browser.bookmarks.getChildren(folderId);
 	return children.filter((c) => c.url !== undefined);
 };

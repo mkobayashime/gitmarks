@@ -9,7 +9,8 @@ const getAncestorIds = async (folderId: string): Promise<Set<string>> => {
 	let currentId: string | undefined = folderId;
 
 	while (currentId) {
-		const nodes = await browser.bookmarks.get(currentId);
+		const nodes: { id: string; parentId?: string }[] =
+			await browser.bookmarks.get(currentId);
 		const node = nodes[0];
 		if (!node || !node.parentId) break;
 		ancestors.add(node.parentId);

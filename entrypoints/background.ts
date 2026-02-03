@@ -5,7 +5,9 @@ export default defineBackground(() => {
 	const SYNC_INTERVAL_MINUTES = 60;
 
 	browser.runtime.onInstalled.addListener(() => {
-		browser.alarms.create(SYNC_ALARM_NAME, { periodInMinutes: SYNC_INTERVAL_MINUTES });
+		void browser.alarms.create(SYNC_ALARM_NAME, {
+			periodInMinutes: SYNC_INTERVAL_MINUTES,
+		});
 	});
 
 	browser.alarms.onAlarm.addListener((alarm) => {

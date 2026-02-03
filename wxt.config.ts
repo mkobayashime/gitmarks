@@ -1,5 +1,6 @@
 import { defineConfig } from "wxt";
 import { validateEnvVars } from "./lib/env";
+import packageJSON from "./package.json";
 
 validateEnvVars();
 
@@ -7,7 +8,9 @@ validateEnvVars();
 export default defineConfig({
 	modules: ["@wxt-dev/module-react", "@wxt-dev/auto-icons"],
 	manifest: {
-		name: "GitMarks",
+		name: packageJSON.name,
+		description: packageJSON.description,
+		version: packageJSON.version,
 		permissions: ["storage"],
 		host_permissions: ["https://github.com/*", "https://api.github.com/*"],
 	},

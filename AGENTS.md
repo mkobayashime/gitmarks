@@ -18,3 +18,7 @@ Use these `make` commands, or execute the corresponding commands specified in `M
 
 - `make lint.fix`
 - `make typecheck`
+
+## Coding rules
+
+- Prefer arrow functions over `function` expressions.

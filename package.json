@@ -5,8 +5,12 @@
 	"version": "0.1.0",
 	"type": "module",
 	"dependencies": {
+		"@ark-ui/react": "^5.30.0",
+		"@tailwindcss/vite": "^4.1.18",
 		"react": "^19.2.3",
-		"react-dom": "^19.2.3"
+		"react-dom": "^19.2.3",
+		"tailwindcss": "^4.1.18",
+		"valibot": "^1.2.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.13",

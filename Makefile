@@ -42,9 +42,6 @@ zip: deps PHONY
 zip.firefox: deps PHONY
 	$(wxt) zip -b firefox
 
-compile: deps PHONY
-	tsc --noEmit
-
 postinstall: deps PHONY
 	$(wxt) prepare
 

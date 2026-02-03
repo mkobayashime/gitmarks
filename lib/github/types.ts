@@ -40,4 +40,10 @@ export interface RepoContent {
 	url: string;
 	html_url?: string;
 	download_url?: string | null;
+	content?: string;
+	encoding?: string;
+}
+
+export interface CommitListItem {
+	sha: string;
 }

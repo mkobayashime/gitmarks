@@ -5,25 +5,25 @@
 	"version": "0.1.0",
 	"type": "module",
 	"dependencies": {
-		"@ark-ui/react": "^5.30.0",
-		"@tailwindcss/vite": "^4.1.18",
-		"react": "^19.2.3",
-		"react-dom": "^19.2.3",
-		"tailwindcss": "^4.1.18",
-		"valibot": "^1.2.0"
+		"@ark-ui/react": "5.30.0",
+		"@tailwindcss/vite": "4.1.18",
+		"react": "19.2.4",
+		"react-dom": "19.2.4",
+		"tailwindcss": "4.1.18",
+		"valibot": "1.2.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.3.13",
-		"@mkobayashime/shared-config": "^3.0.0",
+		"@biomejs/biome": "2.3.14",
+		"@mkobayashime/shared-config": "3.1.0",
 		"@types/react": "19.2.10",
 		"@types/react-dom": "19.2.3",
-		"@wxt-dev/auto-icons": "^1.1.0",
-		"@wxt-dev/module-react": "^1.1.5",
-		"eslint": "^9.39.2",
-		"eslint-config-flat-gitignore": "^2.1.0",
-		"typescript": "^5.9.3",
-		"typescript-eslint": "^8.54.0",
-		"wxt": "^0.20.6"
+		"@wxt-dev/auto-icons": "1.1.0",
+		"@wxt-dev/module-react": "1.1.5",
+		"eslint": "9.39.2",
+		"eslint-config-flat-gitignore": "2.1.0",
+		"typescript": "5.9.3",
+		"typescript-eslint": "8.54.0",
+		"wxt": "0.20.13"
 	},
 	"scripts": {
 		"postinstall": "wxt prepare"

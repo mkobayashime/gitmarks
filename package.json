@@ -13,6 +13,7 @@
 		"@mkobayashime/shared-config": "^3.0.0",
 		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
+		"@wxt-dev/auto-icons": "^1.1.0",
 		"@wxt-dev/module-react": "^1.1.5",
 		"eslint": "^9.39.2",
 		"eslint-config-flat-gitignore": "^2.1.0",

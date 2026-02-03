@@ -18,11 +18,6 @@ GitHub レポジトリ上の変更 -> bookmarks への反映のみ行い、bookm
         - e.g. `/src` on the repo
     - `srcDir` 配下のファイルを以下のように検知する
         - ディレクトリ内の `manifest.json` を読み取り、後述のスキーマに沿って解釈する
-- UI
-    - Options page として実装すること
-        - `../../entrypoints/options/index.html`, `../../entrypoints/options/index.ts`
-        - React
-        - GitHub にログインする導線、連携されているレポジトリの情報を表示する
 
 ### `manifest.json` スキーマ
 
@@ -38,6 +33,37 @@ type Bookmark = {
 `location` は `https://example.com` のような URL か、ブックマークレットのファイルへのパス (e.g. `./foobar.js`) のいずれか  
 ファイルパスであった場合、`manifest.json` の存在するディレクトリからの相対パスとして resolve すること
 対応するファイルが存在しない場合、出力される `ManifestJSON` からは取り除くこと
+
+### UI の機能要件
+
+- Options page として実装する
+    - `../../entrypoints/options/index.html`, `../../entrypoints/options/index.ts`
+- スタック
+    - React
+    - Tailwind
+        - CSS や SCSS (Sass) ファイルは使用しない
+    - Headless component library として可能な限り Ark UI を使用する
+        - https://ark-ui.com/docs/overview/about
+- 機能
+    - ログイン状態の表示
+        - 未ログインの場合、ログイン導線
+        - ログイン済みの場合、ログアウト導線
+    - 連携の一覧とそれぞれの設定
+        - 未ログインでも連携は存在する可能性があることに留意
+            - `chrome.storage.sync` での他デバイスから同期など
+        - 各連携について:
+            - 同期の有効/無効切り替え
+            - レポジトリ名を表示
+            - `srcDir` の入力欄
+            - `targetFolder` の入力欄
+            - Pull ボタン: レポジトリから任意のタイミングで同期
+            - 連携解除ボタン
+            - 連携・同期のエラー表示 (後述)
+    - 連携レポジトリを追加する導線
+    - 連携・同期で考慮する例外
+        - 指定された `srcDir` がレポジトリに存在しない
+        - 指定された `targetFolder` が bookmarks に存在しない
+        - 権限不足/ログイン状態が解除されている
 
 ## 進め方
 

@@ -1,6 +1,7 @@
 import { defineConfig } from "wxt";
 import { validateEnvVars } from "./lib/env";
 import packageJSON from "./package.json";
+import tailwind from "@tailwindcss/vite";
 
 validateEnvVars();
 
@@ -11,11 +12,14 @@ export default defineConfig({
 		name: packageJSON.name,
 		description: packageJSON.description,
 		version: packageJSON.version,
-		permissions: ["storage"],
+		permissions: ["storage", "bookmarks", "alarms"],
 		host_permissions: ["https://github.com/*", "https://api.github.com/*"],
 	},
 	autoIcons: {
 		baseIconPath: "public/icon.svg",
 	},
 	outDirTemplate: "{{browser}}-mv{{manifestVersion}}",
+	vite: () => ({
+		plugins: [tailwind()],
+	}),
 });

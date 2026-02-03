@@ -98,7 +98,13 @@ export const fetchFileContent = async (
 	const data = (await response.json()) as RepoContent;
 	if (!data.content) return null;
 
-	return atob(data.content);
+	// Decode base64 to binary string, then convert to Uint8Array, then decode as UTF-8
+	const binaryString = atob(data.content);
+	const bytes = new Uint8Array(binaryString.length);
+	for (let i = 0; i < binaryString.length; i++) {
+		bytes[i] = binaryString.charCodeAt(i);
+	}
+	return new TextDecoder().decode(bytes);
 };
 
 /**

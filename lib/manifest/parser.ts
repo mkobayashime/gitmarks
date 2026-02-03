@@ -28,7 +28,7 @@ const resolveRelativePath = (srcDir: string, relativePath: string): string => {
 /**
  * Parse and resolve a manifest.json content string into bookmarks.
  * - URLs are used as-is
- * - Relative paths are fetched and wrapped as javascript: bookmarklets
+ * - Relative paths are fetched and treated as bookmarklets
  * - Entries referencing missing files are silently excluded
  */
 export const parseManifest = async (
@@ -51,7 +51,7 @@ export const parseManifest = async (
 			const filePath = resolveRelativePath(srcDir, entry.location);
 			const content = await fetchFileContent(token, owner, repo, filePath);
 			if (content === null) continue; // File not found, skip
-			resolved.push({ name: entry.name, url: `javascript:${content}` });
+			resolved.push({ name: entry.name, url: content });
 		}
 	}
 

@@ -2,7 +2,7 @@ import { syncAllConnections } from "../lib/sync/sync-all.ts";
 
 export default defineBackground(() => {
 	const SYNC_ALARM_NAME = "gitmarks-sync";
-	const SYNC_INTERVAL_MINUTES = 60;
+	const SYNC_INTERVAL_MINUTES = 15;
 
 	browser.runtime.onInstalled.addListener(() => {
 		void browser.alarms.create(SYNC_ALARM_NAME, {

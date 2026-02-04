@@ -73,3 +73,25 @@ export const getBookmarksInFolder = async (
 	const children = await browser.bookmarks.getChildren(folderId);
 	return children.filter((c) => c.url !== undefined);
 };
+
+/**
+ * Get or create a subfolder within a parent folder.
+ * Returns the folder ID.
+ */
+export const getOrCreateFolder = async (
+	parentFolderId: string,
+	folderName: string,
+): Promise<string> => {
+	const children = await browser.bookmarks.getChildren(parentFolderId);
+
+	const existing = children.find((c) => !c.url && c.title === folderName);
+	if (existing) {
+		return existing.id;
+	}
+
+	const newFolder = await browser.bookmarks.create({
+		parentId: parentFolderId,
+		title: folderName,
+	});
+	return newFolder.id;
+};

@@ -1,6 +1,13 @@
 import { folderExists } from "../bookmarks/api.ts";
-import { syncBookmarksToFolder } from "../bookmarks/sync.ts";
-import { fetchFileContent, fetchLatestCommitSha } from "../github/api.ts";
+import {
+	type SyncTarget,
+	syncBookmarksToSubfolders,
+} from "../bookmarks/sync.ts";
+import {
+	fetchFileContent,
+	fetchLatestCommitSha,
+	findManifestFiles,
+} from "../github/api.ts";
 import { parseManifest } from "../manifest/parser.ts";
 import { updateConnection } from "../storage/connections.ts";
 import type { Connection } from "../types/connection.ts";
@@ -22,18 +29,15 @@ export const syncConnection = async (
 	options?: { force?: boolean },
 ): Promise<SyncResult> => {
 	try {
-		// 1. Validate target folder exists
 		if (!(await folderExists(connection.targetFolderId))) {
 			const error = "Target folder does not exist";
 			await updateConnection(connection.id, { lastSyncError: error });
 			return { success: false, error };
 		}
 
-		// Normalize srcDir: strip leading slash for API paths
 		const apiPath =
 			connection.srcDir === "/" ? "" : connection.srcDir.replace(/^\//, "");
 
-		// 2. Fetch latest commit SHA
 		const commitSha = await fetchLatestCommitSha(
 			token,
 			connection.repoOwner,
@@ -41,42 +45,57 @@ export const syncConnection = async (
 			apiPath,
 		);
 
-		// 3. Skip check
 		if (!options?.force && commitSha === connection.lastSyncedCommitSha) {
 			return { success: true, skipped: true };
 		}
 
-		// 4. Fetch manifest.json
-		const manifestPath = apiPath ? `${apiPath}/manifest.json` : "manifest.json";
-		const manifestContent = await fetchFileContent(
+		const manifestLocations = await findManifestFiles(
 			token,
 			connection.repoOwner,
 			connection.repoName,
-			manifestPath,
+			apiPath,
 		);
 
-		if (manifestContent === null) {
-			const error = `srcDir "${connection.srcDir}" does not contain manifest.json`;
+		if (manifestLocations.length === 0) {
+			const error = `No manifest.json files found in srcDir "${connection.srcDir}"`;
 			await updateConnection(connection.id, { lastSyncError: error });
 			return { success: false, error };
 		}
 
-		// 5. Parse and resolve bookmarks
-		const bookmarks = await parseManifest(
-			manifestContent,
-			connection.srcDir,
-			token,
-			connection.repoOwner,
-			connection.repoName,
-		);
+		const syncTargets: SyncTarget[] = [];
+		for (const manifestLoc of manifestLocations) {
+			const manifestContent = await fetchFileContent(
+				token,
+				connection.repoOwner,
+				connection.repoName,
+				manifestLoc.path,
+			);
 
-		// 6. Sync to target folder
-		const count = await syncBookmarksToFolder(
+			if (manifestContent === null) {
+				continue;
+			}
+
+			const manifestDir = `/${manifestLoc.path.replace(/\/manifest\.json$/, "")}`;
+
+			const bookmarks = await parseManifest(
+				manifestContent,
+				manifestDir,
+				token,
+				connection.repoOwner,
+				connection.repoName,
+			);
+
+			syncTargets.push({
+				bookmarks,
+				subfolderPath: manifestLoc.relativePath,
+			});
+		}
+
+		const count = await syncBookmarksToSubfolders(
 			connection.targetFolderId,
-			bookmarks,
+			syncTargets,
 		);
 
-		// 7. Update connection state
 		await updateConnection(connection.id, {
 			lastSyncedAt: new Date().toISOString(),
 			lastSyncedCommitSha: commitSha,

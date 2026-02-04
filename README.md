@@ -1,3 +1,99 @@
-# WXT + React
+<div align='center'>
+<img src="./public/icon.svg" width="64" alt="Available in the Chrome Web Store">
 
-This template should help get you started developing with React in WXT.
+# GitMarks
+
+Keep your Chrome bookmarks in sync with GitHub. One-way sync from your repos to your browser.
+
+<br />
+
+<!-- <div> -->
+<!--     <a href='https://example.com' target='_blank'> -->
+<!--         <img src="./img/chrome-web-store-badge.png" width="240" alt="Available in the Chrome Web Store"> -->
+<!--     </a> -->
+<!-- </div> -->
+<!-- <a href='https://example.com' target='_blank'> -->
+<!--     Chrome Web Store -->
+<!-- </a> -->
+</div>
+
+<br />
+
+![Screenshot of the options page](./img/options-page.png)
+
+## Features
+
+- Connect your GitHub account and select repositories to sync
+- Define bookmarks in `manifest.json` within your repo
+- Supports both URLs and bookmarklet files
+- Automatic periodic sync + manual sync
+- Skip-if-unchanged optimization using commit hash
+
+## Setup
+
+### 1. GitHub Repository
+
+Create a `manifest.json` in your repository.
+
+
+#### Manifest
+
+- Schema: `Array<{ name: string; location: string; }>`
+- `location` can be a URL or a relative path to a bookmarklet file in the same directory
+
+> [!TIP]
+> You can place multiple manifest files in subdirectories, and each will create a corresponding bookmark folder.
+
+#### Example manifest
+
+```json
+[
+  {
+    "name": "Example URL",
+    "location": "https://example.com"
+  },
+  {
+    "name": "My Bookmarklet",
+    "location": "./my-bookmarklet.js"
+  }
+]
+```
+
+#### Repository structure example with nested manifests
+
+```
+my-repo/
+├── bookmarks/
+│   ├── manifest.json      # -> TargetFolder/
+│   ├── my-bookmarklet.js  # should be referenced in the manifest.json above
+│   └── tools/
+│       └── manifest.json  # -> TargetFolder/tools/
+└── README.md
+```
+
+### 2. Extension Configuration
+
+1. Install GitMarks and open the options page
+2. Sign in with your GitHub account
+3. Click "Add Connection" and select a repository
+4. Configure:
+   - **Source Directory**: Path to the directory containing `manifest.json` files (e.g., `/bookmarks`)
+   - **Target Folder**: Chrome bookmark folder where bookmarks will be synced
+     - Target folders for different connections must not overlap (no ancestor/descendant relationships)
+5. Enable the connection to start automatic sync
+
+## Usage
+
+- **Automatic Sync**: Enabled connections sync periodically
+- **Manual Sync**: Click "Pull" on any connection to sync immediately
+- **Toggle**: Enable/disable connections without deleting configuration
+- **Disconnect**: Remove a connection entirely
+
+## Development
+
+```bash
+make deps # Install dependencies
+make dev # Start dev server
+make typecheck # Type checking
+make lint.fix # Linting
+```

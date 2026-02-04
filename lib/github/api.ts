@@ -134,3 +134,47 @@ export const fetchLatestCommitSha = async (
 
 	return commits[0].sha;
 };
+
+export type ManifestLocation = {
+	path: string;
+	relativePath: string;
+};
+
+/**
+ * Recursively find all manifest.json files within a directory.
+ */
+export const findManifestFiles = async (
+	token: string,
+	owner: string,
+	repo: string,
+	path: string,
+): Promise<ManifestLocation[]> => {
+	const results: ManifestLocation[] = [];
+
+	const traverse = async (
+		currentPath: string,
+		relativePath: string,
+	): Promise<void> => {
+		const contents = await fetchRepoContents(token, owner, repo, currentPath);
+
+		for (const item of contents) {
+			const itemRelativePath = relativePath
+				? `${relativePath}/${item.name}`
+				: item.name;
+
+			if (item.type === "dir") {
+				await traverse(item.path, itemRelativePath);
+			} else if (item.name === "manifest.json") {
+				results.push({
+					path: item.path,
+					relativePath: relativePath,
+				});
+			}
+		}
+	};
+
+	const initialPath = path || "";
+	await traverse(initialPath, "");
+
+	return results;
+};

@@ -2,6 +2,15 @@
 
 This is a repository for a Chrome Extension called GitMarks.
 
+## Keeping This File Updated
+
+When completing tasks, update this file and report the updates summary if you:
+
+- Update utilities, hooks, or shared functions already documented, or add new ones.
+- Change architectural patterns or data flow
+- Add new external dependencies or APIs
+- Establish new coding conventions
+
 ## Language / Package manager
 
 - TypeScript

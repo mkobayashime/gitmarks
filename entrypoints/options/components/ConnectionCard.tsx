@@ -1,4 +1,4 @@
-import { ChevronDownIcon, ChevronRightIcon } from "@primer/octicons-react";
+import { ChevronDownIcon } from "@primer/octicons-react";
 import { useState } from "react";
 import type { BookmarkFolder } from "../../../lib/bookmarks/api.ts";
 import type { Connection } from "../../../lib/types/connection.ts";
@@ -41,7 +41,6 @@ export const ConnectionCard = ({
 	onSignIn,
 	onToast,
 }: Props) => {
-	const [expanded, setExpanded] = useState(false);
 	const [disconnectOpen, setDisconnectOpen] = useState(false);
 	const [srcDir, setSrcDir] = useState(connection.srcDir);
 	const [targetFolderId, setTargetFolderId] = useState(
@@ -128,26 +127,18 @@ export const ConnectionCard = ({
 
 	return (
 		<>
-			<div
-				className={`rounded-md border bg-zinc-900 ${hasError ? "border-red-500/30" : "border-zinc-800"}`}
+			<details
+				className={`group rounded-md border bg-zinc-900 ${hasError ? "border-red-500/30" : "border-zinc-800"}`}
 			>
 				{/* Compact header row */}
-				<button
-					type="button"
-					onClick={() => setExpanded(!expanded)}
-					className="w-full px-4 py-3 text-left"
-				>
+				<summary className="cursor-pointer list-none px-4 py-3 [&::-webkit-details-marker]:hidden">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2">
 							<span className="text-sm text-zinc-100">
 								{connection.repoFullName}
 							</span>
 						</div>
-						{expanded ? (
-							<ChevronDownIcon className="text-zinc-600" />
-						) : (
-							<ChevronRightIcon className="text-zinc-600" />
-						)}
+						<ChevronDownIcon className="-rotate-90 text-zinc-600 transition-transform group-open:rotate-0" />
 					</div>
 					<div className="mt-1 flex flex-col gap-1">
 						<div
@@ -162,107 +153,105 @@ export const ConnectionCard = ({
 							Last sync {formatDate(connection.lastSyncedAt)}
 						</span>
 					</div>
-				</button>
+				</summary>
 
 				{/* Expanded body */}
-				{expanded && (
-					<div className="border-t border-zinc-800 px-4 pb-4 pt-3">
-						{/* Auth required */}
-						{!authenticated && (
-							<button
-								type="button"
-								onClick={onSignIn}
-								className="mb-3 rounded border border-yellow-500/20 bg-yellow-500/10 px-2.5 py-0.5 text-sm text-yellow-400"
-							>
-								Sign in required
-							</button>
-						)}
+				<div className="border-t border-zinc-800 px-4 pb-4 pt-3">
+					{/* Auth required */}
+					{!authenticated && (
+						<button
+							type="button"
+							onClick={onSignIn}
+							className="mb-3 rounded border border-yellow-500/20 bg-yellow-500/10 px-2.5 py-0.5 text-sm text-yellow-400"
+						>
+							Sign in required
+						</button>
+					)}
 
-						{/* Toggle row */}
-						<div className="mb-3 flex items-center gap-2">
-							<button
-								type="button"
-								onClick={handleToggle}
-								disabled={!authenticated}
-								className={`relative h-5 w-9 rounded-full transition-colors disabled:opacity-50 ${connection.enabled ? "bg-pink-500" : "bg-zinc-700"}`}
-							>
-								<span
-									className="absolute top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow shadow-black/40 transition-all"
-									style={{
-										left: connection.enabled ? "calc(100% - 18px)" : "2px",
-									}}
-								/>
-							</button>
-							<span className="text-xs text-zinc-400">
-								{connection.enabled ? "Enabled" : "Disabled"}
-							</span>
-						</div>
-
-						{/* srcDir */}
-						<label className="block mb-3">
-							<span className="block mb-1 text-xs text-zinc-500">
-								Source directory (on repository)
-							</span>
-							<input
-								type="text"
-								value={srcDir}
-								placeholder="/"
-								onChange={(e) => setSrcDir(e.target.value)}
-								disabled={disabled || !connection.enabled}
-								className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 font-mono text-sm text-zinc-100 placeholder-zinc-600 focus:border-pink-500 focus:outline-none disabled:opacity-40"
-							/>
-						</label>
-
-						{/* Target folder */}
-						<div className="mb-4">
-							<span className="block mb-1 text-xs text-zinc-500">
-								Target folder
-							</span>
-							<FolderSelect
-								folders={folders}
-								value={targetFolderId}
-								onChange={(id, path) => {
-									setTargetFolderId(id);
-									setTargetFolderPath(path);
+					{/* Toggle row */}
+					<div className="mb-3 flex items-center gap-2">
+						<button
+							type="button"
+							onClick={handleToggle}
+							disabled={!authenticated}
+							className={`relative h-5 w-9 rounded-full transition-colors disabled:opacity-50 ${connection.enabled ? "bg-pink-500" : "bg-zinc-700"}`}
+						>
+							<span
+								className="absolute top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow shadow-black/40 transition-all"
+								style={{
+									left: connection.enabled ? "calc(100% - 18px)" : "2px",
 								}}
-								disabled={disabled || !connection.enabled}
 							/>
-						</div>
+						</button>
+						<span className="text-xs text-zinc-400">
+							{connection.enabled ? "Enabled" : "Disabled"}
+						</span>
+					</div>
 
-						{/* Actions */}
-						<div className="flex items-center justify-between">
-							<div className="flex gap-2">
-								<SyncButton
-									syncing={syncing}
-									disabled={disabled || !connection.enabled}
-									onPull={() => void handlePull()}
-								/>
-								<button
-									type="button"
-									onClick={() => void handleSave()}
-									disabled={disabled || !connection.enabled}
-									className="rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-400 hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-40"
-								>
-									Save
-								</button>
-							</div>
-							<button
-								type="button"
-								onClick={() => setDisconnectOpen(true)}
-								disabled={disabled}
-								className="rounded-md px-2.5 py-1.5 text-sm text-red-400 hover:text-red-300 disabled:opacity-40"
-							>
-								Disconnect
-							</button>
-						</div>
+					{/* srcDir */}
+					<label className="block mb-3">
+						<span className="block mb-1 text-xs text-zinc-500">
+							Source directory (on repository)
+						</span>
+						<input
+							type="text"
+							value={srcDir}
+							placeholder="/"
+							onChange={(e) => setSrcDir(e.target.value)}
+							disabled={disabled || !connection.enabled}
+							className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 font-mono text-sm text-zinc-100 placeholder-zinc-600 focus:border-pink-500 focus:outline-none disabled:opacity-40"
+						/>
+					</label>
 
-						<ErrorSection
-							error={displayError}
-							onRetry={() => void handlePull()}
+					{/* Target folder */}
+					<div className="mb-4">
+						<span className="block mb-1 text-xs text-zinc-500">
+							Target folder
+						</span>
+						<FolderSelect
+							folders={folders}
+							value={targetFolderId}
+							onChange={(id, path) => {
+								setTargetFolderId(id);
+								setTargetFolderPath(path);
+							}}
+							disabled={disabled || !connection.enabled}
 						/>
 					</div>
-				)}
-			</div>
+
+					{/* Actions */}
+					<div className="flex items-center justify-between">
+						<div className="flex gap-2">
+							<SyncButton
+								syncing={syncing}
+								disabled={disabled || !connection.enabled}
+								onPull={() => void handlePull()}
+							/>
+							<button
+								type="button"
+								onClick={() => void handleSave()}
+								disabled={disabled || !connection.enabled}
+								className="rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-400 hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-40"
+							>
+								Save
+							</button>
+						</div>
+						<button
+							type="button"
+							onClick={() => setDisconnectOpen(true)}
+							disabled={disabled}
+							className="rounded-md px-2.5 py-1.5 text-sm text-red-400 hover:text-red-300 disabled:opacity-40"
+						>
+							Disconnect
+						</button>
+					</div>
+
+					<ErrorSection
+						error={displayError}
+						onRetry={() => void handlePull()}
+					/>
+				</div>
+			</details>
 
 			<DisconnectConfirmModal
 				open={disconnectOpen}

@@ -1,3 +1,4 @@
+import { ChevronDownIcon } from "@primer/octicons-react";
 import { useEffect, useRef, useState } from "react";
 import type { BookmarkFolder } from "../../../lib/bookmarks/api.ts";
 
@@ -38,7 +39,9 @@ export const FolderSelect = ({ folders, value, onChange, disabled }: Props) => {
 				<span className="truncate">
 					{selected ? selected.path : "Select folder…"}
 				</span>
-				<span className="ml-2 text-zinc-600">▾</span>
+				<span className="ml-2 text-zinc-600">
+					<ChevronDownIcon />
+				</span>
 			</button>
 
 			{open && (

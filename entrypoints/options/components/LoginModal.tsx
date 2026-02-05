@@ -1,3 +1,4 @@
+import { ArrowRightIcon } from "@primer/octicons-react";
 import type { DeviceFlowInfo } from "../hooks/useAuth.ts";
 
 type Props = {
@@ -38,9 +39,10 @@ export const LoginModal = ({ open, deviceFlow, error, onCancel }: Props) => {
 							href={deviceFlow.verificationUri}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="w-full flex justify-center rounded-md bg-indigo-600 p-2 text-sm font-medium text-white hover:bg-indigo-500"
+							className="w-full flex items-center justify-center gap-1 rounded-md bg-indigo-600 p-2 text-sm font-medium text-white hover:bg-indigo-500"
 						>
-							Open github.com/device →
+							Open github.com/device
+							<ArrowRightIcon />
 						</a>
 
 						<p className="mt-3 text-xs text-zinc-600">

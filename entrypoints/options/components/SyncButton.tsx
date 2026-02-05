@@ -1,3 +1,5 @@
+import { SyncIcon } from "@primer/octicons-react";
+
 type Props = {
 	syncing: boolean;
 	disabled: boolean;
@@ -17,7 +19,10 @@ export const SyncButton = ({ syncing, disabled, onPull }: Props) => (
 				Syncing…
 			</span>
 		) : (
-			"Pull"
+			<div className="flex items-center gap-2">
+				<SyncIcon />
+				Sync
+			</div>
 		)}
 	</button>
 );

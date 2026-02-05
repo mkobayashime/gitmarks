@@ -1,3 +1,4 @@
+import { PlusIcon } from "@primer/octicons-react";
 import type { BookmarkFolder } from "../../../lib/bookmarks/api.ts";
 import type { Connection } from "../../../lib/types/connection.ts";
 import { ConnectionCard } from "./ConnectionCard.tsx";
@@ -49,9 +50,10 @@ export const ConnectionList = ({
 		<button
 			type="button"
 			onClick={onAddClick}
-			className="rounded-md border border-dashed border-zinc-700 px-4 py-4 text-sm text-zinc-500 hover:border-indigo-500 hover:text-indigo-400"
+			className="flex items-center justify-center gap-2 rounded-md border border-dashed border-zinc-700 px-4 py-4 text-sm text-zinc-500 hover:border-indigo-500 hover:text-indigo-400"
 		>
-			+ Add repository
+			<PlusIcon />
+			Add repository
 		</button>
 	</div>
 );

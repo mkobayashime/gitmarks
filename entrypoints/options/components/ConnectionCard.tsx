@@ -1,3 +1,4 @@
+import { ChevronDownIcon, ChevronRightIcon } from "@primer/octicons-react";
 import { useState } from "react";
 import type { BookmarkFolder } from "../../../lib/bookmarks/api.ts";
 import type { Connection } from "../../../lib/types/connection.ts";
@@ -142,9 +143,11 @@ export const ConnectionCard = ({
 								{connection.repoFullName}
 							</span>
 						</div>
-						<span className="text-xs text-zinc-600">
-							{expanded ? "▲" : "▼"}
-						</span>
+						{expanded ? (
+							<ChevronDownIcon className="text-zinc-600" />
+						) : (
+							<ChevronRightIcon className="text-zinc-600" />
+						)}
 					</div>
 					<div className="mt-1 flex flex-col gap-1">
 						<div

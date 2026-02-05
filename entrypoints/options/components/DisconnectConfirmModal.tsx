@@ -29,14 +29,14 @@ export const DisconnectConfirmModal = ({
 					<button
 						type="button"
 						onClick={onClose}
-						className="rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm text-zinc-400"
+						className="cursor-pointer rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm text-zinc-400 transition-colors hover:bg-zinc-700"
 					>
 						Cancel
 					</button>
 					<button
 						type="button"
 						onClick={onConfirm}
-						className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-sm font-medium text-red-400 hover:bg-red-500/20"
+						className="cursor-pointer rounded-md border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-sm font-medium text-red-400 transition-colors hover:bg-red-500/20"
 					>
 						Disconnect
 					</button>

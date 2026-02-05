@@ -31,7 +31,7 @@ export const Header = ({ state, user, onSignIn, onSignOut }: Props) => (
 					<button
 						type="button"
 						onClick={onSignOut}
-						className="rounded-md px-2.5 py-1 text-sm text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300"
+						className="cursor-pointer rounded-md px-2.5 py-1 text-sm text-zinc-500 transition-colors hover:bg-zinc-800 hover:text-zinc-300"
 					>
 						Sign out
 					</button>
@@ -40,7 +40,7 @@ export const Header = ({ state, user, onSignIn, onSignOut }: Props) => (
 				<button
 					type="button"
 					onClick={onSignIn}
-					className="rounded-md bg-pink-500 px-3 py-1 text-sm font-medium text-white hover:bg-pink-600"
+					className="cursor-pointer rounded-md bg-pink-500 px-3 py-1 text-sm font-medium text-white transition-colors hover:bg-pink-600"
 				>
 					Sign in
 				</button>

@@ -72,7 +72,7 @@ export const RepoCombobox = ({ repos, loading, value, onChange }: Props) => {
 									setQuery("");
 									setOpen(false);
 								}}
-								className="w-full px-3 py-1.5 text-left text-sm text-zinc-400 hover:bg-zinc-800"
+								className="w-full cursor-pointer px-3 py-1.5 text-left text-sm text-zinc-400 transition-colors hover:bg-zinc-800"
 							>
 								{repo.full_name}
 							</button>

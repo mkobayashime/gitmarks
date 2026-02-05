@@ -162,7 +162,7 @@ export const ConnectionCard = ({
 						<button
 							type="button"
 							onClick={onSignIn}
-							className="mb-3 rounded border border-yellow-500/20 bg-yellow-500/10 px-2.5 py-0.5 text-sm text-yellow-400"
+							className="mb-3 cursor-pointer rounded border border-yellow-500/20 bg-yellow-500/10 px-2.5 py-0.5 text-sm text-yellow-400 transition-colors hover:bg-yellow-500/20"
 						>
 							Sign in required
 						</button>
@@ -174,7 +174,7 @@ export const ConnectionCard = ({
 							type="button"
 							onClick={handleToggle}
 							disabled={!authenticated}
-							className={`relative h-5 w-9 rounded-full transition-colors disabled:opacity-50 ${connection.enabled ? "bg-pink-500" : "bg-zinc-700"}`}
+							className={`relative h-5 w-9 cursor-pointer rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${connection.enabled ? "bg-pink-500" : "bg-zinc-700"}`}
 						>
 							<span
 								className="absolute top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow shadow-black/40 transition-all"
@@ -199,7 +199,7 @@ export const ConnectionCard = ({
 							placeholder="/"
 							onChange={(e) => setSrcDir(e.target.value)}
 							disabled={disabled || !connection.enabled}
-							className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 font-mono text-sm text-zinc-100 placeholder-zinc-600 focus:border-pink-500 focus:outline-none disabled:opacity-40"
+							className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 font-mono text-sm text-zinc-100 placeholder-zinc-600 transition-colors focus:border-pink-500 focus:outline-none disabled:opacity-40"
 						/>
 					</label>
 
@@ -231,7 +231,7 @@ export const ConnectionCard = ({
 								type="button"
 								onClick={() => void handleSave()}
 								disabled={disabled || !connection.enabled}
-								className="rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-400 hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-40"
+								className="cursor-pointer rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-400 transition-colors hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-40"
 							>
 								Save
 							</button>
@@ -240,7 +240,7 @@ export const ConnectionCard = ({
 							type="button"
 							onClick={() => setDisconnectOpen(true)}
 							disabled={disabled}
-							className="rounded-md px-2.5 py-1.5 text-sm text-red-400 hover:text-red-300 disabled:opacity-40"
+							className="cursor-pointer rounded-md px-2.5 py-1.5 text-sm text-red-400 transition-colors hover:text-red-300 disabled:cursor-not-allowed disabled:opacity-40"
 						>
 							Disconnect
 						</button>

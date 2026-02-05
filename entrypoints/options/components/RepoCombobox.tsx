@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Repository } from "../../../lib/github/types.ts";
 
 type Props = {
@@ -11,6 +11,7 @@ type Props = {
 export const RepoCombobox = ({ repos, loading, value, onChange }: Props) => {
 	const [query, setQuery] = useState("");
 	const [open, setOpen] = useState(false);
+	const containerRef = useRef<HTMLDivElement>(null);
 
 	const filtered = useMemo(() => {
 		if (!query) return repos;
@@ -18,9 +19,24 @@ export const RepoCombobox = ({ repos, loading, value, onChange }: Props) => {
 		return repos.filter((r) => r.full_name.toLowerCase().includes(q));
 	}, [repos, query]);
 
+	useEffect(() => {
+		const handleClickOutside = (e: MouseEvent) => {
+			if (
+				containerRef.current &&
+				!containerRef.current.contains(e.target as Node)
+			) {
+				setOpen(false);
+			}
+		};
+		if (open) document.addEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mousedown", handleClickOutside);
+	}, [open]);
+
 	return (
-		<div className="relative">
-			<div className="flex items-center rounded border border-gray-600 bg-gray-800">
+		<div ref={containerRef} className="relative">
+			<div
+				className={`flex items-center rounded-md border bg-zinc-800 ${open ? "border-indigo-500" : "border-zinc-700"}`}
+			>
 				<input
 					type="text"
 					value={query}
@@ -30,17 +46,17 @@ export const RepoCombobox = ({ repos, loading, value, onChange }: Props) => {
 						setOpen(true);
 					}}
 					onFocus={() => setOpen(true)}
-					className="flex-1 bg-transparent px-3 py-1.5 text-sm text-white placeholder-gray-500 outline-none"
+					className="flex-1 bg-transparent px-3 py-1.5 text-sm text-zinc-100 placeholder-zinc-500 outline-none"
 				/>
-				<span className="pr-3 text-gray-500">▼</span>
+				<span className="pr-3 text-xs text-zinc-600">▾</span>
 			</div>
 
 			{open && (
-				<div className="absolute z-20 mt-1 w-full max-h-48 overflow-y-auto rounded border border-gray-600 bg-gray-800 shadow-lg">
+				<div className="absolute z-20 mt-1 w-full max-h-48 overflow-y-auto rounded-md border border-zinc-700 bg-zinc-800">
 					{loading ? (
-						<p className="px-3 py-2 text-sm text-gray-400">Loading…</p>
+						<p className="px-3 py-2 text-xs text-zinc-500">Loading…</p>
 					) : filtered.length === 0 ? (
-						<p className="px-3 py-2 text-sm text-gray-400">
+						<p className="px-3 py-2 text-xs text-zinc-500">
 							{repos.length === 0
 								? "No repositories found. Create one on GitHub."
 								: "No matches"}
@@ -55,9 +71,9 @@ export const RepoCombobox = ({ repos, loading, value, onChange }: Props) => {
 									setQuery("");
 									setOpen(false);
 								}}
-								className="w-full px-3 py-1.5 text-left text-sm text-white hover:bg-gray-700"
+								className="w-full px-3 py-1.5 text-left text-sm text-zinc-400 hover:bg-zinc-700"
 							>
-								{repo.full_name}
+								<span className="font-mono">{repo.full_name}</span>
 							</button>
 						))
 					)}

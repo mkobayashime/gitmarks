@@ -24,7 +24,7 @@ type Props = {
 };
 
 const formatDate = (iso: string | null): string => {
-	if (!iso) return "Never synced";
+	if (!iso) return "Never";
 	return new Date(iso).toLocaleString();
 };
 
@@ -53,13 +53,21 @@ export const ConnectionCard = ({
 
 	const disabled = !authenticated || syncing;
 
-	const statusColor = connection.lastSyncError
-		? "bg-red-500"
-		: connection.enabled
-			? "bg-green-500"
-			: "bg-gray-500";
+	const hasError = !!connection.lastSyncError;
 
-	const statusLabel = connection.lastSyncError
+	const statusDotClass = hasError
+		? "bg-red-400"
+		: connection.enabled
+			? "bg-emerald-400"
+			: "bg-zinc-500";
+
+	const statusTextClass = hasError
+		? "text-red-400"
+		: connection.enabled
+			? "text-emerald-400"
+			: "text-zinc-500";
+
+	const statusLabel = hasError
 		? "Error"
 		: connection.enabled
 			? "Active"
@@ -120,98 +128,106 @@ export const ConnectionCard = ({
 	return (
 		<>
 			<div
-				className={`rounded-lg border bg-gray-800 ${
-					connection.lastSyncError ? "border-red-700" : "border-gray-700"
-				}`}
+				className={`rounded-md border bg-zinc-900 ${hasError ? "border-red-500/30" : "border-zinc-800"}`}
 			>
-				{/* Compact header — always visible, clickable to toggle */}
+				{/* Compact header row */}
 				<button
 					type="button"
 					onClick={() => setExpanded(!expanded)}
 					className="w-full px-4 py-3 text-left"
 				>
-					<div className="flex items-center gap-2">
-						<span className="text-gray-400">{expanded ? "▼" : "▶"}</span>
-						<span className="font-medium text-white">
-							{connection.repoFullName}
+					<div className="flex items-center justify-between">
+						<div className="flex items-center gap-2">
+							<span className="text-sm font-mono text-zinc-100">
+								{connection.repoFullName}
+							</span>
+						</div>
+						<span className="text-xs text-zinc-600">
+							{expanded ? "▲" : "▼"}
 						</span>
 					</div>
-					<div className="mt-1 flex items-center gap-2 ml-5">
-						<span
-							className={`inline-block h-2 w-2 rounded-full ${statusColor}`}
-						/>
-						<span className="text-xs text-gray-400">{statusLabel}</span>
-						<span className="text-xs text-gray-500">·</span>
-						<span className="text-xs text-gray-500">
-							Last synced: {formatDate(connection.lastSyncedAt)}
+					<div className="mt-1 flex flex-col gap-1">
+						<div
+							className={`flex items-center gap-1 text-xs ${statusTextClass}`}
+						>
+							<span
+								className={`inline-block h-1.5 w-1.5 rounded-full ${statusDotClass}`}
+							/>
+							{statusLabel}
+						</div>
+						<span className="font-mono text-xs text-zinc-600">
+							Last sync {formatDate(connection.lastSyncedAt)}
 						</span>
 					</div>
 				</button>
 
 				{/* Expanded body */}
 				{expanded && (
-					<div className="border-t border-gray-700 px-4 py-3">
-						{/* Sign in required chip */}
+					<div className="border-t border-zinc-800 px-4 pb-4 pt-3">
+						{/* Auth required */}
 						{!authenticated && (
 							<button
 								type="button"
 								onClick={onSignIn}
-								className="mb-3 rounded-full bg-yellow-600/20 px-3 py-0.5 text-xs text-yellow-300 hover:bg-yellow-600/30"
+								className="mb-3 rounded border border-yellow-500/20 bg-yellow-500/10 px-2.5 py-0.5 text-sm text-yellow-400"
 							>
 								Sign in required
 							</button>
 						)}
 
-						{/* Toggle */}
-						<div className="flex items-center gap-2 mb-3">
+						{/* Toggle row */}
+						<div className="mb-3 flex items-center gap-2">
 							<button
 								type="button"
 								onClick={handleToggle}
 								disabled={!authenticated}
-								className={`relative h-5 w-9 rounded-full transition-colors disabled:opacity-40 ${
-									connection.enabled ? "bg-indigo-600" : "bg-gray-600"
-								}`}
+								className={`relative h-5 w-9 rounded-full transition-colors disabled:opacity-50 ${connection.enabled ? "bg-indigo-600" : "bg-zinc-700"}`}
 							>
 								<span
-									className={`absolute top-0.5 left-0.5 inline-block h-4 w-4 rounded-full bg-white shadow transition-transform ${
-										connection.enabled ? "translate-x-4" : ""
-									}`}
+									className="absolute top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow shadow-black/40 transition-all"
+									style={{
+										left: connection.enabled ? "calc(100% - 18px)" : "2px",
+									}}
 								/>
 							</button>
-							<span className="text-sm text-gray-300">
+							<span className="text-xs text-zinc-400">
 								{connection.enabled ? "Enabled" : "Disabled"}
 							</span>
 						</div>
 
 						{/* srcDir */}
-						<label className="block mb-1 text-sm text-gray-300">
-							srcDir
+						<label className="block mb-3">
+							<span className="block mb-1 text-xs text-zinc-500">
+								Source directory (on repository)
+							</span>
 							<input
 								type="text"
 								value={srcDir}
 								placeholder="/"
 								onChange={(e) => setSrcDir(e.target.value)}
 								disabled={disabled || !connection.enabled}
-								className="w-full rounded border border-gray-600 bg-gray-700 px-3 py-1.5 text-sm text-white placeholder-gray-500 disabled:opacity-40"
+								className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 font-mono text-sm text-zinc-100 placeholder-zinc-600 focus:border-indigo-500 focus:outline-none disabled:opacity-40"
 							/>
 						</label>
 
 						{/* Target folder */}
-						<span className="mt-3 block mb-1 text-sm text-gray-300">
-							Target folder
-						</span>
-						<FolderSelect
-							folders={folders}
-							value={targetFolderId}
-							onChange={(id, path) => {
-								setTargetFolderId(id);
-								setTargetFolderPath(path);
-							}}
-							disabled={disabled || !connection.enabled}
-						/>
+						<div className="mb-4">
+							<span className="block mb-1 text-xs text-zinc-500">
+								Target folder
+							</span>
+							<FolderSelect
+								folders={folders}
+								value={targetFolderId}
+								onChange={(id, path) => {
+									setTargetFolderId(id);
+									setTargetFolderPath(path);
+								}}
+								disabled={disabled || !connection.enabled}
+							/>
+						</div>
 
-						{/* Action buttons */}
-						<div className="mt-4 flex items-center justify-between">
+						{/* Actions */}
+						<div className="flex items-center justify-between">
 							<div className="flex gap-2">
 								<SyncButton
 									syncing={syncing}
@@ -222,7 +238,7 @@ export const ConnectionCard = ({
 									type="button"
 									onClick={() => void handleSave()}
 									disabled={disabled || !connection.enabled}
-									className="rounded border border-gray-600 px-4 py-1.5 text-sm text-gray-200 hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
+									className="rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-400 hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-40"
 								>
 									Save
 								</button>
@@ -231,13 +247,12 @@ export const ConnectionCard = ({
 								type="button"
 								onClick={() => setDisconnectOpen(true)}
 								disabled={disabled}
-								className="rounded px-3 py-1.5 text-sm text-red-400 hover:text-red-300 disabled:opacity-40"
+								className="rounded-md px-2.5 py-1.5 text-sm text-red-400 hover:text-red-300 disabled:opacity-40"
 							>
 								Disconnect
 							</button>
 						</div>
 
-						{/* Error section */}
 						<ErrorSection
 							error={displayError}
 							onRetry={() => void handlePull()}

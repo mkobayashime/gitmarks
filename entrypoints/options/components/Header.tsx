@@ -9,24 +9,29 @@ type Props = {
 };
 
 export const Header = ({ state, user, onSignIn, onSignOut }: Props) => (
-	<header className="sticky top-0 z-10 flex items-center justify-between bg-gray-900 px-6 py-3 shadow">
-		<span className="text-lg font-semibold text-white">GitMarks</span>
+	<header className="sticky top-0 z-10 flex items-center justify-between border-b border-zinc-800 bg-zinc-950 px-6 py-3">
+		<div className="flex items-center gap-2">
+			<img src="/icon.svg" className="h-8" aria-hidden />
+			<span className="text-xl font-semibold text-zinc-100 tracking-tight">
+				GitMarks
+			</span>
+		</div>
 
-		<div className="flex items-center gap-3">
+		<div className="flex items-center gap-2">
 			{state === "authenticated" && user ? (
 				<>
 					<div className="flex items-center gap-2">
 						<img
 							src={user.avatar_url}
 							alt={user.login}
-							className="h-7 w-7 rounded-full"
+							className="h-6 w-6 rounded-full"
 						/>
-						<span className="text-sm text-gray-200">{user.login}</span>
+						<span className="text-xs text-zinc-400">{user.login}</span>
 					</div>
 					<button
 						type="button"
 						onClick={onSignOut}
-						className="rounded px-3 py-1 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
+						className="rounded-md px-2.5 py-1 text-sm text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300"
 					>
 						Sign out
 					</button>
@@ -35,7 +40,7 @@ export const Header = ({ state, user, onSignIn, onSignOut }: Props) => (
 				<button
 					type="button"
 					onClick={onSignIn}
-					className="rounded bg-indigo-600 px-3 py-1 text-sm text-white hover:bg-indigo-500"
+					className="rounded-md bg-indigo-600 px-3 py-1 text-sm font-medium text-white hover:bg-indigo-500"
 				>
 					Sign in
 				</button>

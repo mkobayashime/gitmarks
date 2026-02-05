@@ -7,15 +7,14 @@ export const ErrorSection = ({ error, onRetry }: Props) => {
 	if (!error) return null;
 
 	return (
-		<div className="mt-3 border-t border-red-800 pt-2">
-			<p className="text-xs font-medium text-red-400">Errors</p>
-			<div className="flex items-start gap-2 mt-1">
-				<span className="text-red-300 text-sm">⚠ {error}</span>
+		<div className="mt-3 rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2.5">
+			<div className="flex items-start justify-between gap-2">
+				<span className="text-sm text-red-400">{error}</span>
 				{onRetry && (
 					<button
 						type="button"
 						onClick={onRetry}
-						className="text-xs text-indigo-400 hover:underline shrink-0"
+						className="shrink-0 text-sm font-medium text-indigo-400 hover:text-indigo-300"
 					>
 						Retry
 					</button>

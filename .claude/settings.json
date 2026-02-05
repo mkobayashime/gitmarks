@@ -1,3 +1,16 @@
 {
-	"plansDirectory": "docs"
+	"plansDirectory": "docs",
+	"hooks": {
+		"PostToolUse": [
+			{
+				"matcher": "Edit:**/*.tsx?|Write:**/*.tsx?",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "make typecheck && make lint"
+					}
+				]
+			}
+		]
+	}
 }

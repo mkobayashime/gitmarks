@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import {
+	autoResolveOrphanConfigs,
+	cleanupDeletedConnections,
+} from "@/lib/storage/orphan-configs.ts";
 import type { Connection } from "@/lib/types/connection";
 import { AddConnectionModal } from "./components/AddConnectionModal.tsx";
 import { ConnectionList } from "./components/ConnectionList.tsx";
@@ -10,6 +14,8 @@ import { useConnections } from "./hooks/useConnections.ts";
 import { useRepositories } from "./hooks/useRepositories.ts";
 import { useSync } from "./hooks/useSync.ts";
 import { type Toast, useToast } from "./hooks/useToast.ts";
+
+const SYNC_KEY = "sync:gitmarks_connections";
 
 const ToastList = ({
 	toasts,
@@ -88,6 +94,34 @@ const App = () => {
 			setLoginOpen(false);
 		}
 	}, [loginOpen, authState]);
+
+	useEffect(() => {
+		const initializeStorage = async () => {
+			await cleanupDeletedConnections();
+			await autoResolveOrphanConfigs();
+			await refreshConnections();
+		};
+
+		void initializeStorage();
+
+		const handleStorageChange = (
+			changes: Record<string, { oldValue?: unknown; newValue?: unknown }>,
+			areaName: string,
+		) => {
+			if (areaName === "sync" && SYNC_KEY in changes) {
+				void (async () => {
+					await cleanupDeletedConnections();
+					const resolvedCount = await autoResolveOrphanConfigs();
+					if (resolvedCount > 0) {
+						await refreshConnections();
+					}
+				})();
+			}
+		};
+
+		browser.storage.onChanged.addListener(handleStorageChange);
+		return () => browser.storage.onChanged.removeListener(handleStorageChange);
+	}, [refreshConnections]);
 
 	const handleAddClick = () => {
 		if (!authenticated) {

@@ -17,6 +17,12 @@ import { type Toast, useToast } from "./hooks/useToast.ts";
 
 const SYNC_KEY = "sync:gitmarks_connections";
 
+const toastStyles = {
+	success: "bg-emerald-500/10 border-emerald-500/25 text-emerald-400",
+	error: "bg-red-500/10 border-red-500/25 text-red-400",
+	info: "bg-zinc-800 border-zinc-700 text-zinc-200",
+} as const;
+
 const ToastList = ({
 	toasts,
 	onRemove,
@@ -28,19 +34,13 @@ const ToastList = ({
 		{toasts.map((t) => (
 			<div
 				key={t.id}
-				className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm text-white shadow ${
-					t.type === "success"
-						? "bg-green-700"
-						: t.type === "error"
-							? "bg-red-700"
-							: "bg-gray-700"
-				}`}
+				className={`flex items-center gap-3 rounded-md border px-4 py-2.5 text-sm ${toastStyles[t.type]}`}
 			>
 				<span>{t.message}</span>
 				<button
 					type="button"
 					onClick={() => onRemove(t.id)}
-					className="ml-2 text-white/60 hover:text-white"
+					className="ml-auto text-zinc-500 hover:text-zinc-400"
 				>
 					×
 				</button>
@@ -145,7 +145,7 @@ const App = () => {
 	const handleRemove = (id: string) => remove(id);
 
 	return (
-		<div className="min-h-screen bg-gray-950 text-white">
+		<div className="min-h-screen bg-zinc-950">
 			<Header
 				state={authState}
 				user={user}
@@ -153,7 +153,7 @@ const App = () => {
 				onSignOut={handleSignOut}
 			/>
 
-			<main className="mx-auto max-w-2xl px-4 py-6">
+			<main className="mx-auto max-w-xl px-4 py-6">
 				<ConnectionList
 					connections={connections}
 					folders={folders}

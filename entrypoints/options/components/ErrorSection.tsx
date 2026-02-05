@@ -14,7 +14,7 @@ export const ErrorSection = ({ error, onRetry }: Props) => {
 					<button
 						type="button"
 						onClick={onRetry}
-						className="shrink-0 text-sm font-medium text-indigo-400 hover:text-indigo-300"
+						className="shrink-0 text-sm font-medium text-pink-400 hover:text-pink-300"
 					>
 						Retry
 					</button>

@@ -50,7 +50,7 @@ export const ConnectionList = ({
 		<button
 			type="button"
 			onClick={onAddClick}
-			className="flex items-center justify-center gap-2 rounded-md border border-dashed border-zinc-700 px-4 py-4 text-sm text-zinc-500 hover:border-indigo-500 hover:text-indigo-400"
+			className="flex items-center justify-center gap-2 rounded-md border border-dashed border-zinc-700 px-4 py-4 text-sm text-zinc-500 hover:border-pink-500 hover:text-pink-400"
 		>
 			<PlusIcon />
 			Add repository

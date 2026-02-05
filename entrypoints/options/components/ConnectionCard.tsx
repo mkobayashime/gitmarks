@@ -184,7 +184,7 @@ export const ConnectionCard = ({
 								type="button"
 								onClick={handleToggle}
 								disabled={!authenticated}
-								className={`relative h-5 w-9 rounded-full transition-colors disabled:opacity-50 ${connection.enabled ? "bg-indigo-600" : "bg-zinc-700"}`}
+								className={`relative h-5 w-9 rounded-full transition-colors disabled:opacity-50 ${connection.enabled ? "bg-pink-500" : "bg-zinc-700"}`}
 							>
 								<span
 									className="absolute top-0.5 inline-block h-4 w-4 rounded-full bg-white shadow shadow-black/40 transition-all"
@@ -209,7 +209,7 @@ export const ConnectionCard = ({
 								placeholder="/"
 								onChange={(e) => setSrcDir(e.target.value)}
 								disabled={disabled || !connection.enabled}
-								className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 font-mono text-sm text-zinc-100 placeholder-zinc-600 focus:border-indigo-500 focus:outline-none disabled:opacity-40"
+								className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 font-mono text-sm text-zinc-100 placeholder-zinc-600 focus:border-pink-500 focus:outline-none disabled:opacity-40"
 							/>
 						</label>
 

@@ -35,7 +35,7 @@ export const RepoCombobox = ({ repos, loading, value, onChange }: Props) => {
 	return (
 		<div ref={containerRef} className="relative">
 			<div
-				className={`flex items-center rounded-md border bg-zinc-800 ${open ? "border-indigo-500" : "border-zinc-700"}`}
+				className={`flex items-center rounded-md border bg-zinc-800 ${open ? "border-pink-500" : "border-zinc-700"}`}
 			>
 				<input
 					type="text"

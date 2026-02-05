@@ -139,7 +139,7 @@ export const ConnectionCard = ({
 				>
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2">
-							<span className="text-sm font-mono text-zinc-100">
+							<span className="text-sm text-zinc-100">
 								{connection.repoFullName}
 							</span>
 						</div>
@@ -158,7 +158,7 @@ export const ConnectionCard = ({
 							/>
 							{statusLabel}
 						</div>
-						<span className="font-mono text-xs text-zinc-600">
+						<span className="text-xs text-zinc-600">
 							Last sync {formatDate(connection.lastSyncedAt)}
 						</span>
 					</div>

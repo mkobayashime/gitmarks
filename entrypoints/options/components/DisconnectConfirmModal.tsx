@@ -21,8 +21,8 @@ export const DisconnectConfirmModal = ({
 				</h2>
 				<p className="text-sm text-zinc-400">
 					This will remove the connection and sync data for{" "}
-					<span className="font-mono text-zinc-100">{repoFullName}</span>. This
-					action cannot be undone.
+					<span className="text-zinc-100">{repoFullName}</span>. This action
+					cannot be undone.
 				</p>
 
 				<div className="mt-6 flex items-center justify-between">

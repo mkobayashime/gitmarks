@@ -73,7 +73,7 @@ export const RepoCombobox = ({ repos, loading, value, onChange }: Props) => {
 								}}
 								className="w-full px-3 py-1.5 text-left text-sm text-zinc-400 hover:bg-zinc-700"
 							>
-								<span className="font-mono">{repo.full_name}</span>
+								{repo.full_name}
 							</button>
 						))
 					)}

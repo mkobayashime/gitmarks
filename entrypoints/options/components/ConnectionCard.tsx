@@ -128,7 +128,19 @@ export const ConnectionCard = ({
 	return (
 		<>
 			<details
-				className={`group rounded-md border bg-zinc-900 ${hasError ? "border-red-500/30" : "border-zinc-800"}`}
+				className={`
+group rounded-md border bg-zinc-900 ${hasError ? "border-red-500/30" : "border-zinc-800"}
+details-content:[interpolate-size:allow-keywords]
+details-content:transition-[height,opacity,content-visibility]
+details-content:transition-discrete
+details-content:duration-200
+details-content:ease-out
+details-content:opacity-0
+open:details-content:opacity-100
+details-content:h-0
+open:details-content:h-auto
+details-content:overflow-y-hidden
+`}
 			>
 				{/* Compact header row */}
 				<summary className="cursor-pointer list-none px-4 py-3 [&::-webkit-details-marker]:hidden">

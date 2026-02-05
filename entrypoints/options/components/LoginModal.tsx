@@ -39,7 +39,7 @@ export const LoginModal = ({ open, deviceFlow, error, onCancel }: Props) => {
 							href={deviceFlow.verificationUri}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="w-full flex items-center justify-center gap-1 rounded-md bg-indigo-600 p-2 text-sm font-medium text-white hover:bg-indigo-500"
+							className="w-full flex items-center justify-center gap-1 rounded-md bg-pink-500 p-2 text-sm font-medium text-white hover:bg-pink-600"
 						>
 							Open github.com/device
 							<ArrowRightIcon />

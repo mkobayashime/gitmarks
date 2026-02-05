@@ -108,7 +108,7 @@ export const AddConnectionModal = ({
 						value={srcDir}
 						placeholder="/"
 						onChange={(e) => setSrcDir(e.target.value)}
-						className="w-full rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 font-mono text-sm text-zinc-100 placeholder-zinc-600 focus:border-pink-500 focus:outline-none"
+						className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 font-mono text-sm text-zinc-100 placeholder-zinc-600 focus:border-pink-500 focus:outline-none"
 					/>
 				</label>
 

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Repository } from "../../../lib/github/types.ts";
+import { ChevronDownIcon } from "@primer/octicons-react";
 
 type Props = {
 	repos: Repository[];
@@ -35,7 +36,7 @@ export const RepoCombobox = ({ repos, loading, value, onChange }: Props) => {
 	return (
 		<div ref={containerRef} className="relative">
 			<div
-				className={`flex items-center rounded-md border bg-zinc-800 ${open ? "border-pink-500" : "border-zinc-700"}`}
+				className={`flex items-center px-3 py-1.5 rounded-md border bg-zinc-900 ${open ? "border-pink-500" : "border-zinc-700"}`}
 			>
 				<input
 					type="text"
@@ -46,13 +47,13 @@ export const RepoCombobox = ({ repos, loading, value, onChange }: Props) => {
 						setOpen(true);
 					}}
 					onFocus={() => setOpen(true)}
-					className="flex-1 bg-transparent px-3 py-1.5 text-sm text-zinc-100 placeholder-zinc-500 outline-none"
+					className="flex-1 bg-transparent text-sm text-zinc-100 placeholder-zinc-500 outline-none"
 				/>
-				<span className="pr-3 text-xs text-zinc-600">▾</span>
+				<ChevronDownIcon className="text-zinc-600" />
 			</div>
 
 			{open && (
-				<div className="absolute z-20 mt-1 w-full max-h-48 overflow-y-auto rounded-md border border-zinc-700 bg-zinc-800">
+				<div className="absolute z-20 mt-1 w-full max-h-48 overflow-y-auto rounded-md border border-zinc-700 bg-zinc-900">
 					{loading ? (
 						<p className="px-3 py-2 text-xs text-zinc-500">Loading…</p>
 					) : filtered.length === 0 ? (
@@ -71,7 +72,7 @@ export const RepoCombobox = ({ repos, loading, value, onChange }: Props) => {
 									setQuery("");
 									setOpen(false);
 								}}
-								className="w-full px-3 py-1.5 text-left text-sm text-zinc-400 hover:bg-zinc-700"
+								className="w-full px-3 py-1.5 text-left text-sm text-zinc-400 hover:bg-zinc-800"
 							>
 								{repo.full_name}
 							</button>

@@ -59,7 +59,7 @@ export const FolderSelect = ({ folders, value, onChange, disabled }: Props) => {
 									onChange(f.id, f.path);
 									setOpen(false);
 								}}
-								className={`w-full px-3 py-1.5 text-left text-sm ${f.id === value ? "bg-pink-500/10 text-pink-400" : "text-zinc-400 hover:bg-zinc-700"}`}
+								className={`w-full px-3 py-1.5 text-left text-sm ${f.id === value ? "bg-pink-500/10 text-pink-400" : "text-zinc-400 hover:bg-zinc-800"}`}
 							>
 								{f.path}
 							</button>

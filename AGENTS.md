@@ -42,6 +42,7 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
 ### Key Features
 - GitHub OAuth Device Flow authentication
 - Repository connection management
+- Cross-browser connection settings sync (via chrome.storage.sync)
 - Manifest file parsing from GitHub repos
 - Automatic periodic sync (hourly) + manual sync
 - Skip-if-unchanged optimization using commit SHA
@@ -79,9 +80,16 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
 
 ### Data Flow
 
-1. **Auth**: GitHub OAuth Device Flow → token stored in chrome.storage
+1. **Auth**: GitHub OAuth Device Flow → token stored in chrome.storage.local
 2. **Add Connection**: User selects repo → target folder → connection saved
-3. **Sync**:
+   - Configuration (repo settings, enabled status) → chrome.storage.sync
+   - State (folder IDs, sync timestamps) → chrome.storage.local
+3. **Cross-Browser Sync**:
+   - Connection settings sync across browsers via chrome.storage.sync
+   - Browser-specific state (folder IDs) remains local
+   - Orphan configs (synced without local state) auto-resolve on mount
+   - Deleted connections cleanup orphaned local state
+4. **Sync**:
    - Fetch latest commit SHA for `srcDir`
    - Skip if unchanged (unless forced)
    - Fetch `manifest.json` from repo
@@ -92,11 +100,26 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
 
 ### Key Types
 
-- `Connection`: Repo config + sync state
+- `ConnectionConfig`: Synced across browsers (repo settings, enabled status)
+- `ConnectionState`: Browser-specific (folder IDs, sync timestamps)
+- `Connection`: Merged type (ConnectionConfig & ConnectionState) for backward compatibility
 - `ManifestBookmark`: `{ name, location }` from manifest.json
 - `ResolvedBookmark`: `{ name, url }` after processing
 
 ### External APIs
 
 - GitHub REST API: Repos, contents, commits, user
-- Chrome Extension API: Storage, Bookmarks, Alarms
+- Chrome Extension API: Storage (sync + local), Bookmarks, Alarms
+
+### Storage Architecture
+
+**Split Storage for Cross-Browser Sync:**
+- `chrome.storage.sync` - Connection configurations (synced across browsers)
+  - Key: `sync:gitmarks_connections`
+  - Includes: repo settings, target folder path, enabled status
+- `chrome.storage.local` - Browser-specific state (local only)
+  - Key: `local:gitmarks_connection_state`
+  - Includes: folder IDs, sync timestamps, errors
+- `chrome.storage.local` - User data (local only)
+  - Keys: `local:gitmarks_user`, `local:github_access_token`
+  - Each browser requires separate authentication

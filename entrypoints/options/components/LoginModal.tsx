@@ -39,7 +39,7 @@ export const LoginModal = ({ open, deviceFlow, error, onCancel }: Props) => {
 							href={deviceFlow.verificationUri}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="w-full flex items-center justify-center gap-1 rounded-md bg-pink-500 p-2 text-sm font-medium text-white hover:bg-pink-600"
+							className="w-full flex items-center justify-center gap-1 rounded-md bg-pink-500 p-2 text-sm font-medium text-white transition-colors hover:bg-pink-600"
 						>
 							Open github.com/device
 							<ArrowRightIcon />
@@ -57,7 +57,7 @@ export const LoginModal = ({ open, deviceFlow, error, onCancel }: Props) => {
 					<button
 						type="button"
 						onClick={onCancel}
-						className="rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm text-zinc-400"
+						className="cursor-pointer rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm text-zinc-400 transition-colors hover:bg-zinc-700"
 					>
 						Cancel
 					</button>

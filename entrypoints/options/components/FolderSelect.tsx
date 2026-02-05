@@ -34,7 +34,7 @@ export const FolderSelect = ({ folders, value, onChange, disabled }: Props) => {
 				type="button"
 				onClick={() => !disabled && setOpen(!open)}
 				disabled={disabled}
-				className={`inline-flex w-full items-center justify-between rounded-md border bg-zinc-900 px-3 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-40 focus:border-pink-500 focus:outline-none ${open ? "border-pink-500" : "border-zinc-700"} ${selected ? "text-zinc-100" : "text-zinc-500"}`}
+				className={`cursor-pointer inline-flex w-full items-center justify-between rounded-md border bg-zinc-900 px-3 py-1.5 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-40 focus:border-pink-500 focus:outline-none ${open ? "border-pink-500" : "border-zinc-700"} ${selected ? "text-zinc-100" : "text-zinc-500"}`}
 			>
 				<span className="truncate">
 					{selected ? selected.path : "Select folder…"}
@@ -59,7 +59,7 @@ export const FolderSelect = ({ folders, value, onChange, disabled }: Props) => {
 									onChange(f.id, f.path);
 									setOpen(false);
 								}}
-								className={`w-full px-3 py-1.5 text-left text-sm ${f.id === value ? "bg-pink-500/10 text-pink-400" : "text-zinc-400 hover:bg-zinc-800"}`}
+								className={`w-full cursor-pointer px-3 py-1.5 text-left text-sm transition-colors ${f.id === value ? "bg-pink-500/10 text-pink-400" : "text-zinc-400 hover:bg-zinc-800"}`}
 							>
 								{f.path}
 							</button>

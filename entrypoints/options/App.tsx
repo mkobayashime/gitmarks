@@ -40,7 +40,7 @@ const ToastList = ({
 				<button
 					type="button"
 					onClick={() => onRemove(t.id)}
-					className="ml-auto text-zinc-500 hover:text-zinc-400"
+					className="ml-auto cursor-pointer text-zinc-500 transition-colors hover:text-zinc-400"
 				>
 					×
 				</button>

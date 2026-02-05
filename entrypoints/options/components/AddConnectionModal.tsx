@@ -108,7 +108,7 @@ export const AddConnectionModal = ({
 						value={srcDir}
 						placeholder="/"
 						onChange={(e) => setSrcDir(e.target.value)}
-						className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 font-mono text-sm text-zinc-100 placeholder-zinc-600 focus:border-pink-500 focus:outline-none"
+						className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 font-mono text-sm text-zinc-100 placeholder-zinc-600 transition-colors focus:border-pink-500 focus:outline-none"
 					/>
 				</label>
 
@@ -136,7 +136,7 @@ export const AddConnectionModal = ({
 					<button
 						type="button"
 						onClick={onClose}
-						className="rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm text-zinc-400"
+						className="cursor-pointer rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm text-zinc-400 transition-colors hover:bg-zinc-700"
 					>
 						Cancel
 					</button>
@@ -144,7 +144,7 @@ export const AddConnectionModal = ({
 						type="button"
 						onClick={() => void handleAdd()}
 						disabled={submitting || !repo || !targetFolderId}
-						className="rounded-md bg-pink-500 px-4 py-1.5 text-sm font-medium text-white hover:bg-pink-600 disabled:cursor-not-allowed disabled:opacity-40"
+						className="cursor-pointer rounded-md bg-pink-500 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-pink-600 disabled:cursor-not-allowed disabled:opacity-40"
 					>
 						Add
 					</button>

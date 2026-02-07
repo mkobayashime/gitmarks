@@ -70,7 +70,7 @@ export const ConnectionCard = ({
 	const statusLabel = hasError
 		? "Error"
 		: connection.enabled
-			? "Active"
+			? "Enabled"
 			: "Disabled";
 
 	const handleToggle = () => {

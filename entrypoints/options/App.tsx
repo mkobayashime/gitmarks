@@ -174,14 +174,19 @@ const App = () => {
 				onCancel={handleLoginClose}
 			/>
 
-			<AddConnectionModal
-				open={addOpen}
-				repos={repos}
-				reposLoading={reposLoading}
-				existingConnections={connections}
-				onAdd={(conn) => void handleAddConnection(conn)}
-				onClose={() => setAddOpen(false)}
-			/>
+			{
+				// unmount and reset all internal states when closed
+				addOpen && (
+					<AddConnectionModal
+						open={addOpen}
+						repos={repos}
+						reposLoading={reposLoading}
+						existingConnections={connections}
+						onAdd={(conn) => void handleAddConnection(conn)}
+						onClose={() => setAddOpen(false)}
+					/>
+				)
+			}
 
 			<ToastList toasts={toasts} onRemove={removeToast} />
 		</div>

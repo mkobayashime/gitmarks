@@ -9,7 +9,6 @@ import { ConnectionList } from "./components/ConnectionList.tsx";
 import { Header } from "./components/Header.tsx";
 import { LoginModal } from "./components/LoginModal.tsx";
 import { useAuth } from "./hooks/useAuth.ts";
-import { useBookmarkFolders } from "./hooks/useBookmarkFolders.ts";
 import { useConnections } from "./hooks/useConnections.ts";
 import { useRepositories } from "./hooks/useRepositories.ts";
 import { useSync } from "./hooks/useSync.ts";
@@ -69,7 +68,6 @@ const App = () => {
 	const { repos, loading: reposLoading } = useRepositories(
 		authState === "authenticated",
 	);
-	const { folders } = useBookmarkFolders();
 	const { toasts, add: addToast, remove: removeToast } = useToast();
 	const { syncingIds, pull } = useSync(() => void refreshConnections());
 
@@ -158,7 +156,6 @@ const App = () => {
 			<main className="mx-auto max-w-xl px-4 py-6">
 				<ConnectionList
 					connections={connections}
-					folders={folders}
 					syncingIds={syncingIds}
 					authenticated={authenticated}
 					onUpdate={handleUpdate}
@@ -181,7 +178,6 @@ const App = () => {
 				open={addOpen}
 				repos={repos}
 				reposLoading={reposLoading}
-				folders={folders}
 				existingConnections={connections}
 				onAdd={(conn) => void handleAddConnection(conn)}
 				onClose={() => setAddOpen(false)}

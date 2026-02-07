@@ -135,6 +135,8 @@ const App = () => {
 		await add(connection);
 		setAddOpen(false);
 		addToast("Connection added", "success");
+
+		await pull(connection);
 	};
 
 	const handleSignOut = () => void signOut();

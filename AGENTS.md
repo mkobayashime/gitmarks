@@ -43,10 +43,12 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
 - GitHub OAuth Device Flow authentication
 - Repository connection management
 - Cross-browser connection settings sync (via chrome.storage.sync)
+- **Recursive manifest discovery** - Finds all manifest.json files in srcDir and subdirectories
+- **Nested bookmark folders** - Creates subfolders matching repository directory structure
 - Manifest file parsing from GitHub repos
 - Automatic periodic sync (hourly) + manual sync
 - Skip-if-unchanged optimization using commit SHA
-- Bookmarklet support (relative paths wrapped as `javascript:` URLs)
+- Bookmarklet support
 
 ### Architecture Layers
 
@@ -67,6 +69,9 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
 │  Sync Engine (lib/sync/)                                     │
 │  - syncConnection: Single repo sync with commit SHA check    │
 │  - syncAllConnections: Batch sync for enabled connections    │
+│  - findManifestFiles: Recursive manifest discovery           │
+│  - syncBookmarksToSubfolders: Nested folder sync             │
+│  - getOrCreateFolder: Create nested bookmark folders         │
 └──────────────────────────────────────────────────────────────┘
                               │
 ┌──────────────────────────────────────────────────────────────┐
@@ -92,10 +97,13 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
 4. **Sync**:
    - Fetch latest commit SHA for `srcDir`
    - Skip if unchanged (unless forced)
-   - Fetch `manifest.json` from repo
-   - Validate with Valibot
-   - Resolve URLs and fetch bookmarklet files
-   - Clear folder → create new bookmarks
+   - Recursively find all `manifest.json` files in srcDir
+   - For each manifest:
+     - Fetch and validate with Valibot
+     - Resolve URLs and fetch bookmarklet files
+     - Create corresponding subfolder structure
+   - Clear all existing bookmarks in target folder
+   - Create new bookmarks in respective subfolders
    - Update `lastSyncedCommitSha`
 
 ### Key Types
@@ -105,6 +113,8 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
 - `Connection`: Merged type (ConnectionConfig & ConnectionState) for backward compatibility
 - `ManifestBookmark`: `{ name, location }` from manifest.json
 - `ResolvedBookmark`: `{ name, url }` after processing
+- `ManifestLocation`: `{ path: string, relativePath: string }` - Location of each manifest file
+- `SyncTarget`: `{ bookmarks: ResolvedBookmark[], subfolderPath?: string }` - Target for subfolder sync
 
 ### External APIs
 

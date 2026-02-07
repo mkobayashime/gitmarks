@@ -1,17 +1,15 @@
 import { useState } from "react";
-import type { BookmarkFolder } from "../../../lib/bookmarks/api.ts";
 import type { Repository } from "../../../lib/github/types.ts";
 import type { Connection } from "../../../lib/types/connection.ts";
 import { validateSrcDir } from "../../../lib/validation/src-dir.ts";
 import { validateTargetFolder } from "../../../lib/validation/target-folder.ts";
-import { FolderSelect } from "./FolderSelect.tsx";
+import { FolderSelectPopup } from "./FolderSelectPopup.tsx";
 import { RepoCombobox } from "./RepoCombobox.tsx";
 
 type Props = {
 	open: boolean;
 	repos: Repository[];
 	reposLoading: boolean;
-	folders: BookmarkFolder[];
 	existingConnections: Connection[];
 	onAdd: (connection: Connection) => void;
 	onClose: () => void;
@@ -21,7 +19,6 @@ export const AddConnectionModal = ({
 	open,
 	repos,
 	reposLoading,
-	folders,
 	existingConnections,
 	onAdd,
 	onClose,
@@ -32,6 +29,7 @@ export const AddConnectionModal = ({
 	const [targetFolderPath, setTargetFolderPath] = useState("");
 	const [error, setError] = useState<string | null>(null);
 	const [submitting, setSubmitting] = useState(false);
+	const [folderPopupOpen, setFolderPopupOpen] = useState(false);
 
 	if (!open) return null;
 
@@ -116,14 +114,24 @@ export const AddConnectionModal = ({
 					<span className="block mb-1 text-xs text-zinc-500">
 						Target folder
 					</span>
-					<FolderSelect
-						folders={folders}
-						value={targetFolderId}
-						onChange={(id, path) => {
-							setTargetFolderId(id);
-							setTargetFolderPath(path);
-						}}
-					/>
+					<div className="relative">
+						<button
+							type="button"
+							onClick={() => setFolderPopupOpen(true)}
+							className="w-full cursor-pointer rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-left text-sm text-zinc-100 placeholder-zinc-600 transition-colors focus:border-pink-500 focus:outline-none hover:border-zinc-600"
+						>
+							{targetFolderPath || "Select folder…"}
+						</button>
+						<FolderSelectPopup
+							open={folderPopupOpen}
+							value={targetFolderId}
+							onSelect={(id, path) => {
+								setTargetFolderId(id);
+								setTargetFolderPath(path);
+							}}
+							onClose={() => setFolderPopupOpen(false)}
+						/>
+					</div>
 				</div>
 
 				{error && (

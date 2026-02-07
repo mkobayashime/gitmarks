@@ -1,11 +1,9 @@
 import { PlusIcon } from "@primer/octicons-react";
-import type { BookmarkFolder } from "../../../lib/bookmarks/api.ts";
 import type { Connection } from "../../../lib/types/connection.ts";
 import { ConnectionCard } from "./ConnectionCard.tsx";
 
 type Props = {
 	connections: Connection[];
-	folders: BookmarkFolder[];
 	syncingIds: Set<string>;
 	authenticated: boolean;
 	onUpdate: (id: string, updates: Partial<Connection>) => Promise<void>;
@@ -20,7 +18,6 @@ type Props = {
 
 export const ConnectionList = ({
 	connections,
-	folders,
 	syncingIds,
 	authenticated,
 	onUpdate,
@@ -35,7 +32,6 @@ export const ConnectionList = ({
 			<ConnectionCard
 				key={conn.id}
 				connection={conn}
-				folders={folders}
 				allConnections={connections}
 				syncing={syncingIds.has(conn.id)}
 				authenticated={authenticated}

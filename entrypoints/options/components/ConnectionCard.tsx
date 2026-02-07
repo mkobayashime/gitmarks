@@ -1,17 +1,15 @@
 import { ChevronDownIcon } from "@primer/octicons-react";
 import { useState } from "react";
-import type { BookmarkFolder } from "../../../lib/bookmarks/api.ts";
 import type { Connection } from "../../../lib/types/connection.ts";
 import { validateSrcDir } from "../../../lib/validation/src-dir.ts";
 import { validateTargetFolder } from "../../../lib/validation/target-folder.ts";
 import { DisconnectConfirmModal } from "./DisconnectConfirmModal.tsx";
 import { ErrorSection } from "./ErrorSection.tsx";
-import { FolderSelect } from "./FolderSelect.tsx";
+import { FolderSelectPopup } from "./FolderSelectPopup.tsx";
 import { SyncButton } from "./SyncButton.tsx";
 
 type Props = {
 	connection: Connection;
-	folders: BookmarkFolder[];
 	allConnections: Connection[];
 	syncing: boolean;
 	authenticated: boolean;
@@ -31,7 +29,6 @@ const formatDate = (iso: string | null): string => {
 
 export const ConnectionCard = ({
 	connection,
-	folders,
 	allConnections,
 	syncing,
 	authenticated,
@@ -42,6 +39,7 @@ export const ConnectionCard = ({
 	onToast,
 }: Props) => {
 	const [disconnectOpen, setDisconnectOpen] = useState(false);
+	const [folderPopupOpen, setFolderPopupOpen] = useState(false);
 	const [srcDir, setSrcDir] = useState(connection.srcDir);
 	const [targetFolderId, setTargetFolderId] = useState(
 		connection.targetFolderId,
@@ -139,7 +137,6 @@ details-content:opacity-0
 open:details-content:opacity-100
 details-content:h-0
 open:details-content:h-auto
-details-content:overflow-y-hidden
 `}
 			>
 				{/* Compact header row */}
@@ -220,15 +217,25 @@ details-content:overflow-y-hidden
 						<span className="block mb-1 text-xs text-zinc-500">
 							Target folder
 						</span>
-						<FolderSelect
-							folders={folders}
-							value={targetFolderId}
-							onChange={(id, path) => {
-								setTargetFolderId(id);
-								setTargetFolderPath(path);
-							}}
-							disabled={disabled || !connection.enabled}
-						/>
+						<div className="relative">
+							<button
+								type="button"
+								onClick={() => setFolderPopupOpen(true)}
+								disabled={disabled || !connection.enabled}
+								className="w-full cursor-pointer rounded-md border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-left text-sm text-zinc-100 placeholder-zinc-600 transition-colors focus:border-pink-500 focus:outline-none hover:border-zinc-600 disabled:cursor-not-allowed disabled:opacity-40"
+							>
+								{targetFolderPath || "Select folder…"}
+							</button>
+							<FolderSelectPopup
+								open={folderPopupOpen}
+								value={targetFolderId}
+								onSelect={(id, path) => {
+									setTargetFolderId(id);
+									setTargetFolderPath(path);
+								}}
+								onClose={() => setFolderPopupOpen(false)}
+							/>
+						</div>
 					</div>
 
 					{/* Actions */}

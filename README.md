@@ -13,7 +13,7 @@ Keep your Chrome bookmarks in sync with GitHub. One-way sync from your repos to 
 <!--     </a> -->
 <!-- </div> -->
 <!-- <a href='https://example.com' target='_blank'> -->
-<!--     Chrome Web Store -->
+    Chrome Web Store (currently in review)
 <!-- </a> -->
 </div>
 

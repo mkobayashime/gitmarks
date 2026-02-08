@@ -178,7 +178,7 @@ export const AddConnectionModal = ({
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
 			<div className="grid grid-rows-[max-content_minmax(0,1fr)_max-content] gap-4 w-full max-w-lg h-120 rounded-md border border-zinc-800 bg-zinc-950 p-6">
-				<h2 className="text-sm font-semibold text-zinc-100 tracking-tight">
+				<h2 className="text-base font-semibold text-zinc-100 tracking-tight">
 					Add new connection
 				</h2>
 

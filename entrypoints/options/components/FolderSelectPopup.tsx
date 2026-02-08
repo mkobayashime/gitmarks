@@ -6,6 +6,7 @@ import {
 	getAncestorIds,
 	getFolderTree,
 } from "../../../lib/bookmarks/tree.ts";
+import { Button } from "./Button";
 import { FolderTree } from "./FolderTree.tsx";
 
 type Props = {
@@ -100,30 +101,30 @@ export const FolderSelectPopup = ({
 				</div>
 
 				<div className="flex items-center justify-between border-t border-zinc-800 py-3 px-4">
-					<div className="flex items-center gap-1.5">
-						<button
-							type="button"
-							className="flex items-center gap-1.5 text-zinc-500 transition-colors hover:text-zinc-400"
-							onClick={() => {
-								setLoading(true);
-								void getFolderTree()
-									.then((tree) => {
-										setFolders(tree);
-										if (selectedId) {
-											const ancestors = getAncestorIds(tree, selectedId);
-											setExpandedIds(new Set(ancestors.slice(0, -1)));
-										}
-									})
-									.finally(() => setLoading(false));
-							}}
-						>
-							<SyncIcon size={12} />
-							<span className="text-xs font-medium">Refresh</span>
-						</button>
-					</div>
+					<Button
+						kind="text"
+						size="sm"
+						icon={<SyncIcon size={12} />}
+						onClick={() => {
+							setLoading(true);
+							void getFolderTree()
+								.then((tree) => {
+									setFolders(tree);
+									if (selectedId) {
+										const ancestors = getAncestorIds(tree, selectedId);
+										setExpandedIds(new Set(ancestors.slice(0, -1)));
+									}
+								})
+								.finally(() => setLoading(false));
+						}}
+					>
+						Refresh
+					</Button>
 
-					<button
-						type="button"
+					<Button
+						kind="primary"
+						size="sm"
+						icon={<CheckIcon size={12} />}
 						onClick={() => {
 							if (selectedId) {
 								const selectedFolder = findFolderInTree(folders, selectedId);
@@ -134,11 +135,9 @@ export const FolderSelectPopup = ({
 							onClose();
 						}}
 						disabled={!selectedId}
-						className="flex items-center gap-1 cursor-pointer rounded-md bg-pink-500 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-pink-600 disabled:cursor-not-allowed disabled:opacity-40"
 					>
-						<CheckIcon size={12} />
 						Select
-					</button>
+					</Button>
 				</div>
 			</div>
 		</div>

@@ -1,3 +1,5 @@
+import { Button } from "./Button";
+
 type Props = {
 	error: string | null;
 	onRetry?: () => void;
@@ -8,16 +10,16 @@ export const ErrorSection = ({ error, onRetry }: Props) => {
 
 	return (
 		<div className="mt-3 rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2.5">
-			<div className="flex items-start justify-between gap-2">
+			<div className="flex items-center justify-between gap-2">
 				<span className="text-sm text-red-400">{error}</span>
 				{onRetry && (
-					<button
-						type="button"
+					<Button
+						kind="text"
+						className="text-pink-400 hover:text-pink-300"
 						onClick={onRetry}
-						className="cursor-pointer shrink-0 text-sm font-medium text-pink-400 transition-colors hover:text-pink-300"
 					>
 						Retry
-					</button>
+					</Button>
 				)}
 			</div>
 		</div>

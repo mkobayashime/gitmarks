@@ -1,5 +1,6 @@
 import { ArrowRightIcon } from "@primer/octicons-react";
 import type { DeviceFlowInfo } from "../hooks/useAuth.ts";
+import { Button } from "./Button";
 
 type Props = {
 	open: boolean;
@@ -54,13 +55,9 @@ export const LoginModal = ({ open, deviceFlow, error, onCancel }: Props) => {
 				)}
 
 				<div className="mt-6 flex justify-end">
-					<button
-						type="button"
-						onClick={onCancel}
-						className="cursor-pointer rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm text-zinc-400 transition-colors hover:bg-zinc-700"
-					>
+					<Button kind="secondary" onClick={onCancel}>
 						Cancel
-					</button>
+					</Button>
 				</div>
 			</div>
 		</div>

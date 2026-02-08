@@ -1,3 +1,5 @@
+import { Button } from "./Button";
+
 type Props = {
 	open: boolean;
 	repoFullName: string;
@@ -26,20 +28,12 @@ export const DisconnectConfirmModal = ({
 				</p>
 
 				<div className="mt-6 flex items-center justify-between">
-					<button
-						type="button"
-						onClick={onClose}
-						className="cursor-pointer rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm text-zinc-400 transition-colors hover:bg-zinc-700"
-					>
+					<Button kind="secondary" onClick={onClose}>
 						Cancel
-					</button>
-					<button
-						type="button"
-						onClick={onConfirm}
-						className="cursor-pointer rounded-md border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-sm font-medium text-red-400 transition-colors hover:bg-red-500/20"
-					>
+					</Button>
+					<Button kind="secondary" dangerous onClick={onConfirm}>
 						Disconnect
-					</button>
+					</Button>
 				</div>
 			</div>
 		</div>

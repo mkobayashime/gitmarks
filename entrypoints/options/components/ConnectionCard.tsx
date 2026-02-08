@@ -49,6 +49,11 @@ export const ConnectionCard = ({
 	);
 	const [validationError, setValidationError] = useState<string | null>(null);
 
+	const hasUnsavedChanges =
+		srcDir !== connection.srcDir ||
+		targetFolderId !== connection.targetFolderId ||
+		targetFolderPath !== connection.targetFolderPath;
+
 	const disabled = !authenticated || syncing;
 
 	const hasError = !!connection.lastSyncError;
@@ -243,7 +248,7 @@ open:details-content:h-auto
 						<div className="flex gap-2">
 							<SyncButton
 								syncing={syncing}
-								disabled={disabled || !connection.enabled}
+								disabled={disabled || !connection.enabled || hasUnsavedChanges}
 								onPull={() => void handlePull()}
 							/>
 							<button

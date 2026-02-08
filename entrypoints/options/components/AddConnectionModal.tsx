@@ -7,6 +7,7 @@ import type { Repository } from "../../../lib/github/types.ts";
 import type { Connection } from "../../../lib/types/connection.ts";
 import { validateSrcDir } from "../../../lib/validation/src-dir.ts";
 import { validateTargetFolder } from "../../../lib/validation/target-folder.ts";
+import { Button } from "./Button";
 import { FolderTree } from "./FolderTree.tsx";
 import { RepoCombobox } from "./RepoCombobox.tsx";
 
@@ -244,14 +245,14 @@ export const AddConnectionModal = ({
 							<span className="block mb-1 text-xs text-zinc-500">
 								Target folder
 							</span>
-							<button
-								type="button"
+							<Button
+								kind="text"
+								size="sm"
+								icon={<SyncIcon size={12} />}
 								onClick={handleRefreshFolders}
-								className="flex items-center gap-1.5 text-zinc-500 transition-colors hover:text-zinc-400"
 							>
-								<SyncIcon size={12} />
-								<span className="text-xs font-medium">Refresh</span>
-							</button>
+								Refresh
+							</Button>
 						</div>
 
 						<div className="overflow-y-auto rounded-md border border-zinc-800 bg-zinc-900/50 p-2 min-h-0">
@@ -279,39 +280,31 @@ export const AddConnectionModal = ({
 				)}
 
 				<div className="mt-6 flex items-center justify-between">
-					<button
-						type="button"
-						onClick={onClose}
-						className="cursor-pointer rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm text-zinc-400 transition-colors hover:bg-zinc-700"
-					>
+					<Button kind="secondary" onClick={onClose}>
 						Cancel
-					</button>
+					</Button>
 					{currentStep === 0 ? (
-						<button
-							type="button"
+						<Button
+							kind="primary"
+							size="lg"
 							onClick={handleNext}
 							disabled={!repo}
-							className="cursor-pointer rounded-md bg-pink-500 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-pink-600 disabled:cursor-not-allowed disabled:opacity-40"
 						>
 							Next
-						</button>
+						</Button>
 					) : (
 						<div className="flex gap-2">
-							<button
-								type="button"
-								onClick={handleBack}
-								className="cursor-pointer rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm text-zinc-400 transition-colors hover:bg-zinc-700"
-							>
+							<Button kind="secondary" onClick={handleBack}>
 								Back
-							</button>
-							<button
-								type="button"
+							</Button>
+							<Button
+								kind="primary"
+								size="lg"
 								onClick={() => void handleAdd()}
 								disabled={submitting || !targetFolderId}
-								className="cursor-pointer rounded-md bg-pink-500 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-pink-600 disabled:cursor-not-allowed disabled:opacity-40"
 							>
 								Complete
-							</button>
+							</Button>
 						</div>
 					)}
 				</div>

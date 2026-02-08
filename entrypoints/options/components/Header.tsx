@@ -1,5 +1,6 @@
 import type { GitHubUser } from "../../../lib/types/user.ts";
 import type { AuthState } from "../hooks/useAuth.ts";
+import { Button } from "./Button";
 
 type Props = {
 	state: AuthState;
@@ -28,22 +29,14 @@ export const Header = ({ state, user, onSignIn, onSignOut }: Props) => (
 						/>
 						<span className="text-xs text-zinc-400">{user.login}</span>
 					</div>
-					<button
-						type="button"
-						onClick={onSignOut}
-						className="cursor-pointer rounded-md px-2.5 py-1 text-sm text-zinc-500 transition-colors hover:bg-zinc-800 hover:text-zinc-300"
-					>
+					<Button kind="ghost" size="sm" onClick={onSignOut}>
 						Sign out
-					</button>
+					</Button>
 				</>
 			) : (
-				<button
-					type="button"
-					onClick={onSignIn}
-					className="cursor-pointer rounded-md bg-pink-500 px-3 py-1 text-sm font-medium text-white transition-colors hover:bg-pink-600"
-				>
+				<Button kind="primary" onClick={onSignIn}>
 					Sign in
-				</button>
+				</Button>
 			)}
 		</div>
 	</header>

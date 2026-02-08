@@ -1,12 +1,12 @@
-import { ChevronDownIcon } from "@primer/octicons-react";
+import { ChevronDownIcon, SyncIcon } from "@primer/octicons-react";
 import { useState } from "react";
 import type { Connection } from "../../../lib/types/connection.ts";
 import { validateSrcDir } from "../../../lib/validation/src-dir.ts";
 import { validateTargetFolder } from "../../../lib/validation/target-folder.ts";
+import { Button } from "./Button";
 import { DisconnectConfirmModal } from "./DisconnectConfirmModal.tsx";
 import { ErrorSection } from "./ErrorSection.tsx";
 import { FolderSelectPopup } from "./FolderSelectPopup.tsx";
-import { SyncButton } from "./SyncButton.tsx";
 
 type Props = {
 	connection: Connection;
@@ -246,28 +246,30 @@ open:details-content:h-auto
 					{/* Actions */}
 					<div className="flex items-center justify-between">
 						<div className="flex gap-2">
-							<SyncButton
-								syncing={syncing}
+							<Button
+								icon={<SyncIcon />}
+								loading={syncing}
 								disabled={disabled || !connection.enabled || hasUnsavedChanges}
-								onPull={() => void handlePull()}
-							/>
-							<button
-								type="button"
+								onClick={() => void handlePull()}
+							>
+								{syncing ? "Syncing…" : "Sync"}
+							</Button>
+							<Button
+								kind="secondary"
 								onClick={() => void handleSave()}
 								disabled={disabled || !connection.enabled}
-								className="cursor-pointer rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-400 transition-colors hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-40"
 							>
 								Save
-							</button>
+							</Button>
 						</div>
-						<button
-							type="button"
+						<Button
+							kind="text"
+							dangerous
 							onClick={() => setDisconnectOpen(true)}
 							disabled={disabled}
-							className="cursor-pointer rounded-md px-2.5 py-1.5 text-sm text-red-400 transition-colors hover:text-red-300 disabled:cursor-not-allowed disabled:opacity-40"
 						>
 							Disconnect
-						</button>
+						</Button>
 					</div>
 
 					<ErrorSection

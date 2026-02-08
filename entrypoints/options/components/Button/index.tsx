@@ -25,7 +25,13 @@ const buttonVariants = cva(
 	{
 		variants: {
 			kind: {
-				primary: ["bg-pink-500", "text-white", "hover:bg-pink-600"],
+				primary: [
+					"border",
+					"border-transparent",
+					"bg-pink-500",
+					"text-white",
+					"hover:bg-pink-600",
+				],
 				secondary: [
 					"border",
 					"border-zinc-700",
@@ -39,7 +45,7 @@ const buttonVariants = cva(
 			dangerous: {
 				true: [
 					"text-red-400",
-					"hover:text-red-300",
+					"hover:text-red-500",
 					"data-[kind=secondary]:border-red-500/30",
 					"data-[kind=secondary]:bg-red-500/10",
 					"data-[kind=secondary]:hover:bg-red-500/20",
@@ -56,13 +62,18 @@ const buttonVariants = cva(
 			{
 				kind: "primary",
 				dangerous: true,
-				class: ["bg-red-500", "hover:bg-red-600", "text-white"],
+				class: [
+					"bg-red-500",
+					"hover:bg-red-600",
+					"text-white",
+					"hover:text-white",
+				],
 			},
 			// Text dangerous (link-like)
 			{
 				kind: "text",
 				dangerous: true,
-				class: ["text-red-400", "hover:text-red-300"],
+				class: ["text-red-400", "hover:text-red-500", "hover:bg-red-900/30"],
 			},
 		],
 		defaultVariants: {

@@ -246,21 +246,24 @@ open:details-content:h-auto
 					{/* Actions */}
 					<div className="flex items-center justify-between">
 						<div className="flex gap-2">
-							<Button
-								icon={<SyncIcon />}
-								loading={syncing}
-								disabled={disabled || !connection.enabled || hasUnsavedChanges}
-								onClick={() => void handlePull()}
-							>
-								{syncing ? "Syncing…" : "Sync"}
-							</Button>
-							<Button
-								kind="secondary"
-								onClick={() => void handleSave()}
-								disabled={disabled || !connection.enabled}
-							>
-								Save
-							</Button>
+							{hasUnsavedChanges ? (
+								<Button
+									kind="primary"
+									onClick={() => void handleSave()}
+									disabled={disabled || !connection.enabled}
+								>
+									Save
+								</Button>
+							) : (
+								<Button
+									icon={<SyncIcon />}
+									loading={syncing}
+									disabled={disabled || !connection.enabled}
+									onClick={() => void handlePull()}
+								>
+									{syncing ? "Syncing…" : "Sync"}
+								</Button>
+							)}
 						</div>
 						<Button
 							kind="text"

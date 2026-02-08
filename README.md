@@ -1,5 +1,5 @@
 <div align='center'>
-<img src="./public/icon.svg" width="64" alt="Available in the Chrome Web Store">
+<img src="./public/icon.svg" width="64" alt="GitMarks logo">
 
 # GitMarks
 
@@ -13,9 +13,13 @@ Keep your Chrome bookmarks in sync with GitHub. One-way sync from your repos to 
 <!--     </a> -->
 <!-- </div> -->
 <!-- <a href='https://example.com' target='_blank'> -->
-    Chrome Web Store (currently in review)
+<!-- Chrome Web Store -->
 <!-- </a> -->
 </div>
+
+<p align='center'>
+Chrome Web Store (currently in review)
+</p>
 
 <br />
 

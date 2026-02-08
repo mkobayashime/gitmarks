@@ -1,4 +1,5 @@
-import { ArrowRightIcon } from "@primer/octicons-react";
+import { Clipboard } from "@ark-ui/react";
+import { ArrowRightIcon, CheckIcon, CopyIcon } from "@primer/octicons-react";
 import type { DeviceFlowInfo } from "../hooks/useAuth.ts";
 import { Button } from "./Button";
 
@@ -24,17 +25,23 @@ export const LoginModal = ({ open, deviceFlow, error, onCancel }: Props) => {
 						<p className="text-sm text-red-400">{error}</p>
 					</div>
 				) : deviceFlow ? (
-					<>
-						<p className="mb-3 text-sm text-zinc-400">
+					<div className="flex flex-col gap-4">
+						<p className="text-sm text-zinc-400">
 							Enter this code at{" "}
 							<span className="font-mono text-zinc-100">github.com/device</span>
 						</p>
 
-						<div className="mb-3 rounded-md border border-zinc-700 bg-zinc-900 p-2 text-center">
-							<span className="font-mono text-base font-semibold tracking-widest text-zinc-100">
-								{deviceFlow.userCode}
-							</span>
-						</div>
+						<Clipboard.Root
+							value={deviceFlow.userCode}
+							className="flex items-center justify-center gap-2 rounded-md border border-zinc-700 bg-zinc-900 p-2 text-center text-zinc-100"
+						>
+							<Clipboard.ValueText className="font-mono text-base font-semibold tracking-widest" />
+							<Clipboard.Trigger className="p-2 rounded-md transition-colors cursor-pointer text-zinc-300 hover:bg-zinc-700">
+								<Clipboard.Indicator copied={<CheckIcon />}>
+									<CopyIcon />
+								</Clipboard.Indicator>
+							</Clipboard.Trigger>
+						</Clipboard.Root>
 
 						<a
 							href={deviceFlow.verificationUri}
@@ -46,10 +53,10 @@ export const LoginModal = ({ open, deviceFlow, error, onCancel }: Props) => {
 							<ArrowRightIcon />
 						</a>
 
-						<p className="mt-3 text-xs text-zinc-600">
+						<p className="text-xs text-zinc-400 text-center">
 							Waiting for authorization…
 						</p>
-					</>
+					</div>
 				) : (
 					<p className="text-xs text-zinc-500">Starting authentication…</p>
 				)}

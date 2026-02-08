@@ -9,10 +9,5 @@
 			"defineBackground",
 			"storage"
 		]
-	},
-	"css": {
-		"parser": {
-			"tailwindDirectives": true
-		}
 	}
 }

@@ -15,7 +15,7 @@ export const LoginModal = ({ open, deviceFlow, error, onCancel }: Props) => {
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
 			<div className="w-full max-w-md rounded-md border border-zinc-800 bg-zinc-950 p-6">
-				<h2 className="mb-4 text-sm font-semibold text-zinc-100 tracking-tight">
+				<h2 className="mb-4 text-base font-semibold text-zinc-100 tracking-tight">
 					Sign in with GitHub
 				</h2>
 

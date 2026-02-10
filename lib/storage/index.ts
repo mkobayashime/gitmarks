@@ -1,13 +1,20 @@
-const ACCESS_TOKEN_KEY = "local:github_access_token";
+const AUTH_DATA_KEY = "local:github_auth_data";
 
-export const saveToken = async (token: string): Promise<void> => {
-	await storage.setItem(ACCESS_TOKEN_KEY, token);
+export type AuthData = {
+	accessToken: string;
+	refreshToken?: string;
+	expiresAt?: number;
+	refreshTokenExpiresAt?: number;
 };
 
-export const getToken = async (): Promise<string | null> => {
-	return await storage.getItem<string>(ACCESS_TOKEN_KEY);
+export const saveAuthData = async (data: AuthData): Promise<void> => {
+	await storage.setItem(AUTH_DATA_KEY, data);
 };
 
-export const removeToken = async (): Promise<void> => {
-	await storage.removeItem(ACCESS_TOKEN_KEY);
+export const getAuthData = async (): Promise<AuthData | null> => {
+	return await storage.getItem<AuthData>(AUTH_DATA_KEY);
+};
+
+export const removeAuthData = async (): Promise<void> => {
+	await storage.removeItem(AUTH_DATA_KEY);
 };

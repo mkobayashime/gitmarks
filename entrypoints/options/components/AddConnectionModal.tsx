@@ -12,7 +12,6 @@ import { FolderTree } from "./FolderTree.tsx";
 import { RepoCombobox } from "./RepoCombobox.tsx";
 
 type Props = {
-	open: boolean;
 	repos: Repository[];
 	reposLoading: boolean;
 	existingConnections: Connection[];
@@ -21,7 +20,6 @@ type Props = {
 };
 
 export const AddConnectionModal = ({
-	open,
 	repos,
 	reposLoading,
 	existingConnections,
@@ -42,8 +40,6 @@ export const AddConnectionModal = ({
 	const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 	const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
 	const [hasLoadedFolderTree, setHasLoadedFolderTree] = useState(false);
-
-	if (!open) return null;
 
 	const loadFolderTree = () => {
 		setFolderTreeLoading(true);

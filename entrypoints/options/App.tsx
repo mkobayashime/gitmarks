@@ -8,6 +8,7 @@ import { AddConnectionModal } from "./components/AddConnectionModal.tsx";
 import { ConnectionList } from "./components/ConnectionList.tsx";
 import { Header } from "./components/Header.tsx";
 import { LoginModal } from "./components/LoginModal.tsx";
+import { SettingsSection } from "./components/SettingsSection.tsx";
 import { useAuth } from "./hooks/useAuth.ts";
 import { useConnections } from "./hooks/useConnections.ts";
 import { useRepositories } from "./hooks/useRepositories.ts";
@@ -153,7 +154,7 @@ const App = () => {
 				onSignOut={handleSignOut}
 			/>
 
-			<main className="mx-auto max-w-xl px-4 py-6">
+			<main className="flex flex-col gap-8 mx-auto max-w-xl px-4 py-6">
 				<ConnectionList
 					connections={connections}
 					syncingIds={syncingIds}
@@ -165,6 +166,10 @@ const App = () => {
 					onAddClick={handleAddClick}
 					onToast={addToast}
 				/>
+				<div className="flex flex-col gap-2">
+					<h2 className="text-base font-semibold text-zinc-100">Settings</h2>
+					<SettingsSection onToast={addToast} />
+				</div>
 			</main>
 
 			<LoginModal

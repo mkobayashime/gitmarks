@@ -58,23 +58,29 @@ export const ConnectionCard = ({
 
 	const hasError = !!connection.lastSyncError;
 
-	const statusDotClass = hasError
-		? "bg-red-400"
-		: connection.enabled
-			? "bg-emerald-400"
-			: "bg-zinc-500";
+	const statusDotClass = !authenticated
+		? "bg-yellow-400"
+		: hasError
+			? "bg-red-400"
+			: connection.enabled
+				? "bg-emerald-400"
+				: "bg-zinc-500";
 
-	const statusTextClass = hasError
-		? "text-red-400"
-		: connection.enabled
-			? "text-emerald-400"
-			: "text-zinc-500";
+	const statusTextClass = !authenticated
+		? "text-yellow-400"
+		: hasError
+			? "text-red-400"
+			: connection.enabled
+				? "text-emerald-400"
+				: "text-zinc-500";
 
-	const statusLabel = hasError
-		? "Error"
-		: connection.enabled
-			? "Enabled"
-			: "Disabled";
+	const statusLabel = !authenticated
+		? "Sign in required"
+		: hasError
+			? "Error"
+			: connection.enabled
+				? "Enabled"
+				: "Disabled";
 
 	const handleToggle = () => {
 		void onUpdate(connection.id, { enabled: !connection.enabled });

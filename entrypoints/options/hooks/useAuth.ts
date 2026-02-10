@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchUser } from "../../../lib/github/api.ts";
 import { startDeviceFlow } from "../../../lib/github/auth.ts";
-import { getToken, removeToken } from "../../../lib/storage/index.ts";
+import { getAuthData, removeAuthData } from "../../../lib/storage/index.ts";
 import { getUser, removeUser, saveUser } from "../../../lib/storage/user.ts";
 import type { GitHubUser } from "../../../lib/types/user.ts";
 
@@ -22,8 +22,8 @@ export const useAuth = () => {
 	// On mount: restore cached auth state
 	useEffect(() => {
 		const restore = async () => {
-			const token = await getToken();
-			if (!token) return;
+			const authData = await getAuthData();
+			if (!authData) return;
 
 			const cached = await getUser();
 			if (cached) {
@@ -32,15 +32,15 @@ export const useAuth = () => {
 				return;
 			}
 
-			// Token exists but no cached user — fetch from GitHub
+			// Auth data exists but no cached user — fetch from GitHub
 			try {
-				const fetched = await fetchUser(token);
+				const fetched = await fetchUser(authData.accessToken);
 				await saveUser(fetched);
 				setUser(fetched);
 				setState("authenticated");
 			} catch {
 				// Token likely expired
-				await removeToken();
+				await removeAuthData();
 			}
 		};
 
@@ -60,11 +60,11 @@ export const useAuth = () => {
 			if (cancelRef.current.cancelled) return;
 
 			// Auth succeeded — fetch user
-			const token = await getToken();
-			if (!token) throw new Error("Token not saved");
+			const authData = await getAuthData();
+			if (!authData) throw new Error("Auth data not saved");
 
 			if (cancelRef.current.cancelled) return;
-			const fetched = await fetchUser(token);
+			const fetched = await fetchUser(authData.accessToken);
 
 			if (cancelRef.current.cancelled) return;
 			await saveUser(fetched);
@@ -87,7 +87,7 @@ export const useAuth = () => {
 	}, []);
 
 	const signOut = useCallback(async () => {
-		await removeToken();
+		await removeAuthData();
 		await removeUser();
 		setUser(null);
 		setState("idle");

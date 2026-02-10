@@ -178,7 +178,6 @@ const App = () => {
 				// unmount and reset all internal states when closed
 				addOpen && (
 					<AddConnectionModal
-						open={addOpen}
 						repos={repos}
 						reposLoading={reposLoading}
 						existingConnections={connections}

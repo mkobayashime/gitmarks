@@ -7,19 +7,15 @@ Keep your Chrome bookmarks in sync with GitHub. One-way sync from your repos to 
 
 <br />
 
-<!-- <div> -->
-<!--     <a href='https://example.com' target='_blank'> -->
-<!--         <img src="./img/chrome-web-store-badge.png" width="240" alt="Available in the Chrome Web Store"> -->
-<!--     </a> -->
-<!-- </div> -->
-<!-- <a href='https://example.com' target='_blank'> -->
-<!-- Chrome Web Store -->
-<!-- </a> -->
+<div>
+    <a href='https://chromewebstore.google.com/detail/gitmarks/omobppnblncamhlkhmbfalidcaoemfdj' target='_blank'>
+        <img src="./img/chrome-web-store-badge.png" width="240" alt="Available in the Chrome Web Store">
+    </a>
 </div>
-
-<p align='center'>
-Chrome Web Store (currently in review)
-</p>
+<a href='https://chromewebstore.google.com/detail/gitmarks/omobppnblncamhlkhmbfalidcaoemfdj' target='_blank'>
+Chrome Web Store
+</a>
+</div>
 
 <br />
 

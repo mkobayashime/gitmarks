@@ -3,7 +3,7 @@ import { SyncIcon } from "@primer/octicons-react";
 import { useState } from "react";
 import type { BookmarkTreeFolder } from "../../../lib/bookmarks/tree.ts";
 import { getAncestorIds, getFolderTree } from "../../../lib/bookmarks/tree.ts";
-import type { Repository } from "../../../lib/github/types.ts";
+import type { Repository } from "../../../lib/github/schemas.ts";
 import type { Connection } from "../../../lib/types/connection.ts";
 import { validateSrcDir } from "../../../lib/validation/src-dir.ts";
 import { validateTargetFolder } from "../../../lib/validation/target-folder.ts";

@@ -1,17 +1,15 @@
+import * as v from "valibot";
 import { validateEnvVars } from "../env";
 import { getToken, saveToken } from "../storage";
-import type {
-	AccessTokenErrorResponse,
-	AccessTokenResponse,
-	DeviceCodeResponse,
-} from "./types";
+import {
+	AccessTokenErrorResponseSchema,
+	AccessTokenResponseSchema,
+	DeviceCodeResponseSchema,
+} from "./schemas";
 
 const { GITHUB_CLIENT_ID } = validateEnvVars();
 
-/**
- * Step 1: Request device and user codes from GitHub
- */
-export const requestDeviceCode = async (): Promise<DeviceCodeResponse> => {
+export const requestDeviceCode = async () => {
 	const response = await fetch("https://github.com/login/device/code", {
 		method: "POST",
 		headers: {
@@ -30,12 +28,10 @@ export const requestDeviceCode = async (): Promise<DeviceCodeResponse> => {
 		);
 	}
 
-	return (await response.json()) as DeviceCodeResponse;
+	const raw: unknown = await response.json();
+	return v.parse(DeviceCodeResponseSchema, raw);
 };
 
-/**
- * Step 2: Poll for access token
- */
 export const pollForToken = async (
 	deviceCode: string,
 	interval: number,
@@ -65,12 +61,11 @@ export const pollForToken = async (
 			);
 		}
 
-		const data = (await response.json()) as
-			| AccessTokenResponse
-			| AccessTokenErrorResponse;
+		const raw: unknown = await response.json();
 
-		if ("error" in data) {
-			switch (data.error) {
+		const errorResult = v.safeParse(AccessTokenErrorResponseSchema, raw);
+		if (errorResult.success) {
+			switch (errorResult.output.error) {
 				case "authorization_pending":
 					// Continue polling
 					await new Promise((resolve) => setTimeout(resolve, pollInterval));
@@ -94,46 +89,31 @@ export const pollForToken = async (
 
 				default:
 					throw new Error(
-						`Authentication error: ${data.error} - ${data.error_description || "Unknown error"}`,
+						`Authentication error: ${errorResult.output.error} - ${errorResult.output.error_description || "Unknown error"}`,
 					);
 			}
 		}
 
-		return data.access_token;
+		const successResult = v.parse(AccessTokenResponseSchema, raw);
+		return successResult.access_token;
 	};
 
 	return poll();
 };
 
-/**
- * Combined Device Flow authentication
- * @param onUserCode Callback to display user code and verification URL
- * @returns Access token
- */
 export const startDeviceFlow = async (
 	onUserCode: (code: string, verificationUri: string) => void,
 ): Promise<string> => {
-	// Request device code
 	const deviceResponse = await requestDeviceCode();
-
-	// Display user code to the user
 	onUserCode(deviceResponse.user_code, deviceResponse.verification_uri);
-
-	// Poll for access token
 	const accessToken = await pollForToken(
 		deviceResponse.device_code,
 		deviceResponse.interval,
 	);
-
-	// Save token to storage
 	await saveToken(accessToken);
-
 	return accessToken;
 };
 
-/**
- * Check if user is authenticated
- */
 export const isAuthenticated = async (): Promise<boolean> => {
 	const token = await getToken();
 	return token !== null;

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { fetchUserRepos } from "../../../lib/github/api.ts";
-import type { Repository } from "../../../lib/github/types.ts";
+import type { Repository } from "../../../lib/github/schemas.ts";
 import { getToken } from "../../../lib/storage/index.ts";
 
 export const useRepositories = (authenticated: boolean) => {

@@ -1,5 +1,13 @@
-import type { GitHubUser } from "../types/user.ts";
-import type { CommitListItem, RepoContent, Repository } from "./types";
+import * as v from "valibot";
+import {
+	CommitListItemSchema,
+	type GitHubUser,
+	GitHubUserSchema,
+	type RepoContent,
+	RepoContentSchema,
+	type Repository,
+	RepositorySchema,
+} from "./schemas";
 
 const API_BASE = "https://api.github.com";
 
@@ -26,7 +34,8 @@ export const fetchUserRepos = async (token: string): Promise<Repository[]> => {
 		);
 	}
 
-	return (await response.json()) as Repository[];
+	const raw: unknown = await response.json();
+	return v.parse(v.array(RepositorySchema), raw);
 };
 
 /**
@@ -49,10 +58,13 @@ export const fetchRepoContents = async (
 		);
 	}
 
-	const data = (await response.json()) as RepoContent | RepoContent[];
+	const raw: unknown = await response.json();
 
 	// GitHub API returns an array for directories, or a single object for files
-	return Array.isArray(data) ? data : [data];
+	if (Array.isArray(raw)) {
+		return v.parse(v.array(RepoContentSchema), raw);
+	}
+	return [v.parse(RepoContentSchema, raw)];
 };
 
 /**
@@ -69,7 +81,8 @@ export const fetchUser = async (token: string): Promise<GitHubUser> => {
 		);
 	}
 
-	return (await response.json()) as GitHubUser;
+	const raw: unknown = await response.json();
+	return v.parse(GitHubUserSchema, raw);
 };
 
 /**
@@ -88,14 +101,14 @@ export const fetchFileContent = async (
 	});
 
 	if (response.status === 404) return null;
-
 	if (!response.ok) {
 		throw new Error(
 			`Failed to fetch file content: ${response.status} ${response.statusText}`,
 		);
 	}
 
-	const data = (await response.json()) as RepoContent;
+	const raw: unknown = await response.json();
+	const data = v.parse(RepoContentSchema, raw);
 	if (!data.content) return null;
 
 	// Decode base64 to binary string, then convert to Uint8Array, then decode as UTF-8
@@ -127,7 +140,8 @@ export const fetchLatestCommitSha = async (
 		);
 	}
 
-	const commits = (await response.json()) as CommitListItem[];
+	const raw: unknown = await response.json();
+	const commits = v.parse(v.array(CommitListItemSchema), raw);
 	if (commits.length === 0) {
 		throw new Error("No commits found for the specified path");
 	}

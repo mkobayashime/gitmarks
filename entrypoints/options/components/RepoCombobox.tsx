@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from "@primer/octicons-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { Repository } from "../../../lib/github/types.ts";
+import type { Repository } from "../../../lib/github/schemas.ts";
 
 type Props = {
 	repos: Repository[];

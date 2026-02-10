@@ -1,5 +1,1 @@
-export type GitHubUser = {
-	login: string;
-	avatar_url: string;
-	name: string | null;
-};
+export { type GitHubUser, GitHubUserSchema } from "../github/schemas";

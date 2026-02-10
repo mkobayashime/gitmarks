@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { fetchUserRepos } from "../../../lib/github/api.ts";
+import { getValidToken } from "../../../lib/github/auth.ts";
 import type { Repository } from "../../../lib/github/schemas.ts";
-import { getToken } from "../../../lib/storage/index.ts";
 
 export const useRepositories = (authenticated: boolean) => {
 	const [repos, setRepos] = useState<Repository[]>([]);
@@ -13,7 +13,7 @@ export const useRepositories = (authenticated: boolean) => {
 		setLoading(true);
 		setError(null);
 		try {
-			const token = await getToken();
+			const token = await getValidToken();
 			if (!token) return;
 			setRepos(await fetchUserRepos(token));
 		} catch (err) {

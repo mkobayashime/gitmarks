@@ -14,6 +14,9 @@ export const AccessTokenResponseSchema = v.object({
 	access_token: v.string(),
 	token_type: v.string(),
 	scope: v.string(),
+	expires_in: v.optional(v.number()),
+	refresh_token: v.optional(v.string()),
+	refresh_token_expires_in: v.optional(v.number()),
 });
 
 export type AccessTokenResponse = v.InferOutput<

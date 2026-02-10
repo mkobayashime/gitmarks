@@ -1,5 +1,5 @@
+import { getValidToken } from "../github/auth.ts";
 import { getConnections } from "../storage/connections.ts";
-import { getToken } from "../storage/index.ts";
 import { type SyncResult, syncConnection } from "./sync-connection.ts";
 
 export type SyncAllResult = {
@@ -12,7 +12,7 @@ export type SyncAllResult = {
  * allowing the commit-hash skip optimization.
  */
 export const syncAllConnections = async (): Promise<SyncAllResult[]> => {
-	const token = await getToken();
+	const token = await getValidToken();
 	if (!token) return [];
 
 	const connections = await getConnections();

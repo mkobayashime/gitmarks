@@ -46,7 +46,7 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
 - **Recursive manifest discovery** - Finds all manifest.json files in srcDir and subdirectories
 - **Nested bookmark folders** - Creates subfolders matching repository directory structure
 - Manifest file parsing from GitHub repos
-- Automatic periodic sync (every 15 min) + manual sync
+- Automatic periodic sync (configurable interval) + manual sync
 - Skip-if-unchanged optimization using commit SHA
 - Bookmarklet support
 
@@ -62,7 +62,7 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
 ┌──────────────────────────────────────────────────────────────┐
 │  Background Service (entrypoints/background.ts)              │
 │  - WXT background script                                     │
-│  - Alarm-based periodic sync (15 min interval)               │
+│  - Alarm-based periodic sync (configurable interval)         │
 └──────────────────────────────────────────────────────────────┘
                               │
 ┌──────────────────────────────────────────────────────────────┐
@@ -133,3 +133,7 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
 - `chrome.storage.local` - User data (local only)
   - Keys: `local:gitmarks_user`, `local:github_access_token`
   - Each browser requires separate authentication
+- `chrome.storage.sync` - Extension settings (synced across browsers)
+  - Key: `sync:gitmarks_settings`
+  - Includes: sync interval in minutes
+  - Settings are validated with Valibot schema with fallback values

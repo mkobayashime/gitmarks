@@ -26,7 +26,7 @@ Chrome Web Store
 - Connect your GitHub account and select repositories to sync
 - Define bookmarks in `manifest.json` within your repo
 - Supports both URLs and bookmarklet files
-- Automatic periodic sync + manual sync
+- Automatic periodic sync (configurable interval) + manual sync
 - Skip-if-unchanged optimization using commit hash
 
 ## Setup

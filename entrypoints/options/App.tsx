@@ -53,10 +53,8 @@ const App = () => {
 	const {
 		state: authState,
 		user,
-		deviceFlow,
 		error: authError,
 		signIn,
-		cancelSignIn,
 		signOut,
 	} = useAuth();
 	const {
@@ -73,26 +71,30 @@ const App = () => {
 	const { syncingIds, pull } = useSync(() => void refreshConnections());
 
 	const [loginOpen, setLoginOpen] = useState(false);
+	const [signInLoading, setSignInLoading] = useState(false);
 	const [addOpen, setAddOpen] = useState(false);
 
 	const authenticated = authState === "authenticated";
 
 	const handleSignIn = () => {
 		setLoginOpen(true);
-		void signIn();
 	};
 
 	const handleLoginClose = () => {
-		cancelSignIn();
 		setLoginOpen(false);
 	};
 
-	// Auto-close login modal once authenticated
-	useEffect(() => {
-		if (loginOpen && authState === "authenticated") {
+	const handleTokenSubmit = async (token: string) => {
+		setSignInLoading(true);
+		try {
+			await signIn(token);
 			setLoginOpen(false);
+		} catch {
+			// Error handled in useAuth and displayed in LoginModal
+		} finally {
+			setSignInLoading(false);
 		}
-	}, [loginOpen, authState]);
+	};
 
 	useEffect(() => {
 		const initializeStorage = async () => {
@@ -174,8 +176,9 @@ const App = () => {
 
 			<LoginModal
 				open={loginOpen}
-				deviceFlow={deviceFlow}
 				error={authError}
+				loading={signInLoading}
+				onSubmit={(token) => void handleTokenSubmit(token)}
 				onCancel={handleLoginClose}
 			/>
 

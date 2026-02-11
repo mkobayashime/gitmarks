@@ -1,71 +1,141 @@
-import { Clipboard } from "@ark-ui/react";
-import { ArrowRightIcon, CheckIcon, CopyIcon } from "@primer/octicons-react";
-import type { DeviceFlowInfo } from "../hooks/useAuth.ts";
+import { ArrowRightIcon } from "@primer/octicons-react";
+import { useState } from "react";
 import { Button } from "./Button";
 
 type Props = {
 	open: boolean;
-	deviceFlow: DeviceFlowInfo | null;
 	error: string | null;
+	loading: boolean;
+	onSubmit: (token: string) => void;
 	onCancel: () => void;
 };
 
-export const LoginModal = ({ open, deviceFlow, error, onCancel }: Props) => {
+const FINE_GRAINED_PAT_PREFIX = "github_pat_";
+
+export const LoginModal = ({
+	open,
+	error,
+	loading,
+	onSubmit,
+	onCancel,
+}: Props) => {
+	const [token, setToken] = useState("");
+	const [validationError, setValidationError] = useState<string | null>(null);
+
 	if (!open) return null;
+
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		setValidationError(null);
+
+		const trimmed = token.trim();
+		if (!trimmed) {
+			setValidationError("Please enter a token");
+			return;
+		}
+
+		if (!trimmed.startsWith(FINE_GRAINED_PAT_PREFIX)) {
+			setValidationError(
+				"Please enter a Fine-grained PAT (token starting with github_pat_)",
+			);
+			return;
+		}
+
+		onSubmit(trimmed);
+	};
+
+	const handleCancel = () => {
+		setToken("");
+		setValidationError(null);
+		onCancel();
+	};
 
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-			<div className="w-full max-w-md rounded-md border border-zinc-800 bg-zinc-950 p-6">
-				<h2 className="mb-4 text-base font-semibold text-zinc-100 tracking-tight">
+			<div className="w-full max-w-md rounded-md space-y-6 border border-zinc-800 bg-zinc-950 p-6">
+				<h2 className="text-base font-semibold text-zinc-100 tracking-tight">
 					Sign in with GitHub
 				</h2>
 
-				{error ? (
-					<div className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2.5">
-						<p className="text-sm text-red-400">{error}</p>
+				<div className="space-y-2">
+					<p className="font-medium text-zinc-300">
+						A Fine-grained personal access token is required
+					</p>
+					<div className="mb-4 rounded-md bg-zinc-950 text-xs text-zinc-400 space-y-2">
+						<ol className="list-decimal list-inside space-y-1 pl-1">
+							<li>
+								<span className="text-zinc-300 mr-1">Repository access:</span>
+								Select repositories you want to sync
+							</li>
+							<li>
+								<span className="text-zinc-300 mr-1">
+									Repository permissions:
+								</span>
+								<span className="text-pink-400">Contents: Read-only</span>
+							</li>
+						</ol>
 					</div>
-				) : deviceFlow ? (
-					<div className="flex flex-col gap-4">
-						<p className="text-sm text-zinc-400">
-							Enter this code at{" "}
-							<span className="font-mono text-zinc-100">github.com/device</span>
-						</p>
 
-						<Clipboard.Root
-							value={deviceFlow.userCode}
-							className="flex items-center justify-center gap-2 rounded-md border border-zinc-700 bg-zinc-900 p-2 text-center text-zinc-100"
+					<a
+						href="https://github.com/settings/personal-access-tokens/new"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<Button
+							kind="secondary"
+							trailingIcon={<ArrowRightIcon />}
+							className="w-full"
+							tabIndex={-1}
 						>
-							<Clipboard.ValueText className="font-mono text-base font-semibold tracking-widest" />
-							<Clipboard.Trigger className="p-2 rounded-md transition-colors cursor-pointer text-zinc-300 hover:bg-zinc-700">
-								<Clipboard.Indicator copied={<CheckIcon />}>
-									<CopyIcon />
-								</Clipboard.Indicator>
-							</Clipboard.Trigger>
-						</Clipboard.Root>
-
-						<a
-							href={deviceFlow.verificationUri}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="w-full flex items-center justify-center gap-1 rounded-md bg-pink-500 p-2 text-sm font-medium text-white transition-colors hover:bg-pink-600"
-						>
-							Open github.com/device
-							<ArrowRightIcon />
-						</a>
-
-						<p className="text-xs text-zinc-400 text-center">
-							Waiting for authorization…
-						</p>
-					</div>
-				) : (
-					<p className="text-xs text-zinc-500">Starting authentication…</p>
-				)}
-
-				<div className="mt-6 flex justify-end">
-					<Button kind="secondary" onClick={onCancel}>
-						Cancel
-					</Button>
+							Generate a new token on GitHub
+						</Button>
+					</a>
 				</div>
+
+				<form onSubmit={handleSubmit} className="space-y-4">
+					<div>
+						<label
+							htmlFor="pat-input"
+							className="block text-xs text-zinc-400 mb-1.5"
+						>
+							Token
+						</label>
+						<input
+							id="pat-input"
+							type="password"
+							value={token}
+							onChange={(e) => setToken(e.target.value)}
+							placeholder="github_pat_..."
+							className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-zinc-500 focus:outline-none font-mono"
+							disabled={loading}
+						/>
+					</div>
+
+					{(error || validationError) && (
+						<div className="mb-4 rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2.5">
+							<p className="text-sm text-red-400">{validationError || error}</p>
+						</div>
+					)}
+
+					<div className="flex justify-center gap-2">
+						<Button
+							kind="secondary"
+							onClick={handleCancel}
+							disabled={loading}
+							className="grow-1"
+						>
+							Cancel
+						</Button>
+						<Button
+							kind="primary"
+							type="submit"
+							disabled={loading}
+							className="grow-1"
+						>
+							{loading ? "Validating..." : "Sign in"}
+						</Button>
+					</div>
+				</form>
 			</div>
 		</div>
 	);

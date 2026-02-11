@@ -2,9 +2,6 @@ const AUTH_DATA_KEY = "local:github_auth_data";
 
 export type AuthData = {
 	accessToken: string;
-	refreshToken?: string;
-	expiresAt?: number;
-	refreshTokenExpiresAt?: number;
 };
 
 export const saveAuthData = async (data: AuthData): Promise<void> => {

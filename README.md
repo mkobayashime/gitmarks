@@ -74,13 +74,15 @@ my-repo/
 ### 2. Extension Configuration
 
 1. Install GitMarks and open the options page
-2. Sign in with your GitHub account
-3. Click "Add Connection" and select a repository
-4. Configure:
+2. Create a [Fine-grained Personal Access Token](https://github.com/settings/personal-access-tokens/new) on GitHub
+   - **Repository access**: Select the repositories you want to sync
+   - **Repository permissions**: Contents → Read-only
+3. Sign in by entering your token in the GitMarks options page
+4. Click "Add Connection" and select a repository
+5. Configure:
    - **Source Directory**: Path to the directory containing `manifest.json` files (e.g., `/bookmarks`)
    - **Target Folder**: Chrome bookmark folder where bookmarks will be synced
      - Target folders for different connections must not overlap (no ancestor/descendant relationships)
-5. Enable the connection to start automatic sync
 
 ## Usage
 

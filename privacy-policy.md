@@ -1,6 +1,6 @@
 # Privacy Policy for GitMarks
 
-**Last Updated:** February 8, 2026
+**Last Updated:** February 12, 2026
 
 ## Overview
 
@@ -8,12 +8,15 @@ GitMarks is a Chrome Extension that syncs GitHub repository manifest files to Ch
 
 ## Data Collection and Storage
 
+> [!IMPORTANT]
+> No data is transmitted to the extension author or any third-party servers operated by the extension author.
+
 ### What Data We Collect
 
-GitMarks collects and stores the following data **locally on your device only**:
+GitMarks collects and stores the following data **in Chrome's standard storage**:
 
 1. **GitHub Authentication Data**
-   - GitHub OAuth access token (obtained via GitHub OAuth Device Flow)
+   - GitHub Fine-grained Personal Access Token (PAT) provided by the user
    - GitHub user profile information (username, user ID)
 
 2. **Repository Connection Settings**
@@ -42,14 +45,12 @@ GitMarks collects and stores the following data **locally on your device only**:
   - Folder IDs and sync timestamps
   - Stored locally on each device, not synced
 
-**Important: No data is transmitted to the extension author or any third-party servers operated by the extension author.**
-
 ## How Data Is Used
 
 The extension uses your data for the following purposes:
 
 1. **GitHub API Communication**
-   - Authenticate with GitHub using your OAuth token
+   - Authenticate with GitHub using your Personal Access Token
    - Fetch repository contents, commit information, and manifest files
    - All communication is directly between your browser and GitHub's API
 
@@ -68,8 +69,8 @@ The extension uses your data for the following purposes:
 GitMarks communicates with the following third-party services:
 
 1. **GitHub (github.com)**
-   - Purpose: OAuth authentication, repository data retrieval
-   - Data shared: OAuth token, repository queries
+   - Purpose: Token validation, repository data retrieval
+   - Data shared: Personal Access Token, repository queries
    - Privacy Policy: https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement
 
 **The extension does NOT communicate with:**
@@ -81,8 +82,8 @@ GitMarks communicates with the following third-party services:
 
 ## Data Security
 
-- All authentication tokens are stored securely using Chrome's built-in storage APIs
-- OAuth tokens are never exposed to websites you visit
+- Personal Access Tokens are stored securely using Chrome's built-in storage APIs
+- Tokens are never exposed to websites you visit
 - The extension runs in an isolated environment as per Chrome Extension security model
 - Communication with GitHub API uses HTTPS encryption
 

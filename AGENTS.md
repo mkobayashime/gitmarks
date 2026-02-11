@@ -40,7 +40,7 @@ Use these `make` commands, or execute the corresponding commands specified in `M
 Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks.
 
 ### Key Features
-- GitHub OAuth Device Flow authentication with automatic token refresh (GitHub App User Access Token)
+- Fine-grained Personal Access Token (PAT) authentication
 - Repository connection management
 - Cross-browser connection settings sync (via chrome.storage.sync)
 - **Recursive manifest discovery** - Finds all manifest.json files in srcDir and subdirectories
@@ -77,7 +77,7 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
 ┌──────────────────────────────────────────────────────────────┐
 │  Data Layer                                                  │
 │  ├── lib/storage/     - Connection/user CRUD (chrome.storage)│
-│  ├── lib/github/auth.ts - Device Flow, token refresh         │
+│  ├── lib/github/auth.ts - PAT validation, token retrieval    │
 │  ├── lib/github/api.ts - Repo/file/user fetch               │
 │  ├── lib/bookmarks/   - Chrome bookmarks API wrapper         │
 │  └── lib/manifest/    - JSON parsing with Valibot validation │
@@ -86,10 +86,9 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
 
 ### Data Flow
 
-1. **Auth**: GitHub OAuth Device Flow → `AuthData` (token + refresh metadata) stored in chrome.storage.local
-   - `getValidToken()` checks expiry before every API call; refreshes automatically if within 5-min buffer
-   - Refresh token rotation: each refresh issues a new `refresh_token`
-   - If refresh token is also expired, storage is cleared → re-auth required
+1. **Auth**: User inputs Fine-grained PAT → validated via `/user` API → `AuthData` stored in chrome.storage.local
+   - `getValidToken()` returns the stored access token directly (no expiry check)
+   - No automatic refresh; user must re-enter token if it expires or is revoked
 2. **Add Connection**: User selects repo → target folder → connection saved
    - Configuration (repo settings, enabled status) → chrome.storage.sync
    - State (folder IDs, sync timestamps) → chrome.storage.local
@@ -136,7 +135,7 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
   - Includes: folder IDs, sync timestamps, errors
 - `chrome.storage.local` - User data (local only)
   - Keys: `local:gitmarks_user`, `local:github_auth_data`
-  - `local:github_auth_data` stores `AuthData`: `{ accessToken, refreshToken?, expiresAt?, refreshTokenExpiresAt? }`
+  - `local:github_auth_data` stores `AuthData`: `{ accessToken: string }`
   - Each browser requires separate authentication
 - `chrome.storage.sync` - Extension settings (synced across browsers)
   - Key: `sync:gitmarks_settings`

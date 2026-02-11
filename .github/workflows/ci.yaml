@@ -4,9 +4,6 @@ on:
       - main
   pull_request:
 
-env:
-  WXT_GITHUB_APP_CLIENT_ID: dummy
-
 jobs:
   ci:
     runs-on: ubuntu-slim

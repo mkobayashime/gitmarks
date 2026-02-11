@@ -1,38 +1,5 @@
 import * as v from "valibot";
 
-export const DeviceCodeResponseSchema = v.object({
-	device_code: v.string(),
-	user_code: v.string(),
-	verification_uri: v.string(),
-	expires_in: v.number(),
-	interval: v.number(),
-});
-
-export type DeviceCodeResponse = v.InferOutput<typeof DeviceCodeResponseSchema>;
-
-export const AccessTokenResponseSchema = v.object({
-	access_token: v.string(),
-	token_type: v.string(),
-	scope: v.string(),
-	expires_in: v.optional(v.number()),
-	refresh_token: v.optional(v.string()),
-	refresh_token_expires_in: v.optional(v.number()),
-});
-
-export type AccessTokenResponse = v.InferOutput<
-	typeof AccessTokenResponseSchema
->;
-
-export const AccessTokenErrorResponseSchema = v.object({
-	error: v.string(),
-	error_description: v.optional(v.string()),
-	error_uri: v.optional(v.string()),
-});
-
-export type AccessTokenErrorResponse = v.InferOutput<
-	typeof AccessTokenErrorResponseSchema
->;
-
 const RepositoryOwnerSchema = v.object({
 	login: v.string(),
 	avatar_url: v.optional(v.string()),

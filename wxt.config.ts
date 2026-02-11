@@ -1,9 +1,6 @@
 import tailwind from "@tailwindcss/vite";
 import { defineConfig } from "wxt";
-import { validateEnvVars } from "./lib/env";
 import packageJSON from "./package.json";
-
-validateEnvVars();
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({

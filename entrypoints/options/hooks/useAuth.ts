@@ -1,23 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { fetchUser } from "../../../lib/github/api.ts";
-import { startDeviceFlow } from "../../../lib/github/auth.ts";
+import { validateAndSaveToken } from "../../../lib/github/auth.ts";
 import { getAuthData, removeAuthData } from "../../../lib/storage/index.ts";
 import { getUser, removeUser, saveUser } from "../../../lib/storage/user.ts";
 import type { GitHubUser } from "../../../lib/types/user.ts";
 
-export type AuthState = "idle" | "pending" | "authenticated";
-
-export type DeviceFlowInfo = {
-	userCode: string;
-	verificationUri: string;
-};
+export type AuthState = "idle" | "authenticated";
 
 export const useAuth = () => {
 	const [state, setState] = useState<AuthState>("idle");
 	const [user, setUser] = useState<GitHubUser | null>(null);
-	const [deviceFlow, setDeviceFlow] = useState<DeviceFlowInfo | null>(null);
 	const [error, setError] = useState<string | null>(null);
-	const cancelRef = useRef<{ cancelled: boolean }>({ cancelled: false });
 
 	// On mount: restore cached auth state
 	useEffect(() => {
@@ -39,7 +32,7 @@ export const useAuth = () => {
 				setUser(fetched);
 				setState("authenticated");
 			} catch {
-				// Token likely expired
+				// Token likely invalid
 				await removeAuthData();
 			}
 		};
@@ -47,43 +40,19 @@ export const useAuth = () => {
 		void restore();
 	}, []);
 
-	const signIn = useCallback(async () => {
+	const signIn = useCallback(async (token: string) => {
 		setError(null);
-		setState("pending");
-		cancelRef.current = { cancelled: false };
 
 		try {
-			await startDeviceFlow((code, uri) => {
-				setDeviceFlow({ userCode: code, verificationUri: uri });
-			});
-
-			if (cancelRef.current.cancelled) return;
-
-			// Auth succeeded — fetch user
-			const authData = await getAuthData();
-			if (!authData) throw new Error("Auth data not saved");
-
-			if (cancelRef.current.cancelled) return;
-			const fetched = await fetchUser(authData.accessToken);
-
-			if (cancelRef.current.cancelled) return;
-			await saveUser(fetched);
+			const fetched = await validateAndSaveToken(token);
 			setUser(fetched);
-			setDeviceFlow(null);
 			setState("authenticated");
 		} catch (err) {
-			if (cancelRef.current.cancelled) return;
-			setError(err instanceof Error ? err.message : "Authentication failed");
-			setDeviceFlow(null);
-			setState("idle");
+			const message =
+				err instanceof Error ? err.message : "Authentication failed";
+			setError(message);
+			throw err;
 		}
-	}, []);
-
-	const cancelSignIn = useCallback(() => {
-		cancelRef.current.cancelled = true;
-		setDeviceFlow(null);
-		setState("idle");
-		setError(null);
 	}, []);
 
 	const signOut = useCallback(async () => {
@@ -94,5 +63,5 @@ export const useAuth = () => {
 		setError(null);
 	}, []);
 
-	return { state, user, deviceFlow, error, signIn, cancelSignIn, signOut };
+	return { state, user, error, signIn, signOut };
 };

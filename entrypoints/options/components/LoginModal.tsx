@@ -122,7 +122,7 @@ export const LoginModal = ({
 							kind="secondary"
 							onClick={handleCancel}
 							disabled={loading}
-							className="grow-1"
+							className="flex-1 basis-full"
 						>
 							Cancel
 						</Button>
@@ -130,7 +130,7 @@ export const LoginModal = ({
 							kind="primary"
 							type="submit"
 							disabled={loading}
-							className="grow-1"
+							className="flex-1 basis-full"
 						>
 							{loading ? "Validating..." : "Sign in"}
 						</Button>

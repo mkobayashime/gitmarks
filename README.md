@@ -61,7 +61,7 @@ Create a `manifest.json` in your repository.
 
 #### Repository structure example with nested manifests
 
-```
+```bash
 my-repo/
 ├── bookmarks/
 │   ├── manifest.json      # -> TargetFolder/

@@ -2,7 +2,7 @@
 	"name": "GitMarks",
 	"description": "Keep your Chrome bookmarks in sync with GitHub. One-way sync from your repos to your browser.",
 	"private": true,
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"type": "module",
 	"dependencies": {
 		"@ark-ui/react": "5.31.0",

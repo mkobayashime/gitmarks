@@ -46,6 +46,10 @@ export const syncConnection = async (
 		);
 
 		if (!options?.force && commitSha === connection.lastSyncedCommitSha) {
+			await updateConnection(connection.id, {
+				lastSyncedAt: new Date().toISOString(),
+				lastSyncSkipped: true,
+			});
 			return { success: true, skipped: true };
 		}
 
@@ -100,6 +104,7 @@ export const syncConnection = async (
 			lastSyncedAt: new Date().toISOString(),
 			lastSyncedCommitSha: commitSha,
 			lastSyncError: null,
+			lastSyncSkipped: false,
 		});
 
 		return { success: true, bookmarkCount: count };

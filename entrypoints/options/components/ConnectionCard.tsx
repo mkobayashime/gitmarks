@@ -169,8 +169,9 @@ open:details-content:h-auto
 							/>
 							{statusLabel}
 						</div>
-						<span className="text-xs text-zinc-600">
+						<span className="text-xs text-zinc-500">
 							Last sync {formatDate(connection.lastSyncedAt)}
+							{connection.lastSyncSkipped && " (Skipped)"}
 						</span>
 					</div>
 				</summary>

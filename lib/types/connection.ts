@@ -14,6 +14,7 @@ export type ConnectionState = {
 	lastSyncedAt: string | null;
 	lastSyncedCommitSha: string | null;
 	lastSyncError: string | null;
+	lastSyncSkipped?: boolean;
 };
 
 export type Connection = ConnectionConfig & ConnectionState;

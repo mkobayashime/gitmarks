@@ -16,7 +16,7 @@
 		"valibot": "1.2.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.3.14",
+		"@biomejs/biome": "2.4.2",
 		"@mkobayashime/shared-config": "4.0.0",
 		"@primer/octicons-react": "19.21.2",
 		"@types/react": "19.2.10",

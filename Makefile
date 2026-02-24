@@ -1,6 +1,6 @@
 biome = bunx biome
 eslint = bunx eslint
-typecheck = bunx tsc --noEmit
+typecheck = bunx tsgo --noEmit
 wxt = bunx wxt
 
 deps: PHONY

@@ -237,10 +237,8 @@ export const AddConnectionModal = ({
 					</Steps.Content>
 
 					<Steps.Content index={1} className="min-h-0 flex flex-col">
-						<div className="mb-3 flex items-center justify-between flex-shrink-0">
-							<span className="block mb-1 text-xs text-zinc-500">
-								Target folder
-							</span>
+						<div className="mb-2 flex items-center justify-between flex-shrink-0">
+							<span className="block text-xs text-zinc-500">Target folder</span>
 							<Button
 								kind="text"
 								size="sm"

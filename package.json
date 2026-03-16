@@ -23,7 +23,7 @@
 		"@types/react-dom": "19.2.3",
 		"@typescript/native-preview": "7.0.0-dev.20260302.1",
 		"@wxt-dev/auto-icons": "1.1.1",
-		"@wxt-dev/module-react": "1.1.5",
+		"@wxt-dev/module-react": "1.2.1",
 		"eslint": "9.39.3",
 		"eslint-config-flat-gitignore": "2.2.1",
 		"typescript": "5.9.3",

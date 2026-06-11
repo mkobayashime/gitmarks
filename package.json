@@ -18,7 +18,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.4.7",
 		"@mkobayashime/shared-config": "4.1.0",
-		"@primer/octicons-react": "19.25.0",
+		"@primer/octicons-react": "19.28.1",
 		"@types/react": "19.2.14",
 		"@types/react-dom": "19.2.3",
 		"@typescript/native-preview": "7.0.0-dev.20260314.1",

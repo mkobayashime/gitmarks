@@ -3,6 +3,8 @@
 
 # GitMarks
 
+### BaC: Bookmarks as Code
+
 Keep your Chrome bookmarks in sync with GitHub. One-way sync from your repos to your browser.
 
 <br />

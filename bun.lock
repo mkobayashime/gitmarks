@@ -18,7 +18,7 @@
       "devDependencies": {
         "@biomejs/biome": "2.4.7",
         "@mkobayashime/shared-config": "4.1.0",
-        "@primer/octicons-react": "19.25.0",
+        "@primer/octicons-react": "19.28.1",
         "@types/react": "19.2.14",
         "@types/react-dom": "19.2.3",
         "@typescript/native-preview": "7.0.0-dev.20260314.1",
@@ -263,7 +263,7 @@
 
     "@pnpm/npm-conf": ["@pnpm/npm-conf@3.0.2", "", { "dependencies": { "@pnpm/config.env-replace": "^1.1.0", "@pnpm/network.ca-file": "^1.0.1", "config-chain": "^1.1.11" } }, "sha512-h104Kh26rR8tm+a3Qkc5S4VLYint3FE48as7+/5oCEcKR2idC/pF1G6AhIXKI+eHPJa/3J9i5z0Al47IeGHPkA=="],
 
-    "@primer/octicons-react": ["@primer/octicons-react@19.25.0", "", { "peerDependencies": { "react": ">=16.3" } }, "sha512-Cv7l7Mk4ahe6pOJ4A59viOQ22q5QkJ3jtkMyrQ2lpOofcKpVzvVg4CpYiq76Lj0RRlYC4qk1Tp9FpfzQnf4AuQ=="],
+    "@primer/octicons-react": ["@primer/octicons-react@19.28.1", "", { "peerDependencies": { "react": ">=16.3" } }, "sha512-ZADBMOPk6qoXXH3GEQuf3fYdhr9wCShgeJRGXsr5liaZG8P+hXGEQAy/eg7/FZjFIu8aRCmx+UBKmHvNTp7zpw=="],
 
     "@rolldown/pluginutils": ["@rolldown/pluginutils@1.0.0-rc.2", "", {}, "sha512-izyXV/v+cHiRfozX62W9htOAvwMo4/bXKDrQ+vom1L1qRuexPock/7VZDAhnpHCLNejd3NJ6hiab+tO0D44Rgw=="],
 

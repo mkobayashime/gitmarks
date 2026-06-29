@@ -2,7 +2,7 @@
 	"name": "GitMarks",
 	"description": "BaC: Bookmarks as Code. Keep your Chrome bookmarks in sync with GitHub. One-way sync from your repos to your browser.",
 	"private": true,
-	"version": "2.2.1",
+	"version": "2.3.0",
 	"type": "module",
 	"dependencies": {
 		"@ark-ui/react": "5.37.2",

@@ -1,6 +1,6 @@
 {
 	"name": "GitMarks",
-	"version": "2.3.0",
+	"version": "2.3.1",
 	"private": true,
 	"description": "BaC: Bookmarks as Code. Keep your Chrome bookmarks in sync with GitHub. One-way sync from your repos to your browser.",
 	"type": "module",

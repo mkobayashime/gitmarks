@@ -28,7 +28,7 @@
 		"oxfmt": "0.68.0",
 		"oxlint": "1.83.0",
 		"oxlint-tsgolint": "7.0.2002",
-		"typescript": "5.9.3",
+		"typescript": "7.0.2",
 		"wxt": "0.20.26"
 	}
 }

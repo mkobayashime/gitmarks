@@ -11,9 +11,7 @@ const LOCAL_STATE_KEY = "local:gitmarks_connection_state";
 
 export const getConnections = async (): Promise<Connection[]> => {
 	const [configs, states] = await Promise.all([
-		browser.storage.sync
-			.get(SYNC_KEY)
-			.then((r) => (r[SYNC_KEY] ?? {}) as SyncConnectionsStore),
+		browser.storage.sync.get(SYNC_KEY).then((r) => (r[SYNC_KEY] ?? {}) as SyncConnectionsStore),
 		browser.storage.local
 			.get(LOCAL_STATE_KEY)
 			.then((r) => (r[LOCAL_STATE_KEY] ?? {}) as LocalConnectionStateStore),
@@ -25,13 +23,8 @@ export const getConnections = async (): Promise<Connection[]> => {
 };
 
 export const saveConnection = async (connection: Connection): Promise<void> => {
-	const {
-		targetFolderId,
-		lastSyncedAt,
-		lastSyncedCommitSha,
-		lastSyncError,
-		...config
-	} = connection;
+	const { targetFolderId, lastSyncedAt, lastSyncedCommitSha, lastSyncError, ...config } =
+		connection;
 
 	const state: ConnectionState = {
 		targetFolderId,
@@ -47,18 +40,14 @@ export const saveConnection = async (connection: Connection): Promise<void> => {
 			return browser.storage.sync.set({ [SYNC_KEY]: configs });
 		}),
 		browser.storage.local.get(LOCAL_STATE_KEY).then((result) => {
-			const states = (result[LOCAL_STATE_KEY] ??
-				{}) as LocalConnectionStateStore;
+			const states = (result[LOCAL_STATE_KEY] ?? {}) as LocalConnectionStateStore;
 			states[connection.id] = state;
 			return browser.storage.local.set({ [LOCAL_STATE_KEY]: states });
 		}),
 	]);
 };
 
-export const updateConnection = async (
-	id: string,
-	updates: Partial<Connection>,
-): Promise<void> => {
+export const updateConnection = async (id: string, updates: Partial<Connection>): Promise<void> => {
 	const configKeys: (keyof ConnectionConfig)[] = [
 		"id",
 		"repoFullName",
@@ -117,10 +106,7 @@ const omitKeys = <T extends Record<string, unknown>, K extends keyof T>(
 	return result as Omit<T, K>;
 };
 
-const updateSyncConfig = async (
-	id: string,
-	updates: Partial<ConnectionConfig>,
-): Promise<void> => {
+const updateSyncConfig = async (id: string, updates: Partial<ConnectionConfig>): Promise<void> => {
 	await browser.storage.sync.get(SYNC_KEY).then((result) => {
 		const configs = (result[SYNC_KEY] ?? {}) as SyncConnectionsStore;
 		if (!(id in configs)) return;
@@ -129,10 +115,7 @@ const updateSyncConfig = async (
 	});
 };
 
-const updateLocalState = async (
-	id: string,
-	updates: Partial<ConnectionState>,
-): Promise<void> => {
+const updateLocalState = async (id: string, updates: Partial<ConnectionState>): Promise<void> => {
 	await browser.storage.local.get(LOCAL_STATE_KEY).then((result) => {
 		const states = (result[LOCAL_STATE_KEY] ?? {}) as LocalConnectionStateStore;
 		if (!(id in states)) return;
@@ -158,8 +141,7 @@ const deleteFromLocal = async (id: string): Promise<void> => {
 };
 
 export const getSyncConfigs = async (): Promise<SyncConnectionsStore> => {
-	return ((await browser.storage.sync.get(SYNC_KEY))[SYNC_KEY] ??
-		{}) as SyncConnectionsStore;
+	return ((await browser.storage.sync.get(SYNC_KEY))[SYNC_KEY] ?? {}) as SyncConnectionsStore;
 };
 
 export const getLocalStates = async (): Promise<LocalConnectionStateStore> => {

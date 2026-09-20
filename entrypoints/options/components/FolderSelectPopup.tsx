@@ -1,11 +1,8 @@
 import { CheckIcon, SyncIcon } from "@primer/octicons-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+
 import type { BookmarkTreeFolder } from "../../../lib/bookmarks/tree.ts";
-import {
-	findFolderInTree,
-	getAncestorIds,
-	getFolderTree,
-} from "../../../lib/bookmarks/tree.ts";
+import { findFolderInTree, getAncestorIds, getFolderTree } from "../../../lib/bookmarks/tree.ts";
 import { Button } from "./Button";
 import { FolderTree } from "./FolderTree.tsx";
 
@@ -80,15 +77,10 @@ export const FolderSelectPopup = ({
 
 	return (
 		<div className="absolute z-50 mt-1 w-full min-w-[320px]">
-			<div
-				ref={popupRef}
-				className="rounded-lg border border-zinc-700 bg-zinc-950 shadow-lg"
-			>
+			<div ref={popupRef} className="rounded-lg border border-zinc-700 bg-zinc-950 shadow-lg">
 				<div className="max-h-[min(320px,40vh)] overflow-y-auto py-2 px-2">
 					{loading ? (
-						<p className="px-3 py-2 text-xs text-zinc-500">
-							Loading folders...
-						</p>
+						<p className="px-3 py-2 text-xs text-zinc-500">Loading folders...</p>
 					) : (
 						<FolderTree
 							folders={folders}

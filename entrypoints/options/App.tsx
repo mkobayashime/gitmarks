@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+
 import {
 	autoResolveOrphanConfigs,
 	cleanupDeletedConnections,
 } from "@/lib/storage/orphan-configs.ts";
 import type { Connection } from "@/lib/types/connection";
+
 import { AddConnectionModal } from "./components/AddConnectionModal.tsx";
 import { ConnectionList } from "./components/ConnectionList.tsx";
 import { Header } from "./components/Header.tsx";
@@ -23,13 +25,7 @@ const toastStyles = {
 	info: "bg-zinc-800 border-zinc-700 text-zinc-200",
 } as const;
 
-const ToastList = ({
-	toasts,
-	onRemove,
-}: {
-	toasts: Toast[];
-	onRemove: (id: string) => void;
-}) => (
+const ToastList = ({ toasts, onRemove }: { toasts: Toast[]; onRemove: (id: string) => void }) => (
 	<div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
 		{toasts.map((t) => (
 			<div
@@ -50,23 +46,9 @@ const ToastList = ({
 );
 
 const App = () => {
-	const {
-		state: authState,
-		user,
-		error: authError,
-		signIn,
-		signOut,
-	} = useAuth();
-	const {
-		connections,
-		refresh: refreshConnections,
-		add,
-		update,
-		remove,
-	} = useConnections();
-	const { repos, loading: reposLoading } = useRepositories(
-		authState === "authenticated",
-	);
+	const { state: authState, user, error: authError, signIn, signOut } = useAuth();
+	const { connections, refresh: refreshConnections, add, update, remove } = useConnections();
+	const { repos, loading: reposLoading } = useRepositories(authState === "authenticated");
 	const { toasts, add: addToast, remove: removeToast } = useToast();
 	const { syncingIds, pull } = useSync(() => void refreshConnections());
 
@@ -142,19 +124,13 @@ const App = () => {
 
 	const handleSignOut = () => void signOut();
 
-	const handleUpdate = (id: string, updates: Partial<Connection>) =>
-		update(id, updates);
+	const handleUpdate = (id: string, updates: Partial<Connection>) => update(id, updates);
 
 	const handleRemove = (id: string) => remove(id);
 
 	return (
 		<div className="min-h-screen bg-zinc-950">
-			<Header
-				state={authState}
-				user={user}
-				onSignIn={handleSignIn}
-				onSignOut={handleSignOut}
-			/>
+			<Header state={authState} user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />
 
 			<main className="flex flex-col gap-8 mx-auto max-w-xl px-4 py-6">
 				<ConnectionList

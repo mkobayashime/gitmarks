@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps, ReactElement } from "react";
 import { forwardRef } from "react";
+
 import { cn } from "../utils/cn";
 
 const buttonVariants = cva(
@@ -25,13 +26,7 @@ const buttonVariants = cva(
 	{
 		variants: {
 			kind: {
-				primary: [
-					"border",
-					"border-transparent",
-					"bg-pink-500",
-					"text-white",
-					"hover:bg-pink-600",
-				],
+				primary: ["border", "border-transparent", "bg-pink-500", "text-white", "hover:bg-pink-600"],
 				secondary: [
 					"border",
 					"border-zinc-700",
@@ -62,12 +57,7 @@ const buttonVariants = cva(
 			{
 				kind: "primary",
 				dangerous: true,
-				class: [
-					"bg-red-500",
-					"hover:bg-red-600",
-					"text-white",
-					"hover:text-white",
-				],
+				class: ["bg-red-500", "hover:bg-red-600", "text-white", "hover:text-white"],
 			},
 			// Text dangerous (link-like)
 			{
@@ -116,9 +106,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 		ref,
 	) => {
 		const isDisabled = disabled || loading;
-		const variantClasses = unstyled
-			? ""
-			: buttonVariants({ kind, dangerous, size });
+		const variantClasses = unstyled ? "" : buttonVariants({ kind, dangerous, size });
 
 		return (
 			<button
@@ -140,9 +128,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 					<>
 						{icon && <span className="inline-flex items-center">{icon}</span>}
 						{children && <span>{children}</span>}
-						{trailingIcon && (
-							<span className="inline-flex items-center">{trailingIcon}</span>
-						)}
+						{trailingIcon && <span className="inline-flex items-center">{trailingIcon}</span>}
 					</>
 				)}
 			</button>

@@ -1,6 +1,7 @@
 import { Steps } from "@ark-ui/react";
 import { SyncIcon } from "@primer/octicons-react";
 import { useState } from "react";
+
 import type { BookmarkTreeFolder } from "../../../lib/bookmarks/tree.ts";
 import { getAncestorIds, getFolderTree } from "../../../lib/bookmarks/tree.ts";
 import type { Repository } from "../../../lib/github/schemas.ts";
@@ -141,10 +142,7 @@ export const AddConnectionModal = ({
 		setError(null);
 
 		try {
-			const folderError = await validateTargetFolder(
-				targetFolderId,
-				existingConnections,
-			);
+			const folderError = await validateTargetFolder(targetFolderId, existingConnections);
 			if (folderError) {
 				setError(folderError);
 				return;
@@ -174,9 +172,7 @@ export const AddConnectionModal = ({
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
 			<div className="grid grid-rows-[max-content_minmax(0,1fr)_max-content] gap-4 w-full max-w-lg h-120 rounded-md border border-zinc-800 bg-zinc-950 p-6">
-				<h2 className="text-base font-semibold text-zinc-100 tracking-tight">
-					Add new connection
-				</h2>
+				<h2 className="text-base font-semibold text-zinc-100 tracking-tight">Add new connection</h2>
 
 				<Steps.Root
 					count={2}
@@ -211,15 +207,8 @@ export const AddConnectionModal = ({
 
 					<Steps.Content index={0} className="min-h-0">
 						<div className="mb-3">
-							<span className="block mb-1 text-xs text-zinc-500">
-								Repository
-							</span>
-							<RepoCombobox
-								repos={repos}
-								loading={reposLoading}
-								value={repo}
-								onChange={setRepo}
-							/>
+							<span className="block mb-1 text-xs text-zinc-500">Repository</span>
+							<RepoCombobox repos={repos} loading={reposLoading} value={repo} onChange={setRepo} />
 						</div>
 
 						<label className="block mb-3">
@@ -251,9 +240,7 @@ export const AddConnectionModal = ({
 
 						<div className="overflow-y-auto rounded-md border border-zinc-800 bg-zinc-900/50 p-2 min-h-0">
 							{folderTreeLoading ? (
-								<p className="px-3 py-2 text-xs text-zinc-500">
-									Loading folders...
-								</p>
+								<p className="px-3 py-2 text-xs text-zinc-500">Loading folders...</p>
 							) : (
 								<FolderTree
 									folders={folders}
@@ -278,12 +265,7 @@ export const AddConnectionModal = ({
 						Cancel
 					</Button>
 					{currentStep === 0 ? (
-						<Button
-							kind="primary"
-							size="lg"
-							onClick={handleNext}
-							disabled={!repo}
-						>
+						<Button kind="primary" size="lg" onClick={handleNext} disabled={!repo}>
 							Next
 						</Button>
 					) : (

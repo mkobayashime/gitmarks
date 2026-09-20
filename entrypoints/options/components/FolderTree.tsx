@@ -4,6 +4,7 @@ import {
 	ChevronRightIcon,
 	FileDirectoryIcon,
 } from "@primer/octicons-react";
+
 import type { BookmarkTreeFolder } from "../../../lib/bookmarks/tree.ts";
 
 type Props = {

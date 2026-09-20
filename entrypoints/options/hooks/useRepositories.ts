@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+
 import { fetchUserRepos } from "../../../lib/github/api.ts";
 import { getValidToken } from "../../../lib/github/auth.ts";
 import type { Repository } from "../../../lib/github/schemas.ts";
@@ -17,9 +18,7 @@ export const useRepositories = (authenticated: boolean) => {
 			if (!token) return;
 			setRepos(await fetchUserRepos(token));
 		} catch (err) {
-			setError(
-				err instanceof Error ? err.message : "Failed to fetch repositories",
-			);
+			setError(err instanceof Error ? err.message : "Failed to fetch repositories");
 		} finally {
 			setLoading(false);
 		}

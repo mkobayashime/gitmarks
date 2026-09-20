@@ -1,7 +1,9 @@
 # Plan: Multi-Step Add Connection Modal
 
 ## Context
+
 The current Add Connection modal presents all form fields (repository, source directory, target folder) in a single view. This plan implements a 2-step wizard flow to improve UX by:
+
 - Separating repository setup from folder selection
 - Using Ark UI Steps component for visual progress indicator
 - Extracting reusable FolderTree component from FolderSelectPopup
@@ -9,88 +11,94 @@ The current Add Connection modal presents all form fields (repository, source di
 ## Implementation Plan
 
 ### Step 1: Create FolderTree Component
+
 **File:** `entrypoints/options/components/FolderTree.tsx` (new)
 
 Extract the folder tree rendering logic from `FolderSelectPopup.tsx` into a reusable component:
 
 ```tsx
 type FolderTreeProps = {
-  folders: BookmarkTreeFolder[];
-  selectedId: string | null;
-  expandedIds: Set<string>;
-  onToggleExpand: (id: string) => void;
-  onSelectFolder: (id: string) => void;
-}
+	folders: BookmarkTreeFolder[];
+	selectedId: string | null;
+	expandedIds: Set<string>;
+	onToggleExpand: (id: string) => void;
+	onSelectFolder: (id: string) => void;
+};
 ```
 
 **Changes:**
+
 - Extract lines 97-119 (renderTreeRows function) and 141-185 (tree rendering) from FolderSelectPopup
 - Keep the same styling: depth-based indentation, expand/collapse icons, selection states
 - Remove popup-specific wrapper (absolute positioning, border, shadow)
 - Accept `folders` array as prop instead of loading internally
 
 ### Step 2: Refactor FolderSelectPopup
+
 **File:** `entrypoints/options/components/FolderSelectPopup.tsx`
 
 Update to use the new FolderTree component:
 
 **Changes:**
+
 - Import FolderTree component
 - Replace inline tree rendering with `<FolderTree />` component
 - Keep popup container, loading states, refresh button, and Select button
 - Pass state handlers (onToggleExpand, onSelectFolder) to FolderTree
 
 ### Step 3: Implement Ark UI Steps
+
 **File:** `entrypoints/options/components/AddConnectionModal.tsx`
 
 Refactor modal to use 2-step flow with Ark UI Steps component:
 
 **Structure:**
+
 ```tsx
 <Steps.Root count={2} step={currentStep} onStepChange={setCurrentStep}>
-  <Steps.List>
-    <Steps.Item index={0}>
-      <Steps.Trigger>
-        <Steps.Indicator>1</Steps.Indicator>
-      </Steps.Trigger>
-      <Steps.Separator />
-    </Steps.Item>
-    <Steps.Item index={1}>
-      <Steps.Trigger>
-        <Steps.Indicator>2</Steps.Indicator>
-      </Steps.Trigger>
-    </Steps.Item>
-  </Steps.List>
+	<Steps.List>
+		<Steps.Item index={0}>
+			<Steps.Trigger>
+				<Steps.Indicator>1</Steps.Indicator>
+			</Steps.Trigger>
+			<Steps.Separator />
+		</Steps.Item>
+		<Steps.Item index={1}>
+			<Steps.Trigger>
+				<Steps.Indicator>2</Steps.Indicator>
+			</Steps.Trigger>
+		</Steps.Item>
+	</Steps.List>
 
-  <Steps.Content index={0}>
-    {/* Repository selection + srcDir input */}
-  </Steps.Content>
+	<Steps.Content index={0}>{/* Repository selection + srcDir input */}</Steps.Content>
 
-  <Steps.Content index={1}>
-    {/* Target folder selection using FolderTree inline */}
-  </Steps.Content>
+	<Steps.Content index={1}>{/* Target folder selection using FolderTree inline */}</Steps.Content>
 
-  {/* Navigation buttons based on currentStep */}
+	{/* Navigation buttons based on currentStep */}
 </Steps.Root>
 ```
 
 **State Changes:**
+
 - Add `currentStep` state (0 or 1)
 - Add validation for step 1 before allowing Next
 - Add inline folder tree state for step 2 (similar to FolderSelectPopup but embedded)
 
 **Step 1 Content:**
+
 - Repository combobox
 - Source directory input
 - Next button (validates repo + srcDir)
 - Cancel button
 
 **Step 2 Content:**
+
 - Inline FolderTree component (not in popup)
 - Back button (returns to step 1)
 - Complete button (validates targetFolder and submits)
 
 **Styling (using design-principles):**
+
 - Use existing modal container styling
 - Steps indicator at top: small circles with numbers, connected by separator line
 - Current step: pink-500 background
@@ -100,13 +108,16 @@ Refactor modal to use 2-step flow with Ark UI Steps component:
 - Button styles match existing patterns
 
 ### Step 4: Validation Logic
+
 Update validation to work with step flow:
 
 **Step 1 validation (on Next):**
+
 - Repository is selected
 - srcDir is valid (using existing `validateSrcDir`)
 
 **Step 2 validation (on Complete):**
+
 - Target folder is selected
 - Target folder is not already used by another connection (using existing `validateTargetFolder`)
 

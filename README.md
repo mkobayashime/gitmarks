@@ -37,7 +37,6 @@ Chrome Web Store
 
 Create a `manifest.json` in your repository.
 
-
 #### Manifest
 
 - Schema: `Array<{ name: string; location: string; }>`
@@ -50,14 +49,14 @@ Create a `manifest.json` in your repository.
 
 ```json
 [
-  {
-    "name": "Example URL",
-    "location": "https://example.com"
-  },
-  {
-    "name": "My Bookmarklet",
-    "location": "./my-bookmarklet.js"
-  }
+	{
+		"name": "Example URL",
+		"location": "https://example.com"
+	},
+	{
+		"name": "My Bookmarklet",
+		"location": "./my-bookmarklet.js"
+	}
 ]
 ```
 

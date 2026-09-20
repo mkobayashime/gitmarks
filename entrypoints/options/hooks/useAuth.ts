@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+
 import { fetchUser } from "../../../lib/github/api.ts";
 import { validateAndSaveToken } from "../../../lib/github/auth.ts";
 import { getAuthData, removeAuthData } from "../../../lib/storage/index.ts";
@@ -48,8 +49,7 @@ export const useAuth = () => {
 			setUser(fetched);
 			setState("authenticated");
 		} catch (err) {
-			const message =
-				err instanceof Error ? err.message : "Authentication failed";
+			const message = err instanceof Error ? err.message : "Authentication failed";
 			setError(message);
 			throw err;
 		}

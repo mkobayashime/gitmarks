@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+
 import { getValidToken } from "../../../lib/github/auth.ts";
 import { getConnections } from "../../../lib/storage/connections.ts";
 import { syncConnection } from "../../../lib/sync/sync-connection.ts";
@@ -16,8 +17,7 @@ export const useSync = (onSynced?: () => void) => {
 
 				// Re-read connection from storage to get latest state
 				const connections = await getConnections();
-				const fresh =
-					connections.find((c) => c.id === connection.id) ?? connection;
+				const fresh = connections.find((c) => c.id === connection.id) ?? connection;
 
 				const result = await syncConnection(fresh, token, { force: true });
 				return result;

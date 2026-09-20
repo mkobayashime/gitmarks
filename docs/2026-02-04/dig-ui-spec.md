@@ -38,9 +38,9 @@
 
 ## 1. ヘッダー
 
-| 状態 | 表示 |
-|------|------|
-| 未ログイン | アプリ名 + `Sign in` ボタン |
+| 状態         | 表示                                                 |
+| ------------ | ---------------------------------------------------- |
+| 未ログイン   | アプリ名 + `Sign in` ボタン                          |
 | ログイン済み | アプリ名 + ユーザー名（アバター）+ `Sign out` ボタン |
 
 - `Sign in` ボタン → デバイスフローのモーダルを開く（後述: §4）
@@ -96,15 +96,15 @@
 
 #### 各要素の仕様
 
-| 要素 | 詳細 |
-|------|------|
-| **トグルスイッチ** | Ark UI `Toggle`。オン/オフで即時 `chrome.storage` に保存（オートセーブ）。オフの場合は `Pull` ボタンを無効化し、srcDir・targetFolder のインプットも無効化する |
-| **srcDir 入力欄** | プレーンなテキスト入力。プレースホルダーは `/`。リポジトリルート(`/`)も有効な値。値変更後は `Save` で明示的に保存する（§3.3 参照） |
-| **Target folder ドロップダウン** | Ark UI `Select`。オプションは Chrome bookmarks の全フォルダを階層パス（`Bookmarks > A > B`）で表示。`Bookmarks root` も選択可能 |
-| **Pull ボタン** | 同期実行ボタン。実行中は Ark UI `Spinner` に切り替え（再クリック不可）。完了後は元のボタンに戻り、トーストで結果通知 |
-| **Disconnect ボタン** | クリックで確認モーダルを開く（§5） |
-| **Last synced** | 同期成功時に日時を更新。未同期の場合は `Never synced` と表示 |
-| **エラーセクション** | エラーが発生した場合のみ表示。複数エラーがある場合はリスト表示 |
+| 要素                             | 詳細                                                                                                                                                          |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **トグルスイッチ**               | Ark UI `Toggle`。オン/オフで即時 `chrome.storage` に保存（オートセーブ）。オフの場合は `Pull` ボタンを無効化し、srcDir・targetFolder のインプットも無効化する |
+| **srcDir 入力欄**                | プレーンなテキスト入力。プレースホルダーは `/`。リポジトリルート(`/`)も有効な値。値変更後は `Save` で明示的に保存する（§3.3 参照）                            |
+| **Target folder ドロップダウン** | Ark UI `Select`。オプションは Chrome bookmarks の全フォルダを階層パス（`Bookmarks > A > B`）で表示。`Bookmarks root` も選択可能                               |
+| **Pull ボタン**                  | 同期実行ボタン。実行中は Ark UI `Spinner` に切り替え（再クリック不可）。完了後は元のボタンに戻り、トーストで結果通知                                          |
+| **Disconnect ボタン**            | クリックで確認モーダルを開く（§5）                                                                                                                            |
+| **Last synced**                  | 同期成功時に日時を更新。未同期の場合は `Never synced` と表示                                                                                                  |
+| **エラーセクション**             | エラーが発生した場合のみ表示。複数エラーがある場合はリスト表示                                                                                                |
 
 ### 2.3 未ログイン時の連携カード
 
@@ -179,10 +179,10 @@
 
 「追加」または展開カード内の設定変更で保存を行う際、以下のチェックを実行する。エラーの場合は操作を中断し、カード内エラーセクション（追加モーダルの場合はモーダル内）に表示する。
 
-| チェック | エラーメッセージ |
-|---------|----------------|
-| srcDir が空文字列 | `srcDir is required` (`/` は有効) |
-| targetFolder が未選択 | `Target folder is required` |
+| チェック                                        | エラーメッセージ                                                            |
+| ----------------------------------------------- | --------------------------------------------------------------------------- |
+| srcDir が空文字列                               | `srcDir is required` (`/` は有効)                                           |
+| targetFolder が未選択                           | `Target folder is required`                                                 |
 | targetFolder が他の連携と重複（同一・親子関係） | `This folder conflicts with another connection. Choose a different folder.` |
 
 - **トグルの有効/無効は即時保存**（バリデーション対象外）
@@ -275,12 +275,12 @@
 - ページ右下に表示
 - 表示時間: 約 4 秒で自動消滅
 
-| イベント | メッセージ | タイプ |
-|---------|-----------|--------|
-| Pull 成功 | `Synced N bookmarks` | success |
-| Pull 失敗 | `Sync failed` | error |
-| 連携追加成功 | `Connection added` | success |
-| 連携解除完了 | `Connection removed` | info |
+| イベント     | メッセージ           | タイプ  |
+| ------------ | -------------------- | ------- |
+| Pull 成功    | `Synced N bookmarks` | success |
+| Pull 失敗    | `Sync failed`        | error   |
+| 連携追加成功 | `Connection added`   | success |
+| 連携解除完了 | `Connection removed` | info    |
 
 ---
 
@@ -288,13 +288,13 @@
 
 エラーが発生した場合のみ表示される。
 
-| エラー種別 | 表示メッセージ |
-|-----------|--------------|
-| srcDir が存在しない | `srcDir "${value}" does not exist in this repository` |
-| targetFolder が存在しない | `Target folder does not exist` |
-| 権限不足 / 認証切れ | `Sign in required. Please sign in again.` |
-| targetFolder 衝突 | `This folder conflicts with another connection` |
-| その他の同期エラー | `Sync failed: {error message}` |
+| エラー種別                | 表示メッセージ                                        |
+| ------------------------- | ----------------------------------------------------- |
+| srcDir が存在しない       | `srcDir "${value}" does not exist in this repository` |
+| targetFolder が存在しない | `Target folder does not exist`                        |
+| 権限不足 / 認証切れ       | `Sign in required. Please sign in again.`             |
+| targetFolder 衝突         | `This folder conflicts with another connection`       |
+| その他の同期エラー        | `Sync failed: {error message}`                        |
 
 - エラー行に `Retry` リンクを付与（Pull を再実行する）
 - 複数エラーの場合はリスト表示
@@ -303,11 +303,11 @@
 
 ## 9. Ark UI コンポーネント対応一覧
 
-| Ark UI コンポーネント | 使用箇所 |
-|----------------------|---------|
-| `Toggle` | 連携カード内の有効/無効切り替え |
-| `Dialog` | 連携追加モーダル・ログインモーダル・削除確認モーダル |
-| `Combobox` | リポジトリ選択（モーダル内） |
-| `Select` | 同期先フォルダ選択（モーダル内・展開カード内） |
-| `Toast` | 操作結果の通知 |
-| `Spinner` | Pull ボタンの実行中状態 |
+| Ark UI コンポーネント | 使用箇所                                             |
+| --------------------- | ---------------------------------------------------- |
+| `Toggle`              | 連携カード内の有効/無効切り替え                      |
+| `Dialog`              | 連携追加モーダル・ログインモーダル・削除確認モーダル |
+| `Combobox`            | リポジトリ選択（モーダル内）                         |
+| `Select`              | 同期先フォルダ選択（モーダル内・展開カード内）       |
+| `Toast`               | 操作結果の通知                                       |
+| `Spinner`             | Pull ボタンの実行中状態                              |

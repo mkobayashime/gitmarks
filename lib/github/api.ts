@@ -1,4 +1,5 @@
 import * as v from "valibot";
+
 import {
 	CommitListItemSchema,
 	type GitHubUser,
@@ -21,17 +22,12 @@ const createAuthHeaders = (token: string) => ({
  * Fetch user's repositories
  */
 export const fetchUserRepos = async (token: string): Promise<Repository[]> => {
-	const response = await fetch(
-		`${API_BASE}/user/repos?per_page=100&sort=updated`,
-		{
-			headers: createAuthHeaders(token),
-		},
-	);
+	const response = await fetch(`${API_BASE}/user/repos?per_page=100&sort=updated`, {
+		headers: createAuthHeaders(token),
+	});
 
 	if (!response.ok) {
-		throw new Error(
-			`Failed to fetch repositories: ${response.status} ${response.statusText}`,
-		);
+		throw new Error(`Failed to fetch repositories: ${response.status} ${response.statusText}`);
 	}
 
 	const raw: unknown = await response.json();
@@ -53,9 +49,7 @@ export const fetchRepoContents = async (
 	});
 
 	if (!response.ok) {
-		throw new Error(
-			`Failed to fetch repo contents: ${response.status} ${response.statusText}`,
-		);
+		throw new Error(`Failed to fetch repo contents: ${response.status} ${response.statusText}`);
 	}
 
 	const raw: unknown = await response.json();
@@ -76,9 +70,7 @@ export const fetchUser = async (token: string): Promise<GitHubUser> => {
 	});
 
 	if (!response.ok) {
-		throw new Error(
-			`Failed to fetch user: ${response.status} ${response.statusText}`,
-		);
+		throw new Error(`Failed to fetch user: ${response.status} ${response.statusText}`);
 	}
 
 	const raw: unknown = await response.json();
@@ -102,9 +94,7 @@ export const fetchFileContent = async (
 
 	if (response.status === 404) return null;
 	if (!response.ok) {
-		throw new Error(
-			`Failed to fetch file content: ${response.status} ${response.statusText}`,
-		);
+		throw new Error(`Failed to fetch file content: ${response.status} ${response.statusText}`);
 	}
 
 	const raw: unknown = await response.json();
@@ -135,9 +125,7 @@ export const fetchLatestCommitSha = async (
 	});
 
 	if (!response.ok) {
-		throw new Error(
-			`Failed to fetch latest commit: ${response.status} ${response.statusText}`,
-		);
+		throw new Error(`Failed to fetch latest commit: ${response.status} ${response.statusText}`);
 	}
 
 	const raw: unknown = await response.json();
@@ -165,16 +153,11 @@ export const findManifestFiles = async (
 ): Promise<ManifestLocation[]> => {
 	const results: ManifestLocation[] = [];
 
-	const traverse = async (
-		currentPath: string,
-		relativePath: string,
-	): Promise<void> => {
+	const traverse = async (currentPath: string, relativePath: string): Promise<void> => {
 		const contents = await fetchRepoContents(token, owner, repo, currentPath);
 
 		for (const item of contents) {
-			const itemRelativePath = relativePath
-				? `${relativePath}/${item.name}`
-				: item.name;
+			const itemRelativePath = relativePath ? `${relativePath}/${item.name}` : item.name;
 
 			if (item.type === "dir") {
 				await traverse(item.path, itemRelativePath);

@@ -8,26 +8,26 @@ GitHub レポジトリ上の変更 -> bookmarks への反映のみ行い、bookm
 ## 要件
 
 - GitHub 連携
-    - ユーザ自身の GitHub アカウントでログインし、アクセスを許可するレポジトリを選択できる
-    - アクセスを認可されたレポジトリのうち、どのレポジトリを同期に利用するか選択できる
-    - 同期するレポジトリに対して、その内容を bookmarks のどのフォルダに同期するかを設定できる (`targetFolder`)
-    - 任意個の連携を設定することができる
-        - 複数個の連携が設定される場合、同期先フォルダは親子関係にない異なるフォルダであることが必須
+  - ユーザ自身の GitHub アカウントでログインし、アクセスを許可するレポジトリを選択できる
+  - アクセスを認可されたレポジトリのうち、どのレポジトリを同期に利用するか選択できる
+  - 同期するレポジトリに対して、その内容を bookmarks のどのフォルダに同期するかを設定できる (`targetFolder`)
+  - 任意個の連携を設定することができる
+    - 複数個の連携が設定される場合、同期先フォルダは親子関係にない異なるフォルダであることが必須
 - レポジトリ内のファイル解釈
-    - 連携に対して同期対象とするレポジトリ上のディレクトリ (`srcDir`) を設定できる
-        - e.g. `/src` on the repo
-    - `srcDir` 配下のファイルを以下のように検知する
-        - ディレクトリ内の `manifest.json` を読み取り、後述のスキーマに沿って解釈する
+  - 連携に対して同期対象とするレポジトリ上のディレクトリ (`srcDir`) を設定できる
+    - e.g. `/src` on the repo
+  - `srcDir` 配下のファイルを以下のように検知する
+    - ディレクトリ内の `manifest.json` を読み取り、後述のスキーマに沿って解釈する
 
 ### `manifest.json` スキーマ
 
 ```typescript
-type ManifestJSON = Bookmark[]
+type ManifestJSON = Bookmark[];
 
 type Bookmark = {
-    name: string
-    location: string
-}
+	name: string;
+	location: string;
+};
 ```
 
 `location` は `https://example.com` のような URL か、ブックマークレットのファイルへのパス (e.g. `./foobar.js`) のいずれか  
@@ -37,24 +37,24 @@ type Bookmark = {
 ### UI の機能要件
 
 - Options page として実装する
-    - `../../entrypoints/options/index.html`, `../../entrypoints/options/index.ts`
+  - `../../entrypoints/options/index.html`, `../../entrypoints/options/index.ts`
 - スタック
-    - React
-    - Tailwind
-        - CSS や SCSS (Sass) ファイルは使用しない
-    - Headless component library として可能な限り Ark UI を使用する
-        - https://ark-ui.com/docs/overview/about
+  - React
+  - Tailwind
+    - CSS や SCSS (Sass) ファイルは使用しない
+  - Headless component library として可能な限り Ark UI を使用する
+    - https://ark-ui.com/docs/overview/about
 - 機能
-    - ../2026-02-04/dig-ui-spec.md を参照
+  - ../2026-02-04/dig-ui-spec.md を参照
 
 ## 進め方
 
 1. PoC (実装済み)
-    - 作業時のレポート、本実装で考慮すべき点は ./poc-results.md を参照すること
+   - 作業時のレポート、本実装で考慮すべき点は ./poc-results.md を参照すること
 
 2. 本実装
-    - 上記の要件を満たすよう作業計画を立て、実行する
-    - タスクは意味論的な単位で複数のステップに分け、それぞれに完了条件や必要なコンテキストを記載する
+   - 上記の要件を満たすよう作業計画を立て、実行する
+   - タスクは意味論的な単位で複数のステップに分け、それぞれに完了条件や必要なコンテキストを記載する
 
 ## タスク遂行上の要件
 

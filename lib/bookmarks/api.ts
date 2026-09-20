@@ -40,9 +40,7 @@ export const getAllFolders = async (): Promise<BookmarkFolder[]> => {
 /**
  * Get a single folder by ID. Returns null if not found.
  */
-export const getFolderById = async (
-	id: string,
-): Promise<BookmarkFolder | null> => {
+export const getFolderById = async (id: string): Promise<BookmarkFolder | null> => {
 	try {
 		const nodes = await browser.bookmarks.get(id);
 		if (nodes.length === 0 || nodes[0].url) return null;

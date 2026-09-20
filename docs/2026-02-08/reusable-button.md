@@ -5,35 +5,35 @@
 ## 対象箇所
 
 - レポジトリカード
-    - Sync
-    - Save
-    - Disconnect
+  - Sync
+  - Save
+  - Disconnect
 - フォルダ選択
-    - Refresh
-    - Select
+  - Refresh
+  - Select
 - 新規レポジトリモーダル
-    - Cancel
-    - Next
-    - Back
-    - Complete
+  - Cancel
+  - Next
+  - Back
+  - Complete
 - ヘッダ
-    - Sign in
-    - Sign out
+  - Sign in
+  - Sign out
 - その他類似箇所
 
 ## サポートすべき状態/props
 
 - kind
-    - primary
-        - like `Sync`
-    - secondary
-        - like `Save`
-    - text
-        - like `Refresh`
+  - primary
+    - like `Sync`
+  - secondary
+    - like `Save`
+  - text
+    - like `Refresh`
 - disabled
 - dangerous
-    - false: default
-    - true
-        - like `Disconnect`
+  - false: default
+  - true
+    - like `Disconnect`
 - icon
 - その他必要なもの

@@ -3,6 +3,7 @@
 ## Overview
 
 Migrate connection storage from `chrome.storage.local` to a split approach:
+
 - **Configuration** (repo settings, enabled status) → `chrome.storage.sync`
 - **State** (sync timestamps, folder IDs, errors) → `chrome.storage.local`
 
@@ -26,7 +27,7 @@ export type ConnectionConfig = {
 	repoOwner: string;
 	repoName: string;
 	srcDir: string;
-	targetFolderPath: string;  // Synced for folder identification
+	targetFolderPath: string; // Synced for folder identification
 	enabled: boolean;
 	createdAt: string;
 };
@@ -35,7 +36,7 @@ export type ConnectionConfig = {
  * Browser-specific state stored in chrome.storage.local
  */
 export type ConnectionState = {
-	targetFolderId: string;  // Chrome folder IDs are browser-specific
+	targetFolderId: string; // Chrome folder IDs are browser-specific
 	lastSyncedAt: string | null;
 	lastSyncedCommitSha: string | null;
 	lastSyncError: string | null;
@@ -58,6 +59,7 @@ export type LocalConnectionStateStore = Record<string, ConnectionState>;
 Replace array-based operations with dual-storage approach:
 
 **Keys:**
+
 - `sync:gitmarks_connections` - Connection configs (synced)
 - `local:gitmarks_connection_state` - Per-browser state (local)
 
@@ -70,8 +72,8 @@ const LOCAL_STATE_KEY = "local:gitmarks_connection_state";
 // Get all connections (merge sync config + local state)
 export const getConnections = async (): Promise<Connection[]> => {
 	const [configs, states] = await Promise.all([
-		browser.storage.sync.get(SYNC_KEY).then(r => r[SYNC_KEY] ?? {}),
-		browser.storage.local.get(LOCAL_STATE_KEY).then(r => r[LOCAL_STATE_KEY] ?? {}),
+		browser.storage.sync.get(SYNC_KEY).then((r) => r[SYNC_KEY] ?? {}),
+		browser.storage.local.get(LOCAL_STATE_KEY).then((r) => r[LOCAL_STATE_KEY] ?? {}),
 	]);
 
 	// Only return connections with BOTH config AND state
@@ -82,7 +84,8 @@ export const getConnections = async (): Promise<Connection[]> => {
 
 // Save/update connection (writes to both storage areas)
 export const saveConnection = async (connection: Connection): Promise<void> => {
-	const { targetFolderId, lastSyncedAt, lastSyncedCommitSha, lastSyncError, ...config } = connection;
+	const { targetFolderId, lastSyncedAt, lastSyncedCommitSha, lastSyncError, ...config } =
+		connection;
 
 	const state: ConnectionState = {
 		targetFolderId,
@@ -92,12 +95,12 @@ export const saveConnection = async (connection: Connection): Promise<void> => {
 	};
 
 	await Promise.all([
-		browser.storage.sync.get(SYNC_KEY).then(result => {
+		browser.storage.sync.get(SYNC_KEY).then((result) => {
 			const configs = result[SYNC_KEY] ?? {};
 			configs[connection.id] = config;
 			return browser.storage.sync.set({ [SYNC_KEY]: configs });
 		}),
-		browser.storage.local.get(LOCAL_STATE_KEY).then(result => {
+		browser.storage.local.get(LOCAL_STATE_KEY).then((result) => {
 			const states = result[LOCAL_STATE_KEY] ?? {};
 			states[connection.id] = state;
 			return browser.storage.local.set({ [LOCAL_STATE_KEY]: states });
@@ -108,8 +111,14 @@ export const saveConnection = async (connection: Connection): Promise<void> => {
 // Update connection (auto-detects sync vs local fields)
 export const updateConnection = async (id: string, updates: Partial<Connection>): Promise<void> => {
 	const configKeys: (keyof ConnectionConfig)[] = [
-		"id", "repoFullName", "repoOwner", "repoName",
-		"srcDir", "targetFolderPath", "enabled", "createdAt",
+		"id",
+		"repoFullName",
+		"repoOwner",
+		"repoName",
+		"srcDir",
+		"targetFolderPath",
+		"enabled",
+		"createdAt",
 	];
 
 	const configUpdates = pickKeys(updates, configKeys);
@@ -129,10 +138,7 @@ export const updateConnection = async (id: string, updates: Partial<Connection>)
 
 // Remove connection from both storage areas
 export const removeConnection = async (id: string): Promise<void> => {
-	await Promise.all([
-		deleteFromSync(id),
-		deleteFromLocal(id),
-	]);
+	await Promise.all([deleteFromSync(id), deleteFromLocal(id)]);
 };
 ```
 
@@ -196,8 +202,8 @@ import { getOrCreateFolder } from "../bookmarks/api.ts";
  */
 export const getOrphanConfigs = async (): Promise<ConnectionConfig[]> => {
 	const [configs, states] = await Promise.all([
-		browser.storage.sync.get(SYNC_KEY).then(r => r[SYNC_KEY] ?? {}),
-		browser.storage.local.get(LOCAL_STATE_KEY).then(r => r[LOCAL_STATE_KEY] ?? {}),
+		browser.storage.sync.get(SYNC_KEY).then((r) => r[SYNC_KEY] ?? {}),
+		browser.storage.local.get(LOCAL_STATE_KEY).then((r) => r[LOCAL_STATE_KEY] ?? {}),
 	]);
 
 	return Object.entries(configs)
@@ -237,7 +243,7 @@ const createFolderAtPath = async (pathString: string): Promise<string> => {
 	if (parts.length === 0) throw new Error("Invalid folder path");
 
 	// Start from Bookmarks Bar root
-	const bookmarksBar = tree[0].children?.find(c => c.id === "1");
+	const bookmarksBar = tree[0].children?.find((c) => c.id === "1");
 	if (!bookmarksBar?.id) throw new Error("Bookmarks Bar not found");
 
 	let currentId = bookmarksBar.id;
@@ -268,7 +274,7 @@ export const resolveOrphanConfig = async (
 		lastSyncError: null,
 	};
 
-	await browser.storage.local.get(LOCAL_STATE_KEY).then(result => {
+	await browser.storage.local.get(LOCAL_STATE_KEY).then((result) => {
 		const states = result[LOCAL_STATE_KEY] ?? {};
 		states[id] = state;
 		return browser.storage.local.set({ [LOCAL_STATE_KEY]: states });
@@ -315,12 +321,12 @@ When a connection is deleted on Browser A, Browser B should clean up its orphane
 ```typescript
 export const cleanupDeletedConnections = async (): Promise<void> => {
 	const [configs, states] = await Promise.all([
-		browser.storage.sync.get(SYNC_KEY).then(r => r[SYNC_KEY] ?? {}),
-		browser.storage.local.get(LOCAL_STATE_KEY).then(r => r[LOCAL_STATE_KEY] ?? {}),
+		browser.storage.sync.get(SYNC_KEY).then((r) => r[SYNC_KEY] ?? {}),
+		browser.storage.local.get(LOCAL_STATE_KEY).then((r) => r[LOCAL_STATE_KEY] ?? {}),
 	]);
 
 	// Find local states without corresponding configs
-	const orphanStateIds = Object.keys(states).filter(id => !(id in configs));
+	const orphanStateIds = Object.keys(states).filter((id) => !(id in configs));
 
 	if (orphanStateIds.length > 0) {
 		for (const id of orphanStateIds) {
@@ -337,13 +343,13 @@ Call this on app mount and when sync storage changes.
 
 ## Files to Modify
 
-| File | Action |
-|------|--------|
-| `lib/types/connection.ts` | Add `ConnectionConfig`, `ConnectionState`, store types |
-| `lib/storage/connections.ts` | Rewrite for dual-storage (sync + local) |
-| `lib/storage/migrations.ts` | **CREATE** - One-time migration from array to split storage |
-| `lib/storage/orphan-configs.ts` | **CREATE** - Orphan detection and auto-resolution |
-| `entrypoints/options/App.tsx` | Add migration trigger, silent orphan resolution, cleanup |
+| File                            | Action                                                      |
+| ------------------------------- | ----------------------------------------------------------- |
+| `lib/types/connection.ts`       | Add `ConnectionConfig`, `ConnectionState`, store types      |
+| `lib/storage/connections.ts`    | Rewrite for dual-storage (sync + local)                     |
+| `lib/storage/migrations.ts`     | **CREATE** - One-time migration from array to split storage |
+| `lib/storage/orphan-configs.ts` | **CREATE** - Orphan detection and auto-resolution           |
+| `entrypoints/options/App.tsx`   | Add migration trigger, silent orphan resolution, cleanup    |
 
 ---
 

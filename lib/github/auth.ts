@@ -3,9 +3,7 @@ import { saveUser } from "../storage/user";
 import type { GitHubUser } from "../types/user";
 import { fetchUser } from "./api";
 
-export const validateAndSaveToken = async (
-	token: string,
-): Promise<GitHubUser> => {
+export const validateAndSaveToken = async (token: string): Promise<GitHubUser> => {
 	const user = await fetchUser(token);
 	await saveAuthData({ accessToken: token });
 	await saveUser(user);

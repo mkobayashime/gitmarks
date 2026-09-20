@@ -17,9 +17,10 @@ export const getConnections = async (): Promise<Connection[]> => {
 			.then((r) => (r[LOCAL_STATE_KEY] ?? {}) as LocalConnectionStateStore),
 	]);
 
-	return Object.entries(configs)
-		.filter(([id]) => id in states)
-		.map(([id, config]) => ({ ...config, ...states[id] }));
+	return Object.entries(configs).flatMap(([id, config]) => {
+		const state = states[id];
+		return state ? [{ ...config, ...state }] : [];
+	});
 };
 
 export const saveConnection = async (connection: Connection): Promise<void> => {
@@ -109,8 +110,9 @@ const omitKeys = <T extends Record<string, unknown>, K extends keyof T>(
 const updateSyncConfig = async (id: string, updates: Partial<ConnectionConfig>): Promise<void> => {
 	await browser.storage.sync.get(SYNC_KEY).then((result) => {
 		const configs = (result[SYNC_KEY] ?? {}) as SyncConnectionsStore;
-		if (!(id in configs)) return;
-		configs[id] = { ...configs[id], ...updates };
+		const current = configs[id];
+		if (!current) return;
+		configs[id] = { ...current, ...updates };
 		return browser.storage.sync.set({ [SYNC_KEY]: configs });
 	});
 };
@@ -118,8 +120,9 @@ const updateSyncConfig = async (id: string, updates: Partial<ConnectionConfig>):
 const updateLocalState = async (id: string, updates: Partial<ConnectionState>): Promise<void> => {
 	await browser.storage.local.get(LOCAL_STATE_KEY).then((result) => {
 		const states = (result[LOCAL_STATE_KEY] ?? {}) as LocalConnectionStateStore;
-		if (!(id in states)) return;
-		states[id] = { ...states[id], ...updates };
+		const current = states[id];
+		if (!current) return;
+		states[id] = { ...current, ...updates };
 		return browser.storage.local.set({ [LOCAL_STATE_KEY]: states });
 	});
 };

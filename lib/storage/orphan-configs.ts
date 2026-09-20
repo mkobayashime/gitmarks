@@ -47,17 +47,18 @@ const createFolderAtPath = async (pathString: string): Promise<string> => {
 	const parts = pathString.split(" > ").filter(Boolean);
 	if (parts.length === 0) throw new Error("Invalid folder path");
 
-	const rootChildren = tree[0].children ?? [];
-	const rootFolder = rootChildren.find((c) => c.title === parts[0]);
+	const [rootTitle, ...subfolderNames] = parts;
+	const rootChildren = tree[0]?.children ?? [];
+	const rootFolder = rootChildren.find((c) => c.title === rootTitle);
 
 	if (!rootFolder?.id) {
-		throw new Error(`Root folder not found: ${parts[0]}`);
+		throw new Error(`Root folder not found: ${rootTitle}`);
 	}
 
 	let currentId = rootFolder.id;
 
-	for (let i = 1; i < parts.length; i++) {
-		currentId = await getOrCreateFolder(currentId, parts[i]);
+	for (const name of subfolderNames) {
+		currentId = await getOrCreateFolder(currentId, name);
 	}
 
 	return currentId;

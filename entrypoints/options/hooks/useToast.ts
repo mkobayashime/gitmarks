@@ -22,8 +22,8 @@ export const useToast = () => {
 
 	// Auto-dismiss after 4 seconds
 	useEffect(() => {
-		if (toasts.length === 0) return;
 		const latest = toasts[toasts.length - 1];
+		if (!latest) return;
 		const timer = setTimeout(() => remove(latest.id), 4000);
 		return () => clearTimeout(timer);
 	}, [toasts, remove]);

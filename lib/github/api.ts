@@ -130,11 +130,12 @@ export const fetchLatestCommitSha = async (
 
 	const raw: unknown = await response.json();
 	const commits = v.parse(v.array(CommitListItemSchema), raw);
-	if (commits.length === 0) {
+	const latest = commits[0];
+	if (!latest) {
 		throw new Error("No commits found for the specified path");
 	}
 
-	return commits[0].sha;
+	return latest.sha;
 };
 
 export type ManifestLocation = {

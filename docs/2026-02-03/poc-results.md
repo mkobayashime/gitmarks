@@ -4,13 +4,13 @@
 
 以下を PoC で検証した。すべて問題なく動作した。
 
-| 検証項目 | 方法 | 結果 |
-|---------|------|------|
-| GitHub OAuth 認証 | Device Flow | ✅ Chrome Extension から直接実行可能。backend 不要 |
-| アクセストークンの永続化 | WXT の `storage` API (`chrome.storage.local`) | ✅ Extension の再起動をまたいで維持される |
-| ユーザーのレポジトリ一覧の取得 | `GET /user/repos` | ✅ private レポジトリを含む一覧を取得できる |
-| レポジトリ内のファイル一覧の取得 | `GET /repos/{owner}/{repo}/contents/{path}` | ✅ ルートディレクトリのファイル・サブディレクトリを取得できる |
-| Options ページの表示と遷移 | WXT の `entrypoints/options/` | ✅ React コンポーネントとして動作する |
+| 検証項目                         | 方法                                          | 結果                                                          |
+| -------------------------------- | --------------------------------------------- | ------------------------------------------------------------- |
+| GitHub OAuth 認証                | Device Flow                                   | ✅ Chrome Extension から直接実行可能。backend 不要            |
+| アクセストークンの永続化         | WXT の `storage` API (`chrome.storage.local`) | ✅ Extension の再起動をまたいで維持される                     |
+| ユーザーのレポジトリ一覧の取得   | `GET /user/repos`                             | ✅ private レポジトリを含む一覧を取得できる                   |
+| レポジトリ内のファイル一覧の取得 | `GET /repos/{owner}/{repo}/contents/{path}`   | ✅ ルートディレクトリのファイル・サブディレクトリを取得できる |
+| Options ページの表示と遷移       | WXT の `entrypoints/options/`                 | ✅ React コンポーネントとして動作する                         |
 
 ## 技術的な決定と理由
 
@@ -66,13 +66,13 @@ PoC では単一レポジトリの表示のみ対応した。
 
 ## PoC で発見した技術上の注意点
 
-| 項目 | 詳細 |
-|------|------|
-| `browser` vs `chrome` | WXT は `browser` グローバルを提供する。`chrome.*` API は使わず `browser.*` を使うこと |
-| `storage` グローバル | WXT の `storage` は自動インポートされるグローバルだが、Biome はそれを認識しない。`biome.json` の `javascript.globals` に `storage` を追加した |
-| `/contents` のレスポンス形状 | ディレクトリの場合は配列を返す。ファイルの場合は単一オブジェクトを返す。取得後に配列に正規化する必要がある |
-| Options ページの開出先 | `index.html` に `<meta name="manifest.open_in_tab" content="true" />` を付けると Options ページがタブで開く |
-| Client ID の管理 | `lib/env/index.ts` で `import.meta.env.WXT_GITHUB_APP_CLIENT_ID` を読み取り検証する。Extension のビルド時に WXT が環境変数を埋め込む。`auth.ts` はこちらから取得し、直接ハードコードしない |
+| 項目                         | 詳細                                                                                                                                                                                       |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `browser` vs `chrome`        | WXT は `browser` グローバルを提供する。`chrome.*` API は使わず `browser.*` を使うこと                                                                                                      |
+| `storage` グローバル         | WXT の `storage` は自動インポートされるグローバルだが、Biome はそれを認識しない。`biome.json` の `javascript.globals` に `storage` を追加した                                              |
+| `/contents` のレスポンス形状 | ディレクトリの場合は配列を返す。ファイルの場合は単一オブジェクトを返す。取得後に配列に正規化する必要がある                                                                                 |
+| Options ページの開出先       | `index.html` に `<meta name="manifest.open_in_tab" content="true" />` を付けると Options ページがタブで開く                                                                                |
+| Client ID の管理             | `lib/env/index.ts` で `import.meta.env.WXT_GITHUB_APP_CLIENT_ID` を読み取り検証する。Extension のビルド時に WXT が環境変数を埋め込む。`auth.ts` はこちらから取得し、直接ハードコードしない |
 
 ## PoC のコード構成
 

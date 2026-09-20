@@ -3,6 +3,7 @@
 ## Context
 
 Currently, the GitMarks Chrome Extension has 20+ scattered button implementations across 11 component files, each with inline Tailwind classes. This creates:
+
 - Inconsistent styling patterns
 - Difficulty updating button styles globally
 - Code duplication across components
@@ -23,6 +24,7 @@ bun add class-variance-authority clsx tailwind-merge
 ### Phase 2: Create Button Component Structure
 
 Create new files:
+
 1. `/entrypoints/options/components/ui/utils/cn.ts` - Class merging utility
 2. `/entrypoints/options/components/ui/Button/buttonVariants.ts` - CVA configuration
 3. `/entrypoints/options/components/ui/Button/Button.tsx` - Main component
@@ -31,10 +33,12 @@ Create new files:
 ### Phase 3: Component API
 
 **Button Variants (kind/size):**
+
 - `kind`: primary | secondary | text | ghost
 - `size`: sm | md | lg
 
 **Additional Props:**
+
 - `dangerous`: boolean (false | true) - applies danger styling
 - `icon`: ReactElement (leading icon from @primer/octicons-react)
 - `trailingIcon`: ReactElement
@@ -43,6 +47,7 @@ Create new files:
 - All standard button props (onClick, disabled, type, etc.)
 
 **Key Features:**
+
 - Forward ref support
 - Focus-visible ring for accessibility
 - Proper aria attributes for loading state
@@ -66,29 +71,32 @@ Create new files:
 ### Phase 5: Example Migrations
 
 **SyncButton (keep as wrapper):**
+
 ```tsx
 // Before: Custom implementation
 // After: Wrapper around Button
 <Button icon={<SyncIcon />} loading={syncing} disabled={disabled} onClick={onPull}>
-  {syncing ? "Syncing…" : "Sync"}
+	{syncing ? "Syncing…" : "Sync"}
 </Button>
 ```
 
 **ConnectionCard Save button:**
+
 ```tsx
 // Before: <button className="border border-zinc-700 bg-zinc-800...">
 // After:
 <Button kind="secondary" disabled={disabled || !connection.enabled} onClick={handleSave}>
-  Save
+	Save
 </Button>
 ```
 
 **Disconnect button:**
+
 ```tsx
 // Before: <button className="text-red-400 hover:text-red-300...">
 // After:
 <Button kind="text" dangerous disabled={disabled} onClick={() => setDisconnectOpen(true)}>
-  Disconnect
+	Disconnect
 </Button>
 ```
 
@@ -97,12 +105,14 @@ Create new files:
 ## Critical Files
 
 **New Files to Create:**
+
 - `/entrypoints/options/components/ui/utils/cn.ts`
 - `/entrypoints/options/components/ui/Button/buttonVariants.ts`
 - `/entrypoints/options/components/ui/Button/Button.tsx`
 - `/entrypoints/options/components/ui/Button/index.ts`
 
 **Files to Modify:**
+
 - `/entrypoints/options/components/SyncButton.tsx` - Refactor as wrapper
 - `/entrypoints/options/components/ConnectionCard.tsx` - Replace 4 buttons
 - `/entrypoints/options/components/AddConnectionModal.tsx` - Replace 5 buttons
@@ -134,6 +144,7 @@ After implementation, verify:
 10. **Type safety**: TypeScript compiles without errors
 
 **Run:**
+
 ```bash
 make typecheck
 make lint.fix

@@ -4,6 +4,7 @@
 どうしても避けられない場合を除きインラインスタイルや CSS を直接書くのは避け、Tailwind CSS での指定で完結させること
 
 ## Folder Popup — UI Specification
+
 Overall Container
 A modal/popup panel for selecting a bookmark folder destination.
 
@@ -26,9 +27,9 @@ Tree Row Structure
 Each row contains, left-to-right with an 8px gap:
 
 1. Chevron icon (14×14, Lucide icon set):
-      - chevron-down for expanded folders
-      - chevron-right for collapsed folders
-      - For leaf-level items within an expanded parent: replaced with an invisible 14×14 spacer (empty frame, no icon)
+   - chevron-down for expanded folders
+   - chevron-right for collapsed folders
+   - For leaf-level items within an expanded parent: replaced with an invisible 14×14 spacer (empty frame, no icon)
 2. Folder icon (14×14, Lucide folder)
 3. Folder name (text, Inter, 13px, normal weight)
 
@@ -54,16 +55,16 @@ So to summarize the color logic:
 
 #### Tree Content (example data)
 
-Row|Depth|State|Chevron|Name
----|---|---|---|---
-1|0|Expanded|chevron-down|Bookmarks Bar
-2|1|Collapsed|chevron-right|Dev Tools
-3|1|Expanded|chevron-down|Synced
-4|2|Selected|check|bookmarks
-5|2|Normal (hovered)|spacer|reading-list
-6|2|Normal|spacer|work
-7|1|Collapsed|chevron-right|Shopping
-8|0|Collapsed|chevron-right|Other Bookmarks
+| Row | Depth | State            | Chevron       | Name            |
+| --- | ----- | ---------------- | ------------- | --------------- |
+| 1   | 0     | Expanded         | chevron-down  | Bookmarks Bar   |
+| 2   | 1     | Collapsed        | chevron-right | Dev Tools       |
+| 3   | 1     | Expanded         | chevron-down  | Synced          |
+| 4   | 2     | Selected         | check         | bookmarks       |
+| 5   | 2     | Normal (hovered) | spacer        | reading-list    |
+| 6   | 2     | Normal           | spacer        | work            |
+| 7   | 1     | Collapsed        | chevron-right | Shopping        |
+| 8   | 0     | Collapsed        | chevron-right | Other Bookmarks |
 
 ### Section 2: Footer
 
@@ -77,45 +78,45 @@ Footer Left Group
 Horizontal layout, vertically centered, 6px gap. Contains:
 
 1. "New folder" button (text-style/ghost button):
-    - Lucide folder-plus icon, 14×14, #888888
-    - Text "New folder", Inter, 12px, weight 500, #888888
+   - Lucide folder-plus icon, 14×14, #888888
+   - Text "New folder", Inter, 12px, weight 500, #888888
 1. Vertical separator: 1×14px rectangle, fill #333333
 1. "Refresh" button (text-style/ghost button):
-    - Lucide refresh-cw icon, 13×13, #888888
-    - Text "Refresh", Inter, 12px, weight 500, #888888
+   - Lucide refresh-cw icon, 13×13, #888888
+   - Text "Refresh", Inter, 12px, weight 500, #888888
 
 Footer Right Group
 Horizontal layout, vertically centered, 8px gap. Contains:
 
 1. "Cancel" button (outlined):
 
-    - Padding: 6px vertical, 14px horizontal
-    - Corner radius: 6px
-    - Border: 1px solid #333333 (inside-aligned)
-    - No background fill
-    - Text "Cancel", Inter, 12px, weight 500, #CCCCCC
+   - Padding: 6px vertical, 14px horizontal
+   - Corner radius: 6px
+   - Border: 1px solid #333333 (inside-aligned)
+   - No background fill
+   - Text "Cancel", Inter, 12px, weight 500, #CCCCCC
 
 1. "Select" button (primary/filled):
 
-    - Padding: 6px vertical, 14px horizontal
-    - Corner radius: 6px
-    - Background: #E53935 (red)
-    - No border
-    - Text "Select", Inter, 12px, weight 500, #FFFFFF (white)
+   - Padding: 6px vertical, 14px horizontal
+   - Corner radius: 6px
+   - Background: #E53935 (red)
+   - No border
+   - Text "Select", Inter, 12px, weight 500, #FFFFFF (white)
 
 #### Color Palette Summary
 
-Token|Hex|Usage
----|---|---
-Background|#1A1A1A|Popup background
-Border / Separator|#2A2A2A|Popup border, footer top border
-Separator (footer)|#333333|Vertical separator, Cancel button border
-Muted text/icons|#888888|Collapsed icons, footer buttons
-Body text|#CCCCCC|Folder names, Cancel button text
-White|#FFFFFF|Select button text
-Primary/Red|#E53935|Selected state, expanded folder icons, Select button bg
-Selected row bg|#E539351A|~10% red tint
-Hover row bg|FFFFFF0A|~4% white tint
+| Token              | Hex       | Usage                                                   |
+| ------------------ | --------- | ------------------------------------------------------- |
+| Background         | #1A1A1A   | Popup background                                        |
+| Border / Separator | #2A2A2A   | Popup border, footer top border                         |
+| Separator (footer) | #333333   | Vertical separator, Cancel button border                |
+| Muted text/icons   | #888888   | Collapsed icons, footer buttons                         |
+| Body text          | #CCCCCC   | Folder names, Cancel button text                        |
+| White              | #FFFFFF   | Select button text                                      |
+| Primary/Red        | #E53935   | Selected state, expanded folder icons, Select button bg |
+| Selected row bg    | #E539351A | ~10% red tint                                           |
+| Hover row bg       | FFFFFF0A  | ~4% white tint                                          |
 
 ### Icon Set
 

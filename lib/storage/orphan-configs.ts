@@ -12,9 +12,7 @@ const LOCAL_STATE_KEY = "local:gitmarks_connection_state";
 
 export const getOrphanConfigs = async (): Promise<ConnectionConfig[]> => {
 	const [configs, states] = await Promise.all([
-		browser.storage.sync
-			.get(SYNC_KEY)
-			.then((r) => (r[SYNC_KEY] ?? {}) as SyncConnectionsStore),
+		browser.storage.sync.get(SYNC_KEY).then((r) => (r[SYNC_KEY] ?? {}) as SyncConnectionsStore),
 		browser.storage.local
 			.get(LOCAL_STATE_KEY)
 			.then((r) => (r[LOCAL_STATE_KEY] ?? {}) as LocalConnectionStateStore),
@@ -91,9 +89,7 @@ export const resolveOrphanConfig = async (
 
 export const cleanupDeletedConnections = async (): Promise<void> => {
 	const [configs, states] = await Promise.all([
-		browser.storage.sync
-			.get(SYNC_KEY)
-			.then((r) => (r[SYNC_KEY] ?? {}) as SyncConnectionsStore),
+		browser.storage.sync.get(SYNC_KEY).then((r) => (r[SYNC_KEY] ?? {}) as SyncConnectionsStore),
 		browser.storage.local
 			.get(LOCAL_STATE_KEY)
 			.then((r) => (r[LOCAL_STATE_KEY] ?? {}) as LocalConnectionStateStore),

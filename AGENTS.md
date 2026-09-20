@@ -37,9 +37,11 @@ Use these `make` commands, or execute the corresponding commands specified in `M
 ## Architecture Overview
 
 ### Purpose
+
 Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks.
 
 ### Key Features
+
 - Fine-grained Personal Access Token (PAT) authentication
 - Repository connection management
 - Cross-browser connection settings sync (via chrome.storage.sync)
@@ -127,6 +129,7 @@ Chrome Extension that syncs GitHub repository manifest files to Chrome bookmarks
 ### Storage Architecture
 
 **Split Storage for Cross-Browser Sync:**
+
 - `chrome.storage.sync` - Connection configurations (synced across browsers)
   - Key: `sync:gitmarks_connections`
   - Includes: repo settings, target folder path, enabled status

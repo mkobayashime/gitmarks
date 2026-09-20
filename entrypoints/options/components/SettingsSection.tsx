@@ -1,11 +1,8 @@
 import { NumberInput } from "@ark-ui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@primer/octicons-react";
 import { useEffect, useState } from "react";
-import {
-	getSettings,
-	type Settings,
-	updateSettings,
-} from "../../../lib/storage/settings.ts";
+
+import { getSettings, type Settings, updateSettings } from "../../../lib/storage/settings.ts";
 
 type Props = {
 	onToast: (message: string, type: "success" | "error") => void;

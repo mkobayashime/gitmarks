@@ -61,10 +61,7 @@ export const findFolderInTree = (
 /**
  * Get all ancestor IDs for a folder.
  */
-export const getAncestorIds = (
-	folders: BookmarkTreeFolder[],
-	targetId: string,
-): string[] => {
+export const getAncestorIds = (folders: BookmarkTreeFolder[], targetId: string): string[] => {
 	const findPath = (
 		node: BookmarkTreeFolder,
 		targetId: string,

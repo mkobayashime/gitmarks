@@ -17,6 +17,7 @@ Device Flow 関連のコード（Client ID、ポーリング、トークンリ�
 ### 2. `lib/github/auth.ts` — 全面書き換え
 
 **削除する関数/定数:**
+
 - `validateEnvVars()` の import と `GITHUB_CLIENT_ID`
 - `requestDeviceCode()`
 - `pollForToken()`
@@ -26,15 +27,18 @@ Device Flow 関連のコード（Client ID、ポーリング、トークンリ�
 - `BUFFER_MS`
 
 **残す関数（簡素化）:**
+
 - `isAuthenticated()` — そのまま
 - `getValidToken()` — `getAuthData()` から `accessToken` を返すだけに簡素化（リフレッシュロジック削除）
 
 **新規追加:**
+
 - `validateAndSaveToken(token: string): Promise<GitHubUser>` — `/user` API を呼んで検証し、成功すれば `saveAuthData` + `saveUser` して `GitHubUser` を返す。失敗時はエラーを throw
 
 ### 3. `lib/github/schemas.ts` — OAuth スキーマ削除
 
 **削除:**
+
 - `DeviceCodeResponseSchema` / `DeviceCodeResponse`
 - `AccessTokenResponseSchema` / `AccessTokenResponse`
 - `AccessTokenErrorResponseSchema` / `AccessTokenErrorResponse`
@@ -48,12 +52,14 @@ GitHub App Client ID が不要になるため丸ごと削除。
 ### 5. `entrypoints/options/hooks/useAuth.ts` — フロー書き換え
 
 **削除:**
+
 - `DeviceFlowInfo` 型
 - `deviceFlow` state
 - `cancelRef`, `cancelSignIn`
 - `startDeviceFlow` import
 
 **変更:**
+
 - `AuthState`: `"pending"` を削除 → `"idle" | "authenticated"` のみに
 - `signIn(token: string)`: PAT を受け取り、`validateAndSaveToken()` を呼ぶ。成功で `authenticated`、失敗で `error` をセット
 - `restore()`: 起動時の認証復元はそのまま（`getAuthData` → `getUser` → `fetchUser`）
@@ -65,11 +71,13 @@ GitHub App Client ID が不要になるため丸ごと削除。
 **現在:** Device Flow UI（ユーザーコード表示 + github.com/device リンク + ポーリング待ち）
 
 **変更後:**
+
 - テキスト入力欄（`type="password"` でマスク、`github_pat_` prefix の簡易フォーマットチェック）
 - Submit ボタン（バリデーション中は loading 表示）
 - Props: `open`, `error`, `loading`, `onSubmit(token: string)`, `onCancel`（`deviceFlow` を削除）
 
 **UI に記載する PAT 設定手順（モーダル内に常時表示）:**
+
 ```
 Fine-grained personal access token が必要です。
 

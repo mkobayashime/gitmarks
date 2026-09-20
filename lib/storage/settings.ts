@@ -15,9 +15,7 @@ export const getSettings = async (): Promise<Settings> => {
 	return parsed.success ? parsed.output : { syncIntervalMinutes: 20 };
 };
 
-export const updateSettings = async (
-	settings: Partial<Settings>,
-): Promise<void> => {
+export const updateSettings = async (settings: Partial<Settings>): Promise<void> => {
 	const current = await getSettings();
 	const updated = { ...current, ...settings };
 

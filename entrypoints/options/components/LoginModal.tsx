@@ -1,5 +1,6 @@
 import { ArrowRightIcon } from "@primer/octicons-react";
 import { useState } from "react";
+
 import { Button } from "./Button";
 
 type Props = {
@@ -12,13 +13,7 @@ type Props = {
 
 const FINE_GRAINED_PAT_PREFIX = "github_pat_";
 
-export const LoginModal = ({
-	open,
-	error,
-	loading,
-	onSubmit,
-	onCancel,
-}: Props) => {
+export const LoginModal = ({ open, error, loading, onSubmit, onCancel }: Props) => {
 	const [token, setToken] = useState("");
 	const [validationError, setValidationError] = useState<string | null>(null);
 
@@ -35,9 +30,7 @@ export const LoginModal = ({
 		}
 
 		if (!trimmed.startsWith(FINE_GRAINED_PAT_PREFIX)) {
-			setValidationError(
-				"Please enter a Fine-grained PAT (token starting with github_pat_)",
-			);
+			setValidationError("Please enter a Fine-grained PAT (token starting with github_pat_)");
 			return;
 		}
 
@@ -68,9 +61,7 @@ export const LoginModal = ({
 								Select repositories you want to sync
 							</li>
 							<li>
-								<span className="text-zinc-300 mr-1">
-									Repository permissions:
-								</span>
+								<span className="text-zinc-300 mr-1">Repository permissions:</span>
 								<span className="text-pink-400">Contents: Read-only</span>
 							</li>
 						</ol>
@@ -94,10 +85,7 @@ export const LoginModal = ({
 
 				<form onSubmit={handleSubmit} className="space-y-4">
 					<div>
-						<label
-							htmlFor="pat-input"
-							className="block text-xs text-zinc-400 mb-1.5"
-						>
+						<label htmlFor="pat-input" className="block text-xs text-zinc-400 mb-1.5">
 							Token
 						</label>
 						<input
@@ -126,12 +114,7 @@ export const LoginModal = ({
 						>
 							Cancel
 						</Button>
-						<Button
-							kind="primary"
-							type="submit"
-							disabled={loading}
-							className="flex-1 basis-full"
-						>
+						<Button kind="primary" type="submit" disabled={loading} className="flex-1 basis-full">
 							{loading ? "Validating..." : "Sign in"}
 						</Button>
 					</div>

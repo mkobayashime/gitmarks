@@ -74,6 +74,7 @@ GitMarks communicates with the following third-party services:
    - Privacy Policy: https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement
 
 **The extension does NOT communicate with:**
+
 - Analytics services
 - Tracking services
 - Advertising networks

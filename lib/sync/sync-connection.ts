@@ -1,13 +1,6 @@
 import { folderExists } from "../bookmarks/api.ts";
-import {
-	type SyncTarget,
-	syncBookmarksToSubfolders,
-} from "../bookmarks/sync.ts";
-import {
-	fetchFileContent,
-	fetchLatestCommitSha,
-	findManifestFiles,
-} from "../github/api.ts";
+import { type SyncTarget, syncBookmarksToSubfolders } from "../bookmarks/sync.ts";
+import { fetchFileContent, fetchLatestCommitSha, findManifestFiles } from "../github/api.ts";
 import { parseManifest } from "../manifest/parser.ts";
 import { updateConnection } from "../storage/connections.ts";
 import type { Connection } from "../types/connection.ts";
@@ -35,8 +28,7 @@ export const syncConnection = async (
 			return { success: false, error };
 		}
 
-		const apiPath =
-			connection.srcDir === "/" ? "" : connection.srcDir.replace(/^\//, "");
+		const apiPath = connection.srcDir === "/" ? "" : connection.srcDir.replace(/^\//, "");
 
 		const commitSha = await fetchLatestCommitSha(
 			token,
@@ -95,10 +87,7 @@ export const syncConnection = async (
 			});
 		}
 
-		const count = await syncBookmarksToSubfolders(
-			connection.targetFolderId,
-			syncTargets,
-		);
+		const count = await syncBookmarksToSubfolders(connection.targetFolderId, syncTargets);
 
 		await updateConnection(connection.id, {
 			lastSyncedAt: new Date().toISOString(),

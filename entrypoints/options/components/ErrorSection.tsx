@@ -13,11 +13,7 @@ export const ErrorSection = ({ error, onRetry }: Props) => {
 			<div className="flex items-center justify-between gap-2">
 				<span className="text-sm text-red-400">{error}</span>
 				{onRetry && (
-					<Button
-						kind="text"
-						className="text-pink-400 hover:text-pink-300"
-						onClick={onRetry}
-					>
+					<Button kind="text" className="text-pink-400 hover:text-pink-300" onClick={onRetry}>
 						Retry
 					</Button>
 				)}

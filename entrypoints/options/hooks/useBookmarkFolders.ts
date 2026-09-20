@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-	type BookmarkFolder,
-	getAllFolders,
-} from "../../../lib/bookmarks/api.ts";
+
+import { type BookmarkFolder, getAllFolders } from "../../../lib/bookmarks/api.ts";
 
 export const useBookmarkFolders = () => {
 	const [folders, setFolders] = useState<BookmarkFolder[]>([]);

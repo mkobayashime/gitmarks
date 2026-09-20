@@ -26,12 +26,12 @@ GitHub App の[トークンリフレッシュ API](https://docs.github.com/en/ap
 
 ```typescript
 export const AccessTokenResponseSchema = v.object({
-  access_token: v.string(),
-  token_type: v.string(),
-  scope: v.string(),
-  expires_in: v.optional(v.number()),
-  refresh_token: v.optional(v.string()),
-  refresh_token_expires_in: v.optional(v.number()),
+	access_token: v.string(),
+	token_type: v.string(),
+	scope: v.string(),
+	expires_in: v.optional(v.number()),
+	refresh_token: v.optional(v.string()),
+	refresh_token_expires_in: v.optional(v.number()),
 });
 ```
 
@@ -64,10 +64,10 @@ export const removeAuthData = async (): Promise<void> => { ... };
 
 ```typescript
 type AuthResult = {
-  accessToken: string;
-  refreshToken?: string;
-  expiresIn?: number;
-  refreshTokenExpiresIn?: number;
+	accessToken: string;
+	refreshToken?: string;
+	expiresIn?: number;
+	refreshTokenExpiresIn?: number;
 };
 ```
 
@@ -92,19 +92,19 @@ const buildAuthData = (
 
 ```typescript
 export const refreshAccessToken = async (): Promise<string | null> => {
-  const authData = await getAuthData();
-  if (!authData?.refreshToken || !authData.refreshTokenExpiresAt) return null;
+	const authData = await getAuthData();
+	if (!authData?.refreshToken || !authData.refreshTokenExpiresAt) return null;
 
-  // Refresh token 自体が期限切れならサインアウト
-  if (Date.now() > authData.refreshTokenExpiresAt) {
-    await removeAuthData();
-    return null;
-  }
+	// Refresh token 自体が期限切れならサインアウト
+	if (Date.now() > authData.refreshTokenExpiresAt) {
+		await removeAuthData();
+		return null;
+	}
 
-  // POST https://github.com/login/oauth/access_token
-  // body: { client_id, grant_type: "refresh_token", refresh_token }
-  // → 新しい AuthData を saveAuthData で保存
-  // → 新しい access_token を返す
+	// POST https://github.com/login/oauth/access_token
+	// body: { client_id, grant_type: "refresh_token", refresh_token }
+	// → 新しい AuthData を saveAuthData で保存
+	// → 新しい access_token を返す
 };
 ```
 
@@ -112,17 +112,17 @@ export const refreshAccessToken = async (): Promise<string | null> => {
 
 ```typescript
 export const getValidToken = async (): Promise<string | null> => {
-  const authData = await getAuthData();
-  if (!authData) return null;
+	const authData = await getAuthData();
+	if (!authData) return null;
 
-  if (!authData.expiresAt) return authData.accessToken; // Classic OAuth App — 期限なし
+	if (!authData.expiresAt) return authData.accessToken; // Classic OAuth App — 期限なし
 
-  const BUFFER_MS = 5 * 60 * 1000; // 5分のバッファ
-  if (Date.now() < authData.expiresAt - BUFFER_MS) {
-    return authData.accessToken; // まだ有効
-  }
+	const BUFFER_MS = 5 * 60 * 1000; // 5分のバッファ
+	if (Date.now() < authData.expiresAt - BUFFER_MS) {
+		return authData.accessToken; // まだ有効
+	}
 
-  return await refreshAccessToken();
+	return await refreshAccessToken();
 };
 ```
 
@@ -130,13 +130,14 @@ export const getValidToken = async (): Promise<string | null> => {
 
 `getToken()` → `getValidToken()` に変更（`lib/github/auth.ts` からインポート）:
 
-| ファイル | 変更内容 |
-|---------|---------|
-| `lib/sync/sync-all.ts` | `getToken()` → `getValidToken()` |
-| `entrypoints/options/hooks/useSync.ts` | `getToken()` → `getValidToken()` |
+| ファイル                                       | 変更内容                         |
+| ---------------------------------------------- | -------------------------------- |
+| `lib/sync/sync-all.ts`                         | `getToken()` → `getValidToken()` |
+| `entrypoints/options/hooks/useSync.ts`         | `getToken()` → `getValidToken()` |
 | `entrypoints/options/hooks/useRepositories.ts` | `getToken()` → `getValidToken()` |
 
 以下は変更しない（存在チェックのみ）:
+
 - `isAuthenticated()` — `getAuthData() !== null` に変更済み
 - `useAuth.ts` の `restore()` — `getAuthData()` に変更済み
 

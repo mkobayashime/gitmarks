@@ -1,9 +1,7 @@
 import * as v from "valibot";
+
 import { fetchFileContent } from "../github/api.ts";
-import {
-	ManifestJSONSchema,
-	type ResolvedBookmark,
-} from "../types/manifest.ts";
+import { ManifestJSONSchema, type ResolvedBookmark } from "../types/manifest.ts";
 
 const isUrl = (value: string): boolean => {
 	try {
@@ -20,8 +18,7 @@ const isUrl = (value: string): boolean => {
  */
 const resolveRelativePath = (srcDir: string, relativePath: string): string => {
 	const stripped = relativePath.replace(/^\.\//, "");
-	const base =
-		srcDir === "/" ? "" : srcDir.replace(/^\//, "").replace(/\/$/, "");
+	const base = srcDir === "/" ? "" : srcDir.replace(/^\//, "").replace(/\/$/, "");
 	return base ? `${base}/${stripped}` : stripped;
 };
 

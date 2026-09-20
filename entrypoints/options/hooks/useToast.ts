@@ -11,13 +11,10 @@ let nextId = 0;
 export const useToast = () => {
 	const [toasts, setToasts] = useState<Toast[]>([]);
 
-	const add = useCallback(
-		(message: string, type: "success" | "error" | "info") => {
-			const id = String(nextId++);
-			setToasts((prev) => [...prev, { id, message, type }]);
-		},
-		[],
-	);
+	const add = useCallback((message: string, type: "success" | "error" | "info") => {
+		const id = String(nextId++);
+		setToasts((prev) => [...prev, { id, message, type }]);
+	}, []);
 
 	const remove = useCallback((id: string) => {
 		setToasts((prev) => prev.filter((t) => t.id !== id));

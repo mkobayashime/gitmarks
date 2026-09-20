@@ -22,18 +22,20 @@ bun add tailwindcss postcss autoprefixer @ark-ui/react valibot
 ### 1.2 Configure Tailwind CSS
 
 **Create `tailwind.config.js`:**
+
 ```js
 export default {
-  content: ["./entrypoints/**/*.{ts,tsx}", "./lib/**/*.{ts,tsx}"],
-  theme: { extend: {} },
-  plugins: [],
+	content: ["./entrypoints/**/*.{ts,tsx}", "./lib/**/*.{ts,tsx}"],
+	theme: { extend: {} },
+	plugins: [],
 };
 ```
 
 **Create `postcss.config.js`:**
+
 ```js
 export default {
-  plugins: { tailwindcss: {}, autoprefixer: {} },
+	plugins: { tailwindcss: {}, autoprefixer: {} },
 };
 ```
 
@@ -44,6 +46,7 @@ export default {
 ### 1.3 Update Manifest Permissions
 
 **Modify `wxt.config.ts`:**
+
 ```typescript
 permissions: ["storage", "bookmarks", "alarms"],
 ```
@@ -55,31 +58,33 @@ permissions: ["storage", "bookmarks", "alarms"],
 ### 2.1 Create Type Definitions
 
 **`lib/types/connection.ts`:**
+
 ```typescript
 export type Connection = {
-  id: string;
-  repoFullName: string;
-  repoOwner: string;
-  repoName: string;
-  srcDir: string;
-  targetFolderId: string;
-  targetFolderPath: string;
-  enabled: boolean;
-  lastSyncedAt: string | null;
-  lastSyncedCommitSha: string | null;  // For skip-if-unchanged optimization
-  lastSyncError: string | null;
-  createdAt: string;
+	id: string;
+	repoFullName: string;
+	repoOwner: string;
+	repoName: string;
+	srcDir: string;
+	targetFolderId: string;
+	targetFolderPath: string;
+	enabled: boolean;
+	lastSyncedAt: string | null;
+	lastSyncedCommitSha: string | null; // For skip-if-unchanged optimization
+	lastSyncError: string | null;
+	createdAt: string;
 };
 ```
 
 **`lib/types/manifest.ts`:** (with Valibot schemas)
+
 ```typescript
 import * as v from "valibot";
 
 // Valibot schema for manifest.json validation
 export const ManifestBookmarkSchema = v.object({
-  name: v.string(),
-  location: v.string(),
+	name: v.string(),
+	location: v.string(),
 });
 
 export const ManifestJSONSchema = v.array(ManifestBookmarkSchema);
@@ -93,6 +98,7 @@ export type ResolvedBookmark = { name: string; url: string };
 ```
 
 **`lib/types/user.ts`:**
+
 ```typescript
 export type GitHubUser = { login: string; avatar_url: string; name: string | null };
 ```
@@ -108,10 +114,12 @@ export type GitHubUser = { login: string; avatar_url: string; name: string | nul
 ## Phase 3: Validation Logic
 
 **`lib/validation/target-folder.ts`:**
+
 - Validate target folder doesn't overlap with existing connections
 - Check ancestor/descendant relationships using Chrome bookmarks API
 
 **`lib/validation/src-dir.ts`:**
+
 - Validate srcDir is not empty ("/" is valid)
 
 ---
@@ -139,6 +147,7 @@ export const fetchLatestCommitSha = async (
 **Modify `lib/github/types.ts`:**
 
 Add to `RepoContent`:
+
 ```typescript
 content?: string;   // Base64 encoded
 encoding?: string;  // "base64"
@@ -171,18 +180,21 @@ export const parseManifest = async (
 ## Phase 6: Chrome Bookmarks Integration
 
 **`lib/bookmarks/api.ts`:**
+
 - `getAllFolders()`: Get all folders with hierarchical paths
 - `getFolderById()`: Get single folder
 - `folderExists()`: Check if folder still exists
 - `getBookmarksInFolder()`: List direct children
 
 **`lib/bookmarks/sync.ts`:**
+
 ```typescript
 export const syncBookmarksToFolder = async (
   targetFolderId: string,
   bookmarks: ResolvedBookmark[]
 ): Promise<number>;
 ```
+
 - Delete existing bookmarks in folder
 - Create new bookmarks from manifest
 - Return count
@@ -192,6 +204,7 @@ export const syncBookmarksToFolder = async (
 ## Phase 7: Sync Engine
 
 **`lib/sync/sync-connection.ts`:**
+
 ```typescript
 export const syncConnection = async (
   connection: Connection,
@@ -201,6 +214,7 @@ export const syncConnection = async (
 ```
 
 **Sync algorithm with commit hash optimization:**
+
 1. Validate target folder exists
 2. Fetch latest commit SHA for `srcDir` via `fetchLatestCommitSha()`
 3. **Skip check:** If `!options?.force` and `commitSha === connection.lastSyncedCommitSha`:
@@ -211,9 +225,11 @@ export const syncConnection = async (
 7. Update connection: `lastSyncedAt`, `lastSyncedCommitSha`, `lastSyncError`
 
 **`lib/sync/sync-all.ts`:**
+
 ```typescript
 export const syncAllConnections = async (): Promise<SyncResult[]>;
 ```
+
 - Iterates enabled connections
 - Uses default (non-forced) sync, allowing skip optimization
 - Manual "Pull" button in UI uses `force: true` to always sync
@@ -223,20 +239,21 @@ export const syncAllConnections = async (): Promise<SyncResult[]>;
 ## Phase 8: Background Service
 
 **`entrypoints/background.ts`:**
+
 ```typescript
 export default defineBackground(() => {
-  const SYNC_ALARM_NAME = "gitmarks-sync";
-  const SYNC_INTERVAL_MINUTES = 60;
+	const SYNC_ALARM_NAME = "gitmarks-sync";
+	const SYNC_INTERVAL_MINUTES = 60;
 
-  browser.runtime.onInstalled.addListener(() => {
-    browser.alarms.create(SYNC_ALARM_NAME, { periodInMinutes: SYNC_INTERVAL_MINUTES });
-  });
+	browser.runtime.onInstalled.addListener(() => {
+		browser.alarms.create(SYNC_ALARM_NAME, { periodInMinutes: SYNC_INTERVAL_MINUTES });
+	});
 
-  browser.alarms.onAlarm.addListener((alarm) => {
-    if (alarm.name === SYNC_ALARM_NAME) {
-      void syncAllConnections();
-    }
-  });
+	browser.alarms.onAlarm.addListener((alarm) => {
+		if (alarm.name === SYNC_ALARM_NAME) {
+			void syncAllConnections();
+		}
+	});
 });
 ```
 
@@ -283,31 +300,31 @@ entrypoints/options/
 
 ## Files Summary
 
-| Action | Path |
-|--------|------|
-| CREATE | `tailwind.config.js` |
-| CREATE | `postcss.config.js` |
-| CREATE | `lib/types/connection.ts` |
-| CREATE | `lib/types/manifest.ts` |
-| CREATE | `lib/types/user.ts` |
-| CREATE | `lib/storage/connections.ts` |
-| CREATE | `lib/storage/user.ts` |
-| CREATE | `lib/validation/target-folder.ts` |
-| CREATE | `lib/validation/src-dir.ts` |
-| CREATE | `lib/manifest/parser.ts` |
-| CREATE | `lib/bookmarks/api.ts` |
-| CREATE | `lib/bookmarks/sync.ts` |
-| CREATE | `lib/sync/sync-connection.ts` |
-| CREATE | `lib/sync/sync-all.ts` |
-| CREATE | `entrypoints/background.ts` |
-| CREATE | `entrypoints/options/components/*.tsx` (10 files) |
-| CREATE | `entrypoints/options/hooks/*.ts` (6 files) |
-| MODIFY | `wxt.config.ts` |
-| MODIFY | `lib/github/api.ts` |
-| MODIFY | `lib/github/types.ts` |
-| MODIFY | `entrypoints/options/main.tsx` |
-| REWRITE | `entrypoints/options/App.tsx` |
-| DELETE | `entrypoints/options/style.css` |
+| Action  | Path                                              |
+| ------- | ------------------------------------------------- |
+| CREATE  | `tailwind.config.js`                              |
+| CREATE  | `postcss.config.js`                               |
+| CREATE  | `lib/types/connection.ts`                         |
+| CREATE  | `lib/types/manifest.ts`                           |
+| CREATE  | `lib/types/user.ts`                               |
+| CREATE  | `lib/storage/connections.ts`                      |
+| CREATE  | `lib/storage/user.ts`                             |
+| CREATE  | `lib/validation/target-folder.ts`                 |
+| CREATE  | `lib/validation/src-dir.ts`                       |
+| CREATE  | `lib/manifest/parser.ts`                          |
+| CREATE  | `lib/bookmarks/api.ts`                            |
+| CREATE  | `lib/bookmarks/sync.ts`                           |
+| CREATE  | `lib/sync/sync-connection.ts`                     |
+| CREATE  | `lib/sync/sync-all.ts`                            |
+| CREATE  | `entrypoints/background.ts`                       |
+| CREATE  | `entrypoints/options/components/*.tsx` (10 files) |
+| CREATE  | `entrypoints/options/hooks/*.ts` (6 files)        |
+| MODIFY  | `wxt.config.ts`                                   |
+| MODIFY  | `lib/github/api.ts`                               |
+| MODIFY  | `lib/github/types.ts`                             |
+| MODIFY  | `entrypoints/options/main.tsx`                    |
+| REWRITE | `entrypoints/options/App.tsx`                     |
+| DELETE  | `entrypoints/options/style.css`                   |
 
 ---
 

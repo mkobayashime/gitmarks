@@ -1,5 +1,6 @@
 import { ChevronDownIcon, SyncIcon } from "@primer/octicons-react";
 import { useState } from "react";
+
 import type { Connection } from "../../../lib/types/connection.ts";
 import { validateSrcDir } from "../../../lib/validation/src-dir.ts";
 import { validateTargetFolder } from "../../../lib/validation/target-folder.ts";
@@ -41,12 +42,8 @@ export const ConnectionCard = ({
 	const [disconnectOpen, setDisconnectOpen] = useState(false);
 	const [folderPopupOpen, setFolderPopupOpen] = useState(false);
 	const [srcDir, setSrcDir] = useState(connection.srcDir);
-	const [targetFolderId, setTargetFolderId] = useState(
-		connection.targetFolderId,
-	);
-	const [targetFolderPath, setTargetFolderPath] = useState(
-		connection.targetFolderPath,
-	);
+	const [targetFolderId, setTargetFolderId] = useState(connection.targetFolderId);
+	const [targetFolderPath, setTargetFolderPath] = useState(connection.targetFolderPath);
 	const [validationError, setValidationError] = useState<string | null>(null);
 
 	const hasUnsavedChanges =
@@ -95,11 +92,7 @@ export const ConnectionCard = ({
 			return;
 		}
 
-		const folderError = await validateTargetFolder(
-			targetFolderId,
-			allConnections,
-			connection.id,
-		);
+		const folderError = await validateTargetFolder(targetFolderId, allConnections, connection.id);
 		if (folderError) {
 			setValidationError(folderError);
 			return;
@@ -154,19 +147,13 @@ open:details-content:h-auto
 				<summary className="cursor-pointer list-none px-4 py-3 [&::-webkit-details-marker]:hidden">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2">
-							<span className="text-sm text-zinc-100">
-								{connection.repoFullName}
-							</span>
+							<span className="text-sm text-zinc-100">{connection.repoFullName}</span>
 						</div>
 						<ChevronDownIcon className="-rotate-90 text-zinc-600 transition-transform group-open:rotate-0" />
 					</div>
 					<div className="mt-1 flex flex-col gap-1">
-						<div
-							className={`flex items-center gap-1 text-xs ${statusTextClass}`}
-						>
-							<span
-								className={`inline-block h-1.5 w-1.5 rounded-full ${statusDotClass}`}
-							/>
+						<div className={`flex items-center gap-1 text-xs ${statusTextClass}`}>
+							<span className={`inline-block h-1.5 w-1.5 rounded-full ${statusDotClass}`} />
 							{statusLabel}
 						</div>
 						<span className="text-xs text-zinc-500">
@@ -226,9 +213,7 @@ open:details-content:h-auto
 
 					{/* Target folder */}
 					<div className="mb-4">
-						<span className="block mb-1 text-xs text-zinc-500">
-							Target folder
-						</span>
+						<span className="block mb-1 text-xs text-zinc-500">Target folder</span>
 						<div className="relative">
 							<button
 								type="button"
@@ -282,10 +267,7 @@ open:details-content:h-auto
 						</Button>
 					</div>
 
-					<ErrorSection
-						error={displayError}
-						onRetry={() => void handlePull()}
-					/>
+					<ErrorSection error={displayError} onRetry={() => void handlePull()} />
 				</div>
 			</details>
 

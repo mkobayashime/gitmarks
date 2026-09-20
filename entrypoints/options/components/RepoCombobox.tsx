@@ -1,5 +1,6 @@
 import { ChevronDownIcon } from "@primer/octicons-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+
 import type { Repository } from "../../../lib/github/schemas.ts";
 
 type Props = {
@@ -22,10 +23,7 @@ export const RepoCombobox = ({ repos, loading, value, onChange }: Props) => {
 
 	useEffect(() => {
 		const handleClickOutside = (e: MouseEvent) => {
-			if (
-				containerRef.current &&
-				!containerRef.current.contains(e.target as Node)
-			) {
+			if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
 				setOpen(false);
 			}
 		};
@@ -58,9 +56,7 @@ export const RepoCombobox = ({ repos, loading, value, onChange }: Props) => {
 						<p className="px-3 py-2 text-xs text-zinc-500">Loading…</p>
 					) : filtered.length === 0 ? (
 						<p className="px-3 py-2 text-xs text-zinc-500">
-							{repos.length === 0
-								? "No repositories found. Create one on GitHub."
-								: "No matches"}
+							{repos.length === 0 ? "No repositories found. Create one on GitHub." : "No matches"}
 						</p>
 					) : (
 						filtered.map((repo) => (

@@ -1,6 +1,6 @@
 oxlint = bunx oxlint
 oxfmt = bunx oxfmt
-typecheck = bunx tsgo --noEmit
+typecheck = bunx tsc --noEmit
 wxt = bunx wxt
 
 deps: PHONY

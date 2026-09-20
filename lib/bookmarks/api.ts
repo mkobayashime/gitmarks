@@ -43,8 +43,9 @@ export const getAllFolders = async (): Promise<BookmarkFolder[]> => {
 export const getFolderById = async (id: string): Promise<BookmarkFolder | null> => {
 	try {
 		const nodes = await browser.bookmarks.get(id);
-		if (nodes.length === 0 || nodes[0].url) return null;
-		return { id: nodes[0].id, title: nodes[0].title, path: nodes[0].title };
+		const node = nodes[0];
+		if (!node || node.url) return null;
+		return { id: node.id, title: node.title, path: node.title };
 	} catch {
 		return null;
 	}
@@ -56,7 +57,8 @@ export const getFolderById = async (id: string): Promise<BookmarkFolder | null> 
 export const folderExists = async (id: string): Promise<boolean> => {
 	try {
 		const nodes = await browser.bookmarks.get(id);
-		return nodes.length > 0 && !nodes[0].url;
+		const node = nodes[0];
+		return node !== undefined && !node.url;
 	} catch {
 		return false;
 	}

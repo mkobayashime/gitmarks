@@ -24,7 +24,7 @@
 		"@types/react-dom": "19.3.0",
 		"@wxt-dev/auto-icons": "1.1.2",
 		"@wxt-dev/module-react": "1.2.2",
-		"oxfmt": "0.68.0",
+		"oxfmt": "0.70.0",
 		"oxlint": "1.83.0",
 		"oxlint-tsgolint": "7.0.2002",
 		"typescript": "7.0.2",
